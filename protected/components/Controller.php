@@ -21,6 +21,10 @@ class Controller extends RController
 	 */
 	public $breadcrumbs=array();
 
+	public $pageTitle = 'Битфорк индекс курса криптовалют. Курс bitcoin, litecoin и других криптовалют.';
+	public $pageKeywords = '';
+	public $pageDescription = 'Битфорк индекс курса криптовалют. Курс биткоин (bitcoin) к доллару USD, курс litecoin к доллару USD.  Бесплатное API для сторонних интернет сайтов. Настраиваемые параметры курса криптовалют.';
+
 	/*public function filters()
 	{
 		return array(

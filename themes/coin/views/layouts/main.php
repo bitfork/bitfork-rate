@@ -4,7 +4,14 @@
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 	<meta charset="utf-8" />
+	<?php if (!empty($this->pageKeywords))
+	echo '<meta name="keywords" content="' . $this->pageKeywords . '" />';
+	?>
+	<?php if (!empty($this->pageDescription))
+	echo '<meta name="description" content="' . $this->pageDescription . '" />';
+	?>
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
+
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
@@ -26,6 +33,8 @@
 	<link href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/responsive.css" rel="stylesheet" type="text/css"/>
 	<link href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/css/custom-icon-set.css" rel="stylesheet" type="text/css"/>
 	<!-- END CSS TEMPLATE -->
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
