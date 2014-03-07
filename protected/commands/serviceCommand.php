@@ -34,7 +34,7 @@ class ServiceCommand extends CConsoleCommand
 
 	public function stopProcess()
 	{
-		unlink($this->_pidFile);
+		@unlink($this->_pidFile);
 	}
 
 	public function startProcess()
@@ -60,7 +60,10 @@ class ServiceCommand extends CConsoleCommand
 
 		$i = 0;
 		while ($i<30) {
+			// собрать данные со всех сервисов
 			Course::parseAllService();
+			// расчет индекса для каждой комбинации
+			Course::calculateIndex();
 			//echo $i;
 			$i++;
 			sleep($this->_sleep);

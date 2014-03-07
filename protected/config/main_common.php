@@ -1,6 +1,7 @@
 <?php
 
 YiiBase::setPathOfAlias('btc', realpath(__DIR__ . '/../extensions/btc'));
+YiiBase::setPathOfAlias('sse', realpath(__DIR__ . '/../extensions/sse'));
 
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
@@ -52,6 +53,12 @@ return array(
 
 	// application components
 	'components'=>array(
+		'clientScript'=>array(
+			'scriptMap' => array(
+				'jquery.js'=>'/themes/coin/assets/plugins/jquery-1.8.3.min.js',
+				'jquery.min.js'=>'/themes/coin/assets/plugins/jquery-1.8.3.min.js',
+			)
+		),
 		/*'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,

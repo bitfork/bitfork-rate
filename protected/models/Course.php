@@ -29,6 +29,8 @@ class Course extends MyActiveRecord
 
 	const USD		= 1;
 
+	public static $periods = array('1ч'=>1, '24ч'=>24, '7д'=>168);
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -142,7 +144,7 @@ class Course extends MyActiveRecord
 		return parent::model($className);
 	}
 
-	public function getAvgData($date_start, $date_finish, $id_services = null)
+	public static function getAvgData($date_start, $date_finish, $id_services = null)
 	{
 		$where = '';
 		if (is_array($id_services) and count($id_services)>0) {
@@ -152,7 +154,7 @@ class Course extends MyActiveRecord
 			SELECT t.id_service, t2.name as name_service, AVG(t.last) as avg_price, AVG(t.vol_cur) as avg_volume
 			FROM (
 				SELECT *
-				FROM `". $this->tableName() ."`
+				FROM `". Course::model()->tableName() ."`
 				WHERE `create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."' ". $where ."
 			) as `t`
 			JOIN `". Service::model()->tableName() ."` as t2 ON t.id_service = t2.id
@@ -178,6 +180,73 @@ class Course extends MyActiveRecord
 		return array($index, $data);
 	}
 
+	/**
+	 * сохраняем индекс в db
+	 *
+	 * @param $period
+	 * @param $combination
+	 * @param $data
+	 */
+	public static function saveIndex($period, $combination, $data)
+	{
+		$index = new RateIndex();
+		$index->period = $period;
+		$index->servises = implode(',', $combination);
+		$index->services_hash = md5($index->servises);
+		$index->index = $data[0];
+		$index->data = json_encode($data[1]);
+		$index->save();
+	}
+
+	/**
+	 * расчет для раждой комбинации сервисов индекса
+	 */
+	public static function calculateIndex()
+	{
+		$services = array();
+		foreach (Service::model()->findAll() as $service) {
+			$services[] = $service->id;
+		}
+		$combinations = self::getComb($services);
+		foreach (self::$periods as $period) {
+			foreach ($combinations as $combination) {
+				$date_start = new DateTime();
+				$date_start->modify('-'. $period .' hour');
+				$date_start = $date_start->format('Y-m-d H:i:s');
+				$data = Course::model()->getAvgData(
+					$date_start,
+					date('Y-m-d H:i:s'),
+					$combination
+				);
+				self::saveIndex($period, $combination, $data);
+			}
+		}
+	}
+
+	/**
+	 * перебор всех комбинация
+	 *
+	 * @param $services
+	 * @param $start
+	 * @param array $last
+	 * @return array
+	 */
+	public static function getComb($services, $start = -1, $last = array())
+	{
+		$comb = array();
+		for ($i = $start + 1; $i < count($services); $i++) {
+			$comb[] = array_merge($last, array($services[$i]));
+			$last = array_merge($last, array($services[$i]));
+			$ret = self::getComb($services, $i, $last);
+			$comb = array_merge($comb, $ret);
+			$last = array();
+		}
+		return $comb;
+	}
+
+	/**
+	 * получает от сервиса данные и сохраняет в db
+	 */
 	public static function parseAllService()
 	{
 		$exchange = Yii::app()->exchange;

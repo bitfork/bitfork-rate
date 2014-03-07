@@ -9,6 +9,8 @@
 	<meta content="" name="description" />
 	<meta content="" name="author" />
 
+	<?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
+
 	<!-- BEGIN PLUGIN CSS -->
 	<link href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" media="screen"/>
 	<link href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/plugins/jquery-slider/css/jquery.sidr.light.css" rel="stylesheet" type="text/css" media="screen"/>
@@ -31,7 +33,7 @@
 <div class="header navbar navbar-inverse ">
 	<div class="navbar-inner">
 		<div class="header-seperation">
-			<h1 class="muted m-l-10"><?php echo CHtml::encode(Yii::app()->name); ?></h1>
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/logo.png" style="max-height: 50px; margin-top: 5px; margin-left: 20px;">
 		</div>
 		<div class="header-quick-nav">
 			<div class="pull-left">
@@ -54,6 +56,10 @@
 			<?php $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
 					array('label'=>'<i class="icon-custom-home"></i><span class="title">Главная</span>', 'url'=>array('/course/index')),
+					array('label'=>'<i class="fa fa-cog"></i><span class="title">API</span>', 'url'=>array('/course/index')),
+					array('label'=>'<i class="fa fa-book"></i><span class="title">Гайд</span>', 'url'=>array('/course/index')),
+					array('label'=>'<i class="fa fa-question"></i><span class="title">Помощь</span>', 'url'=>array('/course/index')),
+					array('label'=>'<i class="fa fa-user"></i><span class="title">О разработчиках</span>', 'url'=>array('/course/index')),
 					//array('label'=>'<i class="fa fa-folder-open"></i><span class="title">Собрать</span>', 'url'=>array('/course/parse')),
 					/*array('label'=>'Login', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
 					array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/user/logout'), 'visible'=>!Yii::app()->user->isGuest)*/
@@ -79,7 +85,6 @@
 </div>
 
 <!-- BEGIN CORE JS FRAMEWORK-->
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/plugins/jquery-1.8.3.min.js" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/plugins/boostrapv3/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/plugins/breakpoints.js" type="text/javascript"></script>

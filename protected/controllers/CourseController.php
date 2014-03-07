@@ -20,33 +20,38 @@ class CourseController extends Controller
 			}
 		}
 
-		// выбранный период
-		if ($period != 1 and $period != 24 and $period != 168) {
-			$period = 1;
-		}
-		$date_start = new DateTime();
-		$date_start->modify('-'. $period .' hour');
-		$date_start = $date_start->format('Y-m-d H:i:s');
-
-		$data = Course::model()->getAvgData(
-			$date_start,
-			date('Y-m-d H:i:s'),
-			Yii::app()->session['select_services']
-		);
-
 		// список сервисов для формы
 		$servicesAll = Service::model()->findAll();
+
+		// выбранные снрвисы
 		if (Yii::app()->session['select_services']===null) {
 			foreach ($servicesAll as $service) {
 				$modelForm->services[] = $service->id;
 			}
+			Yii::app()->session['select_services'] = $modelForm->services;
 			$servicesList = CHtml::listData($servicesAll, 'id', 'name');
 		} else {
 			$modelForm->services = Yii::app()->session['select_services'];
 			$servicesList = CHtml::listData($servicesAll, 'id', 'name');
 		}
 
-		$this->render('index', array('index'=>$data[0], 'data'=>$data[1], 'period'=>$period, 'modelForm'=>$modelForm, 'servicesList'=>$servicesList));
+		// выбранный период
+		if (!in_array($period, Course::$periods)) {
+			$period = 1;
+		}
+		$data = RateIndex::getDateIndex($period, $modelForm->services);
+		$range = RateIndex::getRangeIndex($period, $modelForm->services);
+		$change = RateIndex::getChangePercent($period, $modelForm->services);
+
+		$this->render('index', array(
+			'index'=>$data[0],
+			'data'=>$data[1],
+			'period'=>$period,
+			'modelForm'=>$modelForm,
+			'servicesList'=>$servicesList,
+			'range'=>$range,
+			'change'=>$change
+		));
 	}
 
 	public function actionParse($id = 'btce')

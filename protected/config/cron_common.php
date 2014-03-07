@@ -2,6 +2,7 @@
 
 // uncomment the following to define a path alias
 YiiBase::setPathOfAlias('btc', realpath(__DIR__ . '/../extensions/btc'));
+YiiBase::setPathOfAlias('sse', realpath(__DIR__ . '/../extensions/sse'));
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
 // This is the main Web application configuration. Any writable

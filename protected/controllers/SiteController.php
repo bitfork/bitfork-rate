@@ -21,6 +21,21 @@ class SiteController extends Controller
 		);
 	}
 
+	public function actionTest()
+	{
+		RateIndex::getChangePercent(1,array(1,2));
+		exit;
+		$values = array(0, 1, 2, 4, 8, 10, 16);
+		$test = 1 + 10;
+
+		foreach ($values as $value) {
+			$result = $value & $test;
+			var_dump($result);
+		}
+		exit;
+		\sse\Service::setMessage(ViewPrice::GetResult(600));
+	}
+
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
