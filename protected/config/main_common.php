@@ -74,8 +74,8 @@ return array(
 			'defaultRoles' => array('Guest') // дефолтная роль
 		),
 		// uncomment the following to enable URLs in path-format
-		/*
 		'urlManager'=>array(
+			'showScriptName'=>false,
 			'urlFormat'=>'path',
 			'rules'=>array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
@@ -83,7 +83,6 @@ return array(
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
-		*/
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=bitfork_rate',
 			'emulatePrepare' => true,
@@ -101,6 +100,11 @@ return array(
 				array(
 					'class'=>'CFileLogRoute',
 					'levels'=>'error, warning',
+				),
+				array(
+					'class'=>'CEmailLogRoute',
+					'levels'=>'error, warning',
+					'emails'=>'vol4444@yandex.ru',
 				),
 				// uncomment the following to show log messages on web pages
 				/*
