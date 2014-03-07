@@ -172,9 +172,12 @@ class Course extends MyActiveRecord
 
 		$index = 0;
 		foreach ($data as $k => $r) {
-			$data[$k]['percent'] = $r['avg_volume'] / $sum;
-			$data[$k]['percent_price'] = $r['avg_price'] * $data[$k]['percent'];
-			$index += $data[$k]['percent_price'];
+			$data[$k]['percent_for_index'] = $r['avg_volume'] / $sum;
+			$data[$k]['percent_price_for_index'] = $r['avg_price'] * $data[$k]['percent_for_index'];
+			$index += $data[$k]['percent_price_for_index'];
+			$change = self::getChangePercent($r['id_service'], $date_start, $date_finish);
+			$data[$k]['change_state'] = $change[0];
+			$data[$k]['change_percent'] = $change[1];
 		}
 
 		return array($index, $data);
@@ -261,5 +264,66 @@ class Course extends MyActiveRecord
 				$model->save();
 			}
 		}
+	}
+
+	/**
+	 * вернет на сколько % изменился цена и в какую сторону
+	 *
+	 * @param $id_services
+	 * @param $date_start
+	 * @param $date_finish
+	 * @return array|bool
+	 */
+	public static function getChangePercent($id_service, $date_start, $date_finish)
+	{
+		$sql = "
+			SELECT `first`.*
+			FROM (
+				SELECT `last`
+				FROM `". Course::model()->tableName() ."`
+				WHERE `id_service` = '". $id_service ."' AND
+					`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
+				ORDER BY id ASC
+				LIMIT 1
+			) as `first`
+			UNION
+			SELECT `last`.*
+			FROM (
+				SELECT `last`
+				FROM `". Course::model()->tableName() ."`
+				WHERE `id_service` = '". $id_service ."' AND
+					`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
+				ORDER BY id DESC
+				LIMIT 1
+			) as `last`
+		";
+
+		$connection=Yii::app()->db;
+		$command=$connection->createCommand($sql);
+		$data = $command->queryAll();
+
+		if (!isset($data[0]))
+			return array(self::CHANGE_NULL, 0);
+
+		$first = $data[0]['last'];
+		$last = $data[1]['last'];
+
+		if ($first<$last) {
+			$percent = (($last - $first) * 100) / $first;
+			$change = RateIndex::CHANGE_UP;
+		} elseif ($last<$first) {
+			$percent = (($first - $last) * 100) / $last;
+			$change = RateIndex::CHANGE_DOWN;
+		} else {
+			$percent = 0;
+			$change = RateIndex::CHANGE_NULL;
+		}
+
+		$round = 1;
+		if ($percent < 1) {
+			$round = 2;
+		}
+
+		return array($change, round($percent, $round));
 	}
 }

@@ -38,6 +38,7 @@
 		</div>
 		<div class="scroller" data-height="410px" data-always-visible="1">
 			<?php foreach ($data as $row) { ?>
+				<?php $state = ($row['change_state']===RateIndex::CHANGE_DOWN) ? 'error' : 'success'; ?>
 				<div class="p-l-15 p-r-15 p-b-10 p-t-10 b-b b-grey">
 					<div class="pull-left">
 						<p class="small-text"><?php echo $row['name_service']; ?></p>
@@ -47,10 +48,10 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="pull-left">
-						<i class="fa fa-sort-desc text-success inline p-b-10" style="vertical-align: middle;"></i>
+						<i class="fa fa-sort-desc text-<?php echo $state; ?> inline p-b-10" style="vertical-align: middle;"></i>
 						<h4 class="text-success semi-bold inline"><?php echo ViewPrice::GetResult($row['avg_price']); ?></h4>
 					</div>
-					<div class="pull-right" style="line-height: 27px;"> <span class="label label-success" style="vertical-align: bottom;">+3,5%</span> </div>
+					<div class="pull-right" style="line-height: 27px;"> <span class="label label-<?php echo $state; ?>" style="vertical-align: bottom;"><?php echo RateIndex::getStrChangeId($row['change_state']); ?> <?php echo $row['change_percent']; ?>%</span> </div>
 					<div class="clearfix"></div>
 				</div>
 			<?php } ?>
