@@ -54,6 +54,24 @@
 					</li>
 				</ul>
 			</div>
+			<div class="pull-left">
+				<div class="header-caption">
+					<h3 class="text-success bold inline"><?php echo Yii::t('main', 'Bitfork index'); ?></h3>
+					<h3 class="text-black bold"><?php echo Yii::t('main', '- exchange'); ?></h3>
+				</div>
+			</div>
+			<div class="pull-right">
+				<div class="header-select-block">
+					<h4 class="text-black select-caption"><?php echo Yii::t('main', 'Alternate cryptocurrencies'); ?></h4>
+					<div class="inline header-select">
+						<select id="source" style="width:100%">
+							<option value="CA">BTC / USD</option>
+							<option value="NV">LTC / USD</option>
+							<option value="OR">BTC / LTC</option>
+						</select>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -64,19 +82,21 @@
 		<div class="page-sidebar-wrapper" id="main-menu-wrapper">
 			<?php $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
-					array('label'=>'<i class="icon-custom-home"></i><span class="title">Главная</span>', 'url'=>array('/course/index')),
-					array('label'=>'<i class="fa fa-cog"></i><span class="title">API</span>', 'url'=>array('/course/index')),
-					array('label'=>'<i class="fa fa-book"></i><span class="title">Гайд</span>', 'url'=>array('/course/index')),
-					array('label'=>'<i class="fa fa-question"></i><span class="title">Помощь</span>', 'url'=>array('/course/index')),
-					array('label'=>'<i class="fa fa-user"></i><span class="title">О разработчиках</span>', 'url'=>array('/course/index')),
-					//array('label'=>'<i class="fa fa-folder-open"></i><span class="title">Собрать</span>', 'url'=>array('/course/parse')),
-					/*array('label'=>'Login', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
-					array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/user/logout'), 'visible'=>!Yii::app()->user->isGuest)*/
+					array('label'=>'<i class="icon-custom-home"></i><span class="title">'. Yii::t('main', 'Home') .'</span>', 'url'=>array('/course/index')),
+					array('label'=>'<i class="fa fa-cog"></i><span class="title">'. Yii::t('main', 'API') .'</span>', 'url'=>array('/course/index')),
+					array('label'=>'<i class="fa fa-book"></i><span class="title">'. Yii::t('main', 'Guide') .'</span>', 'url'=>array('/course/index')),
+					array('label'=>'<i class="fa fa-question"></i><span class="title">'. Yii::t('main', 'Help') .'</span>', 'url'=>array('/course/index')),
+					array('label'=>'<i class="fa fa-user"></i><span class="title">'. Yii::t('main', 'About bitfork') .'</span>', 'url'=>array('/course/index')),
 				),
+				'htmlOptions'=>array('style'=>'margin-top: 20px;'),
 				'encodeLabel' => false,
-				//'linkLabelWrapper' => 'span',
-				//'linkLabelWrapperHtmlOptions'=>array('class'=>'title')
 			)); ?>
+			<div class="languages-item">
+				<select>
+					<option>English</option>
+					<option>Русский</option>
+				</select>
+			</div>
 		</div>
 	</div>
 	<a href="#" class="scrollup">Scroll</a>

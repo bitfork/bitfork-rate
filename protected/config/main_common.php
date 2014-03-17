@@ -11,7 +11,7 @@ YiiBase::setPathOfAlias('sse', realpath(__DIR__ . '/../extensions/sse'));
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'bitfork',
-	'language' => 'ru',
+	'language' => 'en',
 
 	// preloading 'log' component
 	'preload'=>array('log'),

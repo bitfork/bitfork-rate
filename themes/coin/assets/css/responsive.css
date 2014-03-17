@@ -8,6 +8,27 @@ and (min-width : 1600) {
 		display: none !important;
 	}
 }	
+@media (max-width: 1530px) {
+	.select-caption {
+		display: none;
+	}
+	.header-select-block {
+		margin-top: 13px;
+	}
+}
+@media (max-width : 1260px) {
+	.header-caption h3.text-black {
+		display: none;
+	}
+}
+@media (max-width: 580px) {
+	.header-caption h3.text-success {
+		display: none !important;
+	}
+	.header-select-block {
+		margin-bottom: 5px;
+	}
+}
 @media only screen 
 and (min-width : 1824px) {	
 	body { 
@@ -27,8 +48,7 @@ and (min-width : 1824px) {
 	
 	.table td{
 		font-size:14px;
-	}	
-	
+	}		
 	.table td.small-cell, .table th.small-cell{
 		width: 42px;
 	}
@@ -48,7 +68,7 @@ and (min-width : 1824px) {
 	.error-main{
 		margin-top:40%;
 	}
-		.visible-xlg{
+	.visible-xlg{
 		display: block !important;
 	}
 	.hidden-xlg{
@@ -527,7 +547,7 @@ and (orientation : portrait) {
 		margin-left:auto;
 		margin-top:16px;
 	}
-	.header-quick-nav{
+	.header .nav{
 		display:none;
 	}
 	.page-sidebar{
@@ -536,7 +556,7 @@ and (orientation : portrait) {
 	/*** Page content ***/
 	.page-content .content {
 		padding:8px;
-		padding-top:95px;
+		padding-top:135px;
 	}
 	/*** Page title	***/
 	.page-title {
@@ -605,8 +625,19 @@ and (orientation : portrait) {
 	.scrollup {
 		display:none;
 	}
+	.header-select-block {
+		margin-right: 5px;
+	}
 }
 /*** Phones ***/
+@media (max-width: 518px) {
+	.header-caption h3.text-success {
+		display: none !important;
+	}
+	.header-select-block {
+		margin-bottom: 6px;
+	}
+}
 @media (max-width: 480px) {
 	
 	.page-title h3{

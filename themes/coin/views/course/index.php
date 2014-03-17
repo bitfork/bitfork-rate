@@ -2,21 +2,19 @@
 <div class="row tiles-container tiles white" data-aspect-ratio="true" style="height: auto !important; min-height: 510px !important;">
 	<div class="col-md-7 b-grey b-r no-padding" style="height:100%">
 		<div class="p-l-20 p-r-20 p-b-10 p-t-10 b-b b-grey">
-			<h5 class="text-success bold inline">Bitfork индекс</h5>
-			<h5 class="text-black bold inline">- курс обмена криптовалют</h5>
 			<div class="">
-				<h5 class="text-black bold">Bitfork курс</h5>
+				<h5 class="text-black bold"><?php echo Yii::t('main', 'Bitfork rate'); ?></h5>
 				<i class="fa fa-2x <?php echo ($change[0]===RateIndex::CHANGE_DOWN) ? 'fa-sort-asc text-error' : 'fa-sort-desc text-success'; ?> inline p-b-10" style="vertical-align: super;"></i><!-- fa-sort-asc стрелка вниз, text-error красный цвет шрифта -->
 				<h1 class="text-<?php echo ($change[0]===RateIndex::CHANGE_DOWN) ? 'error' : 'success'; ?> bold inline no-margin"> <?php echo ViewPrice::GetResult($index); ?></h1>
 			</div>
 		</div>
 		<div class="p-l-20 p-r-20 p-b-10 p-t-10 b-b b-grey">
 			<div class="pull-left">
-				<p class="text-black">Измененеия за 24 часа</p>
+				<p class="text-black"><?php echo Yii::t('main', '24 hour rate change'); ?></p>
 				<p class="text-<?php echo ($change[0]===RateIndex::CHANGE_DOWN) ? 'error' : 'success'; ?>"><?php echo RateIndex::getStrChangeId($change[0]); ?> <?php echo $change[1]; ?>%</p>
 			</div>
 			<div class="pull-right">
-				<p class="text-black">Диапазон торгов за 24 часа</p>
+				<p class="text-black"><?php echo Yii::t('main', 'The range of trades for 24 hours'); ?></p>
 				<p class="text-<?php echo ($change[0]===RateIndex::CHANGE_DOWN) ? 'error' : 'success'; ?>"><?php echo ViewPrice::GetResult($range['min']); ?> - <?php echo ViewPrice::GetResult($range['max']); ?></p>
 			</div>
 			<div class="clearfix"></div>
@@ -28,14 +26,6 @@
 		</div>
 	</div>
 	<div class="col-md-5 no-padding">
-		<div class="p-l-15 p-r-15 p-b-10 p-t-10 b-b b-grey">
-			<h4 class="text-black ">Другие криптовалюты</h4>
-			<select id="source" style="width:100%">
-				<option value="CA">BTC / USD</option>
-				<option value="NV">LTC / USD</option>
-				<option value="OR">BTC / LTC</option>
-			</select>
-		</div>
 		<div class="scroller" data-height="410px" data-always-visible="1">
 			<?php foreach ($data as $row) { ?>
 				<?php $state = ($row['change_state']===RateIndex::CHANGE_DOWN) ? 'error' : 'success'; ?>
@@ -56,12 +46,47 @@
 				</div>
 			<?php } ?>
 			<div class="p-l-15 p-r-15 p-b-10 p-t-10 b-grey">
-				<button type="button" class="btn btn-default btn-block">Добавить свою биржу</button>
+				<a class="btn btn-default btn-block" data-toggle="modal" data-target="#myModal"><?php echo Yii::t('main', 'Add your Exchange'); ?></a>
 			</div>
 		</div>
 	</div>
 </div>
 <!-- END MARKET SALES WIDGET -->
+
+<div id="myModal" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title"><?php echo Yii::t('main', 'Add your Exchange'); ?></h4>
+			</div>
+			<div class="modal-body overflow-hidden text-centr">
+				<div class="inline" style="width:90%">
+					<div class="input-group transparent overflow-hidden" style="width:100%">
+						<div class="new-market-field">
+							<span><?php echo Yii::t('main', 'Name of Exchange'); ?></span>
+							<div class="inline pull-right">
+								<input type="text" class="form-control" placeholder="">
+							</div>
+						</div>
+						<div class="new-market-field">
+							<span><?php echo Yii::t('main', 'Link API'); ?></span>
+							<div class="inline pull-right">
+								<input type="text" class="form-control" placeholder="">
+							</div>
+						</div>
+						<div class="new-market-field">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary"><?php echo Yii::t('main', 'Submit'); ?></button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <?php /*
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/dashboard_v2.js" type="text/javascript"></script>
 <script type="text/javascript">
