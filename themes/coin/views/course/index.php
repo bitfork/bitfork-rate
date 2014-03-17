@@ -17,7 +17,7 @@
 			</div>
 			<div class="pull-right">
 				<p class="text-black">Диапазон торгов за 24 часа</p>
-				<p class="text-success"><?php echo ViewPrice::GetResult($range['min']); ?> - <?php echo ViewPrice::GetResult($range['max']); ?></p>
+				<p class="text-<?php echo ($change[0]===RateIndex::CHANGE_DOWN) ? 'error' : 'success'; ?>"><?php echo ViewPrice::GetResult($range['min']); ?> - <?php echo ViewPrice::GetResult($range['max']); ?></p>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -49,7 +49,7 @@
 					<div class="clearfix"></div>
 					<div class="pull-left">
 						<i class="fa fa-sort-desc text-<?php echo $state; ?> inline p-b-10" style="vertical-align: middle;"></i>
-						<h4 class="text-success semi-bold inline"><?php echo ViewPrice::GetResult($row['avg_price']); ?></h4>
+						<h4 class="text-<?php echo $state; ?> semi-bold inline"><?php echo ViewPrice::GetResult($row['avg_price']); ?></h4>
 					</div>
 					<div class="pull-right" style="line-height: 27px;"> <span class="label label-<?php echo $state; ?>" style="vertical-align: bottom;"><?php echo RateIndex::getStrChangeId($row['change_state']); ?> <?php echo $row['change_percent']; ?>%</span> </div>
 					<div class="clearfix"></div>

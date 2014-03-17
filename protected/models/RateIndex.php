@@ -253,7 +253,7 @@ class RateIndex extends MyActiveRecord
 		$command=$connection->createCommand($sql);
 		$data = $command->queryAll();
 
-		if (!isset($data[0]))
+		if (!isset($data[0]) or !isset($data[1]))
 			return array(self::CHANGE_NULL, 0);
 
 		$first = $data[0]['index'];

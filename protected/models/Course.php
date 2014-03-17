@@ -303,7 +303,7 @@ class Course extends MyActiveRecord
 		$data = $command->queryAll();
 
 		if (!isset($data[0]) or !isset($data[1]))
-			return array(self::CHANGE_NULL, 0);
+			return array(RateIndex::CHANGE_NULL, 0);
 
 		$first = $data[0]['last'];
 		$last = $data[1]['last'];
