@@ -144,7 +144,7 @@ class Course extends MyActiveRecord
 		return parent::model($className);
 	}
 
-	public static function getAvgData($date_start, $date_finish, $id_services = null)
+	public static function getAvgData($period, $date_start, $date_finish, $id_services = null)
 	{
 		$where = '';
 		if (is_array($id_services) and count($id_services)>0) {
@@ -170,15 +170,21 @@ class Course extends MyActiveRecord
 			$sum += $r['avg_volume'];
 		}
 
-		$index = 0;
+		$index = array();
+		$index['index'] = 0;
+		$index['change_state'] = RateIndex::CHANGE_NULL;
+		$index['change_percent'] = 0;
 		foreach ($data as $k => $r) {
-			$data[$k]['percent_for_index'] = $r['avg_volume'] / $sum;
-			$data[$k]['percent_price_for_index'] = $r['avg_price'] * $data[$k]['percent_for_index'];
-			$index += $data[$k]['percent_price_for_index'];
+			$data[$k]['percent_for_index'] = $r['avg_volume'] / $sum; // процент объема биржи от суммы всех объемов бирж
+			$data[$k]['percent_price_for_index'] = $r['avg_price'] * $data[$k]['percent_for_index']; // цена курса которая влияет на индекс
+			$index['index'] += $data[$k]['percent_price_for_index']; // сумма всех курсов
 			$change = self::getChangePercent($r['id_service'], $date_start, $date_finish);
 			$data[$k]['change_state'] = $change[0];
 			$data[$k]['change_percent'] = $change[1];
 		}
+		$change = RateIndex::getChangePercent($period, $id_services, $date_start, $date_finish);
+		$index['change_state'] = $change[0];
+		$index['change_percent'] = $change[1];
 
 		return array($index, $data);
 	}
@@ -196,9 +202,13 @@ class Course extends MyActiveRecord
 		$index->period = $period;
 		$index->servises = implode(',', $combination);
 		$index->services_hash = md5($index->servises);
-		$index->index = $data[0];
+		$index->index = $data[0]['index'];
+		$index->change_state = $data[0]['change_state'];
+		$index->change_percent = $data[0]['change_percent'];
 		$index->data = json_encode($data[1]);
-		$index->save();
+		if (!$index->save()) {
+			Yii::log(serialize($index->getErrors()), 'error', 'modelIndex');
+		}
 	}
 
 	/**
@@ -217,6 +227,7 @@ class Course extends MyActiveRecord
 				$date_start->modify('-'. $period .' hour');
 				$date_start = $date_start->format('Y-m-d H:i:s');
 				$data = Course::model()->getAvgData(
+					$period,
 					$date_start,
 					date('Y-m-d H:i:s'),
 					$combination

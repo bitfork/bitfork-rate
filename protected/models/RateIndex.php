@@ -9,6 +9,8 @@
  * @property string $servises
  * @property string $services_hash
  * @property double $index
+ * @property integer $change_state
+ * @property double $change_percent
  * @property string $data
  * @property integer $is_active
  * @property string $create_date
@@ -37,12 +39,12 @@ class RateIndex extends MyActiveRecord
 		// will receive user inputs.
 		return array(
 			array('period, servises, services_hash, index, data, create_date, mod_date', 'required'),
-			array('period, is_active', 'numerical', 'integerOnly'=>true),
-			array('index', 'numerical'),
+			array('period, change_state, is_active', 'numerical', 'integerOnly'=>true),
+			array('index, change_percent', 'numerical'),
 			array('services_hash', 'length', 'max'=>32),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, period, servises, services_hash, index, data, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
+			array('id, period, servises, services_hash, index, change_state, change_percent, data, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -68,6 +70,8 @@ class RateIndex extends MyActiveRecord
 			'servises' => 'Servises',
 			'services_hash' => 'Services Hash',
 			'index' => 'Index',
+			'change_state' => 'Change State',
+			'change_percent' => 'Change Percent',
 			'data' => 'Data',
 			'is_active' => 'Is Active',
 			'create_date' => 'Create Date',
@@ -98,6 +102,8 @@ class RateIndex extends MyActiveRecord
 		$criteria->compare('servises',$this->servises,true);
 		$criteria->compare('services_hash',$this->services_hash,true);
 		$criteria->compare('index',$this->index);
+		$criteria->compare('change_state',$this->change_state);
+		$criteria->compare('change_percent',$this->change_percent);
 		$criteria->compare('data',$this->data,true);
 		$criteria->compare('is_active',$this->is_active);
 		$criteria->compare('create_date',$this->create_date,true);
@@ -162,7 +168,7 @@ class RateIndex extends MyActiveRecord
 			$date_finish = date('Y-m-d H:i:s');
 		}
 		$sql = "
-			SELECT `index`, `data`
+			SELECT `index`, `change_state`, `change_percent`, `data`
 			FROM `". RateIndex::model()->tableName() ."`
 			WHERE `period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' AND
 				`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
@@ -173,7 +179,9 @@ class RateIndex extends MyActiveRecord
 		$command=$connection->createCommand($sql);
 		$data = $command->queryRow();
 
-		return (isset($data['index'])) ? array($data['index'], json_decode($data['data'], true)) : array(0, array());
+		return (isset($data['index'])) ?
+			array('index'=>$data, 'services'=>json_decode($data['data'], true)) :
+			array('index'=>array('index' => 0, 'change_state' => RateIndex::CHANGE_NULL, 'change_percent' => 0), 'services'=>array());
 	}
 
 	/**

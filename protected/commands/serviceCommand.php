@@ -59,7 +59,7 @@ class ServiceCommand extends CConsoleCommand
 		$this->startProcess();
 
 		$i = 0;
-		while ($i<30) {
+		while ($i<Yii::app()->params['count_step_service_run']) {
 			// собрать данные со всех сервисов
 			Course::parseAllService();
 			// расчет индекса для каждой комбинации

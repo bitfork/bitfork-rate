@@ -41,16 +41,14 @@ class CourseController extends Controller
 		}
 		$data = RateIndex::getDateIndex($period, $modelForm->services);
 		$range = RateIndex::getRangeIndex($period, $modelForm->services);
-		$change = RateIndex::getChangePercent($period, $modelForm->services);
 
 		$this->render('index', array(
-			'index'=>$data[0],
-			'data'=>$data[1],
+			'index'=>$data['index'],
+			'range'=>$range,
+			'data'=>$data['services'],
 			'period'=>$period,
 			'modelForm'=>$modelForm,
 			'servicesList'=>$servicesList,
-			'range'=>$range,
-			'change'=>$change
 		));
 	}
 
