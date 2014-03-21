@@ -17,16 +17,48 @@ and (min-width : 1600) {
 	}
 }
 @media (max-width : 1260px) {
-	.header-caption h3.text-black {
+	.header-caption h3.course-caption {
 		display: none;
 	}
 }
-@media (max-width: 580px) {
-	.header-caption h3.text-success {
+@media (max-width : 1066px) {
+	.rate-wrap {
+		padding-top: 20px;
+	}
+}
+@media (max-width : 825px) {
+	.your-url-input {
+		width: 475px;
+	}
+}
+@media (max-width : 740px) {
+	.rate-block {
+		float: none;
+		width: auto;
+		margin-bottom: 35px;
+	}
+	.rate-wrap {
+		min-height: 0;
+		padding: 5px 0 ;
+	}
+	.rate-block .btn {
+		margin-bottom: 10px;
+	}
+}
+@media (max-width : 700px) {
+	.your-url-input {
+		width: 475px;
+	}
+}
+@media (max-width: 589px) {
+	.header-caption .company-caption {
 		display: none !important;
 	}
 	.header-select-block {
 		margin-bottom: 5px;
+	}
+	.free-caption {
+		display: none !important;
 	}
 }
 @media only screen 

@@ -73,13 +73,18 @@ return array(
 			'class'=>'RDbAuthManager',
 			'defaultRoles' => array('Guest') // дефолтная роль
 		),
+       	'request'=>array(
+			'class'=>'DLanguageHttpRequest',
+        ),
 		// uncomment the following to enable URLs in path-format
 		'urlManager'=>array(
+			'class'=>'DLanguageUrlManager',
 			'showScriptName'=>false,
 			'urlFormat'=>'path',
 			'rules'=>CMap::mergeArray(
 				require(dirname(__FILE__) . '/api_rules.php'),
 				array(
+					'/'=>'course/index',
 					'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 					'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 					'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',

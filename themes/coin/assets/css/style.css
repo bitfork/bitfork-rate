@@ -8086,3 +8086,93 @@ ul.my-friends li .profile-pic{
 	color: #8b91a0;
 	border: none;
 }
+.main-carousel {
+	margin-bottom: 30px;
+}
+.rates-block {
+	clear: left;
+	overflow: hidden;
+	margin-bottom: 60px;
+}
+.rate-block {
+	float: left;
+	width: 33%;
+	text-align: center;
+}
+.rate-wrap {
+	width: 90%;
+	margin: 0 auto;
+	padding: 35px 10px 0;
+	min-width: 200px;
+	min-height: 200px;
+	margin-bottom: 15px;
+	background: #0aa699;
+	color: #fff !important;
+}
+.rate-caption {
+	margin-bottom: 0px;
+	color: #fff;
+}
+.currency {
+	font-size: 16px;
+}
+.rate {
+	font-size: 36px;
+}
+.rate-block .btn {
+	width: 90%;
+	min-width: 200px;
+	margin-bottom: 20px;
+}
+.hint-link {
+	text-decoration: underline;
+}
+.hint-link:hover {
+	text-decoration: none;
+}
+.account-block {
+	padding: 0 30px;
+	margin-bottom: 60px;
+}
+.account-caption {
+	margin-bottom: 30px;
+	color: #1b1e24;
+	font-weight: bold;
+}
+.account-block label {
+	display: inline-block;
+	margin-right: 15px;
+}
+.your-url-input {
+	width: 530px;
+}
+.url-submit {
+	padding: 7px 11px 8px;
+	vertical-align: middle;
+}
+.account-block .text-black{
+	padding-top: 7px;
+	display: inline-block;
+	margin-right: 10px;
+}
+.main-aboutus-block {
+	padding: 0 30px;
+	margin-bottom: 50px;
+}
+.page-sidebar.mini + .scrollup {
+	left: 36px !important;
+}
+.page-sidebar.mini .language-menu ul {
+	margin-top: 30px;
+	padding-top: 0;
+}
+.page-sidebar.mini .language-menu ul:first-child {
+	border-top: 2px solid #fff;
+}
+.page-sidebar .language-menu ul:first-child {
+	border-top: 2px solid #555;
+}
+.page-sidebar .language-menu ul {
+	margin-top: 30px;
+	padding-top: 0;
+}

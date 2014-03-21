@@ -91,12 +91,7 @@
 				'htmlOptions'=>array('style'=>'margin-top: 20px;'),
 				'encodeLabel' => false,
 			)); ?>
-			<div class="languages-item">
-				<select>
-					<option>English</option>
-					<option>Русский</option>
-				</select>
-			</div>
+			<?php $this->widget('LanguageSwitcherWidget'); ?>
 		</div>
 	</div>
 	<a href="#" class="scrollup">Scroll</a>
