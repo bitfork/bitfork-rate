@@ -1,8 +1,12 @@
 <?php
 class ViewPrice
 {
-	public static function GetResult($value, $is_show_null_kop = false, $rub = '', $kop = '$', $decimal_place = 2, $decimal_point = '.', $thousand_point = ' ')
+	public static function GetResult($value, $rub = '$', $kop = '', $is_show_null_kop = false, $decimal_place = 2, $decimal_point = '.', $thousand_point = ' ')
 	{
+		if ($is_show_null_kop===false and $kop == '') {
+			$kop = $rub;
+			$rub = '';
+		}
 		if (!empty($rub)) {
 			$decimal_point = ' '. $rub .' ';
 		}

@@ -2,19 +2,15 @@
 
 YiiBase::setPathOfAlias('btc', realpath(__DIR__ . '/../extensions/btc'));
 YiiBase::setPathOfAlias('sse', realpath(__DIR__ . '/../extensions/sse'));
+YiiBase::setPathOfAlias('rest', realpath(__DIR__ . '/../extensions/yii-rest-api/library/rest'));
 
-// uncomment the following to define a path alias
-// Yii::setPathOfAlias('local','path/to/local-folder');
-
-// This is the main Web application configuration. Any writable
-// CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'bitfork',
 	'language' => 'en',
 
 	// preloading 'log' component
-	'preload'=>array('log'),
+	'preload'=>array('log','restService'),
 
 	// autoloading model and component classes
 	'import'=>require(dirname(__FILE__) . '/import.php'),
@@ -49,20 +45,24 @@ return array(
 			'captcha' => array('registration'=>false),
 		),
 		'rights',
+		'api',
 	),
 
 	// application components
 	'components'=>array(
+		'restService' => array(
+			'class' => '\rest\MyRestService',
+			'enable' => isset($_SERVER['REQUEST_URI']) && (strpos($_SERVER['REQUEST_URI'], '/api/') !== false), //for example
+			'authAdapterConfig' => array(
+				'class' => '\rest\service\auth\adapters\NoAuth',
+			)
+		),
 		'clientScript'=>array(
 			'scriptMap' => array(
 				'jquery.js'=>'/themes/coin/assets/plugins/jquery-1.8.3.min.js',
 				'jquery.min.js'=>'/themes/coin/assets/plugins/jquery-1.8.3.min.js',
 			)
 		),
-		/*'user'=>array(
-			// enable cookie-based authentication
-			'allowAutoLogin'=>true,
-		),*/
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
@@ -77,10 +77,13 @@ return array(
 		'urlManager'=>array(
 			'showScriptName'=>false,
 			'urlFormat'=>'path',
-			'rules'=>array(
-				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
-				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
-				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+			'rules'=>CMap::mergeArray(
+				require(dirname(__FILE__) . '/api_rules.php'),
+				array(
+					'<controller:\w+>/<id:\d+>'=>'<controller>/view',
+					'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
+					'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+				)
 			),
 		),
 		'db'=>array(
@@ -106,20 +109,11 @@ return array(
 					'levels'=>'error, warning',
 					'emails'=>'vol4444@yandex.ru',
 				),
-				// uncomment the following to show log messages on web pages
-				/*
-				array(
-					'class'=>'CWebLogRoute',
-				),
-				*/
 			),
 		),
 		'cache'=>array(
 			'class'=>'system.caching.CFileCache', // используем кэш на файлах
 			'keyPrefix'=>'3258a5f0',
-			//return $this->hashKey ? md5($this->keyPrefix.$key) : $this->keyPrefix.$key;
-			// например 3258a5f0http://www.tuning-proekt.ru
-			//'class'=>'system.caching.CDummyCache',
 		),
 		'exchange' => array(
 			'class' => '\btc\Service',

@@ -64,10 +64,10 @@
 				<div class="header-select-block">
 					<h4 class="text-black select-caption"><?php echo Yii::t('main', 'Alternate cryptocurrencies'); ?></h4>
 					<div class="inline header-select">
-						<select id="source" style="width:100%">
-							<option value="CA">BTC / USD</option>
-							<option value="NV">LTC / USD</option>
-							<option value="OR">BTC / LTC</option>
+						<select id="source" name="pair" style="width:100%">
+							<?php foreach (Pair::model()->findAll() as $pair) { ?>
+								<option value="<?php echo $pair->id; ?>"><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></option>
+							<?php } ?>
 						</select>
 					</div>
 				</div>

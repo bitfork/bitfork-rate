@@ -36,11 +36,12 @@ class CourseController extends Controller
 		}
 
 		// выбранный период
+		$period = (int)$period;
 		if (!in_array($period, Course::$periods)) {
-			$period = 1;
+			$period = 0;
 		}
-		$data = RateIndex::getDateIndex($period, $modelForm->services);
-		$range = RateIndex::getRangeIndex($period, $modelForm->services);
+		$data = RateIndex::getDateIndex(Course::BTC, Course::USD, $period, $modelForm->services);
+		$range = RateIndex::getRangeIndex(Course::BTC, Course::USD, $period, $modelForm->services);
 
 		$this->render('index', array(
 			'index'=>$data['index'],

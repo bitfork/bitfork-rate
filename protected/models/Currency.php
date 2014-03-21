@@ -1,23 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "service".
+ * This is the model class for table "currency".
  *
- * The followings are the available columns in table 'service':
+ * The followings are the available columns in table 'currency':
  * @property integer $id
  * @property string $name
+ * @property string $symbol
  * @property integer $is_active
  * @property string $create_date
  * @property string $mod_date
  */
-class Service extends MyActiveRecord
+class Currency extends MyActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'service';
+		return 'currency';
 	}
 
 	/**
@@ -28,12 +29,13 @@ class Service extends MyActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, create_date, mod_date', 'required'),
+			array('name, symbol, create_date, mod_date', 'required'),
 			array('is_active', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>512),
+			array('name', 'length', 'max'=>50),
+			array('symbol', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
+			array('id, name, symbol, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -45,7 +47,6 @@ class Service extends MyActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'service_pair' => array(self::HAS_MANY, 'ServicePair', 'id_service'),
 		);
 	}
 
@@ -57,6 +58,7 @@ class Service extends MyActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
+			'symbol' => 'Symbol',
 			'is_active' => 'Is Active',
 			'create_date' => 'Create Date',
 			'mod_date' => 'Mod Date',
@@ -83,6 +85,7 @@ class Service extends MyActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
+		$criteria->compare('symbol',$this->symbol,true);
 		$criteria->compare('is_active',$this->is_active);
 		$criteria->compare('create_date',$this->create_date,true);
 		$criteria->compare('mod_date',$this->mod_date,true);
@@ -96,10 +99,22 @@ class Service extends MyActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Service the static model class
+	 * @return Currency the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	/**
+	 * вернет символ валюты
+	 *
+	 * @param $id
+	 * @return mixed
+	 */
+	public static function getSymbol($id)
+	{
+		$model = self::model()->findByPk($id);
+		return $model->symbol;
 	}
 }

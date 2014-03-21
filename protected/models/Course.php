@@ -7,6 +7,7 @@
  * @property integer $id
  * @property integer $id_service
  * @property integer $id_currency
+ * @property integer $id_currency_from
  * @property double $high
  * @property double $low
  * @property double $avg
@@ -28,8 +29,12 @@ class Course extends MyActiveRecord
 	const BTCCHINA	= 3;
 
 	const USD		= 1;
+	const BTC		= 2;
 
-	public static $periods = array('1ч'=>1, '24ч'=>24, '7д'=>168);
+	// переоды времени за которые считается индекс
+	public static $periods = array('последняя'=>0, '1ч'=>1, '24ч'=>24, '7д'=>168);
+	// возможные пары валют
+	public static $pairs = array(array(self::BTC,self::USD));
 
 	/**
 	 * @return string the associated database table name
@@ -47,13 +52,13 @@ class Course extends MyActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_service, id_currency, high, low, create_date, mod_date', 'required'),
-			array('id_service, id_currency, is_active', 'numerical', 'integerOnly'=>true),
+			array('id_service, id_currency, id_currency_from, high, low, create_date, mod_date', 'required'),
+			array('id_service, id_currency, id_currency_from, is_active', 'numerical', 'integerOnly'=>true),
 			array('high, low, avg, vol, vol_cur, last, buy, sell', 'numerical'),
 			array('updated, server_time', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, id_service, id_currency, high, low, avg, vol, vol_cur, last, buy, sell, updated, server_time, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
+			array('id, id_service, id_currency, id_currency_from, high, low, avg, vol, vol_cur, last, buy, sell, updated, server_time, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,6 +70,8 @@ class Course extends MyActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'currency' => array(self::BELONGS_TO, 'Currency', 'id_currency'),
+			'currency_from' => array(self::BELONGS_TO, 'Currency', 'id_currency_from'),
 		);
 	}
 
@@ -77,6 +84,7 @@ class Course extends MyActiveRecord
 			'id' => 'ID',
 			'id_service' => 'Id Service',
 			'id_currency' => 'Id Currency',
+			'id_currency_from' => 'Id Currency From',
 			'high' => 'High',
 			'low' => 'Low',
 			'avg' => 'Avg',
@@ -114,6 +122,7 @@ class Course extends MyActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('id_service',$this->id_service);
 		$criteria->compare('id_currency',$this->id_currency);
+		$criteria->compare('id_currency_from',$this->id_currency_from);
 		$criteria->compare('high',$this->high);
 		$criteria->compare('low',$this->low);
 		$criteria->compare('avg',$this->avg);
@@ -144,18 +153,44 @@ class Course extends MyActiveRecord
 		return parent::model($className);
 	}
 
-	public static function getAvgData($period, $date_start, $date_finish, $id_services = null)
+	/**
+	 * получает средние данные за переод и считает индекс
+	 * если $period = 0, то учитываются только последние цены от каждой биржи
+	 *
+	 * @param $period
+	 * @param $date_start
+	 * @param $date_finish
+	 * @param null $id_services
+	 * @return array
+	 */
+	public static function getAvgData($id_currency_from, $id_currency, $period, $date_start, $date_finish, $id_services = null)
 	{
-		$where = '';
+		$select = "t.id_service, t2.name as name_service, AVG(t.last) as avg_price, AVG(t.vol_cur) as avg_volume";
+		$where = array();
+		$order = '';
+		$where[] = "`id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency;
+		if ($period > 0 and $date_start!==null and $date_finish!==null) {
+			$where[] = "`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'";
+		} else {
+			// с каждой биржи получаем только последние данные
+			$select = "t.id_service, t2.name as name_service, t.last as avg_price, t.vol_cur as avg_volume";
+			$order = 'ORDER BY id DESC';
+		}
 		if (is_array($id_services) and count($id_services)>0) {
-			$where = ' AND id_service IN ('. implode(',', $id_services) .')';
+			$where[] = 'id_service IN ('. implode(',', $id_services) .')';
+		}
+		if (count($where)>0) {
+			$where = 'WHERE '. implode(' AND ', $where);
+		} else {
+			$where = '';
 		}
 		$sql = "
-			SELECT t.id_service, t2.name as name_service, AVG(t.last) as avg_price, AVG(t.vol_cur) as avg_volume
+			SELECT ". $select ."
 			FROM (
 				SELECT *
 				FROM `". Course::model()->tableName() ."`
-				WHERE `create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."' ". $where ."
+				". $where ."
+				". $order ."
 			) as `t`
 			JOIN `". Service::model()->tableName() ."` as t2 ON t.id_service = t2.id
 			GROUP BY t.id_service
@@ -182,7 +217,7 @@ class Course extends MyActiveRecord
 			$data[$k]['change_state'] = $change[0];
 			$data[$k]['change_percent'] = $change[1];
 		}
-		$change = RateIndex::getChangePercent($period, $id_services, $date_start, $date_finish);
+		$change = RateIndex::getChangePercent($id_currency_from, $id_currency, $period, $id_services, $date_start, $date_finish);
 		$index['change_state'] = $change[0];
 		$index['change_percent'] = $change[1];
 
@@ -196,13 +231,15 @@ class Course extends MyActiveRecord
 	 * @param $combination
 	 * @param $data
 	 */
-	public static function saveIndex($period, $combination, $data)
+	public static function saveIndex($id_currency_from, $id_currency, $period, $combination, $data)
 	{
 		$index = new RateIndex();
 		$index->period = $period;
 		$index->servises = implode(',', $combination);
 		$index->services_hash = md5($index->servises);
 		$index->index = $data[0]['index'];
+		$index->id_currency = $id_currency;
+		$index->id_currency_from = $id_currency_from;
 		$index->change_state = $data[0]['change_state'];
 		$index->change_percent = $data[0]['change_percent'];
 		$index->data = json_encode($data[1]);
@@ -212,14 +249,56 @@ class Course extends MyActiveRecord
 	}
 
 	/**
-	 * расчет для раждой комбинации сервисов индекса
+	 * расчет индекса для всех пар валют и каждой комбинации сервисов
 	 */
 	public static function calculateIndex()
 	{
-		$services = array();
-		foreach (Service::model()->findAll() as $service) {
-			$services[] = $service->id;
+		$services = self::getPairServices();
+
+		foreach ($services as $values) {
+			if (count($values['services'])>0)
+				self::calculateByServices($values['services'], $values['id_currency_from'], $values['id_currency']);
 		}
+	}
+
+	/**
+	 * вернет массив список сервисов для каждой пары
+	 *
+	 * @param bool $object id или объекты серисов
+	 * @return array
+	 */
+	public static function getPairServices($object=false)
+	{
+		$services = array();
+		$pairs = Pair::model()->findAll();
+		foreach ($pairs as $pair) {
+			$services[$pair->id]['id_currency'] = $pair->id_currency;
+			$services[$pair->id]['id_currency_from'] = $pair->id_currency_from;
+			if ($object) {
+				$services[$pair->id]['currency'] = $pair->currency;
+				$services[$pair->id]['currency_from'] = $pair->currency_from;
+			}
+			$services[$pair->id]['services'] = array();
+			foreach ($pair->service_pair as $service_pair) {
+				if ($object) {
+					$services[$pair->id]['services'][] = $service_pair->service;
+				} else {
+					$services[$pair->id]['services'][] = $service_pair->id_service;
+				}
+			}
+		}
+		return $services;
+	}
+
+	/**
+	 * подсчет индекса для сервисов, всех комбинаций
+	 *
+	 * @param $services
+	 * @param $id_currency_from
+	 * @param $id_currency
+	 */
+	public static function calculateByServices($services, $id_currency_from, $id_currency)
+	{
 		$combinations = self::getComb($services);
 		foreach (self::$periods as $period) {
 			foreach ($combinations as $combination) {
@@ -227,12 +306,14 @@ class Course extends MyActiveRecord
 				$date_start->modify('-'. $period .' hour');
 				$date_start = $date_start->format('Y-m-d H:i:s');
 				$data = Course::model()->getAvgData(
+					$id_currency_from,
+					$id_currency,
 					$period,
 					$date_start,
 					date('Y-m-d H:i:s'),
 					$combination
 				);
-				self::saveIndex($period, $combination, $data);
+				self::saveIndex($id_currency_from, $id_currency, $period, $combination, $data);
 			}
 		}
 	}
@@ -264,15 +345,19 @@ class Course extends MyActiveRecord
 	public static function parseAllService()
 	{
 		$exchange = Yii::app()->exchange;
-		foreach (Service::model()->findAll() as $service) {
-			$exchange->setService($service->name);
-			$results = $exchange->getTicker();
-			if ($results!==false) {
-				$model = new Course;
-				$model->attributes=$results;
-				$model->id_service = $service->id;
-				$model->id_currency = Course::USD;
-				$model->save();
+		$services = self::getPairServices(true);
+		foreach ($services as $values) {
+			foreach ($values['services'] as $service) {
+				$exchange->setService($service->name);
+				$results = $exchange->getTicker($values['currency_from']->name, $values['currency']->name);
+				if ($results!==false) {
+					$model = new Course;
+					$model->attributes=$results;
+					$model->id_service = $service->id;
+					$model->id_currency = $values['id_currency'];
+					$model->id_currency_from = $values['id_currency_from'];
+					$model->save();
+				}
 			}
 		}
 	}

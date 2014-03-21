@@ -9,6 +9,8 @@
  * @property string $servises
  * @property string $services_hash
  * @property double $index
+ * @property integer $id_currency
+ * @property integer $id_currency_from
  * @property integer $change_state
  * @property double $change_percent
  * @property string $data
@@ -38,13 +40,13 @@ class RateIndex extends MyActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('period, servises, services_hash, index, data, create_date, mod_date', 'required'),
-			array('period, change_state, is_active', 'numerical', 'integerOnly'=>true),
+			array('period, servises, services_hash, index, id_currency, id_currency_from, data, create_date, mod_date', 'required'),
+			array('period, id_currency, id_currency_from, change_state, is_active', 'numerical', 'integerOnly'=>true),
 			array('index, change_percent', 'numerical'),
 			array('services_hash', 'length', 'max'=>32),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, period, servises, services_hash, index, change_state, change_percent, data, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
+			array('id, period, servises, services_hash, index, id_currency, id_currency_from, change_state, change_percent, data, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,6 +58,8 @@ class RateIndex extends MyActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'currency' => array(self::BELONGS_TO, 'Currency', 'id_currency'),
+			'currency_from' => array(self::BELONGS_TO, 'Currency', 'id_currency_from'),
 		);
 	}
 
@@ -70,6 +74,8 @@ class RateIndex extends MyActiveRecord
 			'servises' => 'Servises',
 			'services_hash' => 'Services Hash',
 			'index' => 'Index',
+			'id_currency' => 'Id Currency',
+			'id_currency_from' => 'Id Currency From',
 			'change_state' => 'Change State',
 			'change_percent' => 'Change Percent',
 			'data' => 'Data',
@@ -102,6 +108,8 @@ class RateIndex extends MyActiveRecord
 		$criteria->compare('servises',$this->servises,true);
 		$criteria->compare('services_hash',$this->services_hash,true);
 		$criteria->compare('index',$this->index);
+		$criteria->compare('id_currency',$this->id_currency);
+		$criteria->compare('id_currency_from',$this->id_currency_from);
 		$criteria->compare('change_state',$this->change_state);
 		$criteria->compare('change_percent',$this->change_percent);
 		$criteria->compare('data',$this->data,true);
@@ -132,7 +140,7 @@ class RateIndex extends MyActiveRecord
 	 * @param $id_services
 	 * @return array
 	 */
-	public static function getLastIndex($period, $id_services)
+	public static function _getLastIndex($period, $id_services)
 	{
 		$sql = "
 			SELECT `index`, `data`
@@ -151,27 +159,40 @@ class RateIndex extends MyActiveRecord
 	/**
 	 * вернет индекс за время
 	 *
+	 * @param $id_currency_from
+	 * @param $id_currency
 	 * @param $period
-	 * @param $id_services
+	 * @param null $id_services
 	 * @param null $date_start
 	 * @param null $date_finish
-	 * @return array|bool
+	 * @return array
 	 */
-	public static function getDateIndex($period, $id_services, $date_start = null, $date_finish = null)
+	public static function getDateIndex($id_currency_from, $id_currency, $period, $id_services = null, $date_start = null, $date_finish = null)
 	{
-		if ($date_start===null) {
+		if ($id_services===null) {
+			$id_services = array();
+			$servicesAll = Service::model()->findAll();
+			foreach ($servicesAll as $service) {
+				$id_services[] = $service->id;
+			}
+		}
+		if ($date_start===true) {
 			$date_start = new DateTime();
 			$date_start->modify('-'. $period .' hour');
 			$date_start = $date_start->format('Y-m-d H:i:s');
 		}
-		if ($date_finish===null) {
+		if ($date_finish===true) {
 			$date_finish = date('Y-m-d H:i:s');
 		}
+		$where_date = '';
+		if ($date_start!==null and $date_finish!==null) {
+			$where_date = "AND `create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'";
+		}
 		$sql = "
-			SELECT `index`, `change_state`, `change_percent`, `data`
+			SELECT `index`, `id_currency_from`, `id_currency`, `change_state`, `change_percent`, `data`
 			FROM `". RateIndex::model()->tableName() ."`
-			WHERE `period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' AND
-				`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
+			WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
+				`period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' ". $where_date ."
 			ORDER BY `id` DESC
 			LIMIT 1
 		";
@@ -179,21 +200,29 @@ class RateIndex extends MyActiveRecord
 		$command=$connection->createCommand($sql);
 		$data = $command->queryRow();
 
+		$services = array();
+		if (isset($data['data'])) {
+			$services = json_decode($data['data'], true);
+			unset($data['data']);
+		}
+
 		return (isset($data['index'])) ?
-			array('index'=>$data, 'services'=>json_decode($data['data'], true)) :
-			array('index'=>array('index' => 0, 'change_state' => RateIndex::CHANGE_NULL, 'change_percent' => 0), 'services'=>array());
+			array('index'=>$data, 'services'=>$services) :
+			array('index'=>array('index' => 0, 'change_state' => RateIndex::CHANGE_NULL, 'change_percent' => 0), 'services'=>$services);
 	}
 
 	/**
 	 * вернет максимальное и минимальное значение за период
 	 *
+	 * @param $id_currency_from
+	 * @param $id_currency
 	 * @param $period
 	 * @param $id_services
 	 * @param null $date_start
 	 * @param null $date_finish
 	 * @return bool
 	 */
-	public static function getRangeIndex($period, $id_services, $date_start = null, $date_finish = null)
+	public static function getRangeIndex($id_currency_from, $id_currency, $period, $id_services, $date_start = null, $date_finish = null)
 	{
 		if ($date_start===null) {
 			$date_start = new DateTime();
@@ -206,7 +235,8 @@ class RateIndex extends MyActiveRecord
 		$sql = "
 			SELECT MIN(`index`) as `min`, MAX(`index`) as `max`
 			FROM `". RateIndex::model()->tableName() ."`
-			WHERE `period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' AND
+			WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
+				`period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' AND
 				`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
 		";
 		$connection=Yii::app()->db;
@@ -219,13 +249,15 @@ class RateIndex extends MyActiveRecord
 	/**
 	 * вернет на сколько % изменился индекс и в какую сторону
 	 *
+	 * @param $id_currency_from
+	 * @param $id_currency
 	 * @param $period
 	 * @param $id_services
 	 * @param null $date_start
 	 * @param null $date_finish
-	 * @return array|bool
+	 * @return array
 	 */
-	public static function getChangePercent($period, $id_services, $date_start = null, $date_finish = null)
+	public static function getChangePercent($id_currency_from, $id_currency, $period, $id_services, $date_start = null, $date_finish = null)
 	{
 		if ($date_start===null) {
 			$date_start = new DateTime();
@@ -240,7 +272,8 @@ class RateIndex extends MyActiveRecord
 			FROM (
 				SELECT `index`
 				FROM `". RateIndex::model()->tableName() ."`
-				WHERE `period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' AND
+				WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
+					`period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' AND
 					`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
 				ORDER BY id ASC
 				LIMIT 1
@@ -250,7 +283,8 @@ class RateIndex extends MyActiveRecord
 			FROM (
 				SELECT `index`
 				FROM `". RateIndex::model()->tableName() ."`
-				WHERE `period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' AND
+				WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
+					`period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' AND
 					`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
 				ORDER BY id DESC
 				LIMIT 1
