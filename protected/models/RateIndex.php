@@ -208,7 +208,7 @@ class RateIndex extends MyActiveRecord
 
 		return (isset($data['index'])) ?
 			array('index'=>$data, 'services'=>$services) :
-			array('index'=>array('index' => 0, 'change_state' => RateIndex::CHANGE_NULL, 'change_percent' => 0), 'services'=>$services);
+			array('index'=>array('index' => 0, 'change_state' => RateIndex::CHANGE_NULL, 'change_percent' => 0, 'id_currency'=>$id_currency, 'id_currency_from'=>$id_currency_from), 'services'=>$services);
 	}
 
 	/**
