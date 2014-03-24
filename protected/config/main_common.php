@@ -97,6 +97,7 @@ return array(
 			'username' => 'bitfork_rate',
 			'password' => 'US3W6yem',
 			'charset' => 'utf8',
+			'tablePrefix' => '',
 		),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
