@@ -12,10 +12,10 @@ return array(
 	// application components
 	'components'=>array(
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=bittest',
+			'connectionString' => 'mysql:host=localhost;dbname=bitfork_rate',
 			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
+			'username' => 'bitfork_rate',
+			'password' => 'US3W6yem',
 			'charset' => 'utf8',
 		),
 		/*'db'=>array(
