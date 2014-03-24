@@ -69,6 +69,13 @@
 								<option value="<?php echo $pair->id; ?>"><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></option>
 							<?php } ?>
 						</select>
+						<script language="javascript">
+							$( document ).ready(function() {
+								$('select[id=source]').change(function(){
+									window.location = '<?php echo $this->createUrl('/course/index', array('pair'=>'')); ?>'+$(this).find('option:selected').val();
+								});
+							});
+						</script>
 					</div>
 				</div>
 			</div>

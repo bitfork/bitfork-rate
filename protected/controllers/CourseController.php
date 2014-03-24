@@ -7,7 +7,7 @@ class CourseController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
-	public function actionIndex($period = null)
+	public function actionIndex($pair = null, $period = null)
 	{
 		// выбранные сервисы
 		$modelForm=new ServicesForm;
@@ -20,29 +20,39 @@ class CourseController extends Controller
 			}
 		}
 
-		// список сервисов для формы
-		$servicesAll = Service::model()->findAll();
 
-		// выбранные снрвисы
-		if (Yii::app()->session['select_services']===null) {
-			foreach ($servicesAll as $service) {
-				$modelForm->services[] = $service->id;
-			}
-			Yii::app()->session['select_services'] = $modelForm->services;
-			$servicesList = CHtml::listData($servicesAll, 'id', 'name');
-		} else {
-			$modelForm->services = Yii::app()->session['select_services'];
-			$servicesList = CHtml::listData($servicesAll, 'id', 'name');
-		}
 
 		// выбранный период
 		$period = (int)$period;
 		if (!in_array($period, Course::$periods)) {
 			$period = 0;
 		}
-		$data = RateIndex::getDateIndex(Course::BTC, Course::USD, $period, $modelForm->services);
-		$range = RateIndex::getRangeIndex(Course::BTC, Course::USD, $period, $modelForm->services);
 
+		if ($pair===null) {
+			$pair = 1;
+		}
+		$pair = Pair::model()->findByPk($pair);
+		if ($pair!==null) {
+			// список сервисов для формы
+			$servicesAll = ServicePair::model()->findAll('id_pair=:id_pair', array(':id_pair'=>$pair->id));
+
+			// выбранные снрвисы
+			if (Yii::app()->session['select_services_'.$pair->id]===null) {
+				foreach ($servicesAll as $service) {
+					$modelForm->services[] = $service->id_service;
+				}
+				Yii::app()->session['select_services_'.$pair->id] = $modelForm->services;
+				$servicesList = CHtml::listData($servicesAll, 'id_service', 'id_pair');
+			} else {
+				$modelForm->services = Yii::app()->session['select_services_'.$pair->id];
+				$servicesList = CHtml::listData($servicesAll, 'id_service', 'id_pair');
+			}
+
+			$data = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, $period, $modelForm->services);
+			$range = RateIndex::getRangeIndex($pair->id_currency_from, $pair->id_currency, $period, $modelForm->services);
+		} else {
+			throw new CHttpException(404, 'Not Found');
+		}
 		$this->render('index', array(
 			'index'=>$data['index'],
 			'range'=>$range,

@@ -7,9 +7,12 @@ class Service extends \CApplicationComponent
 	 * @var array
 	 */
 	public $apiService = array(
-		'btce' => array('class' => '\btc\services\btce\Api'),
-		'bitstamp' => array('class' => '\btc\services\bitstamp\Api'),
-		'btcchina' => array('class' => '\btc\services\btcchina\Api'),
+		'btce'		=> array('class' => '\btc\services\btce\Api'),
+		'bitstamp'	=> array('class' => '\btc\services\bitstamp\Api'),
+		'btcchina'	=> array('class' => '\btc\services\btcchina\Api'),
+		'vircurex'	=> array('class' => '\btc\services\vircurex\Api'),
+		'cryptsy'	=> array('class' => '\btc\services\cryptsy\Api'),
+		'bter'		=> array('class' => '\btc\services\bter\Api'),
 	);
 
 	/**
@@ -67,8 +70,8 @@ class Service extends \CApplicationComponent
 		return $this->getServiceAdapter()->getMessageLog();
 	}
 
-	public function getTicker()
+	public function getTicker($currency_to = 'btc', $currency_of = 'usd')
 	{
-		return $this->getServiceAdapter()->getTicker();
+		return $this->getServiceAdapter()->getTicker($currency_to, $currency_of);
 	}
 }

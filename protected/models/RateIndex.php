@@ -171,9 +171,10 @@ class RateIndex extends MyActiveRecord
 	{
 		if ($id_services===null) {
 			$id_services = array();
-			$servicesAll = Service::model()->findAll();
+			$pair = Pair::model()->find('id_currency_from=:id_currency_from and id_currency=:id_currency', array(':id_currency_from'=>$id_currency_from,':id_currency'=>$id_currency));
+			$servicesAll = ServicePair::model()->findAll('id_pair=:id_pair', array(':id_pair'=>$pair->id));
 			foreach ($servicesAll as $service) {
-				$id_services[] = $service->id;
+				$id_services[] = $service->id_service;
 			}
 		}
 		if ($date_start===true) {
