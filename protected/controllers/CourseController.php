@@ -74,7 +74,11 @@ class CourseController extends Controller
 			$modelForm->api_example = str_replace('http://', '', $modelForm->api_example);
 			$modelForm->api_example = str_replace('https://', '', $modelForm->api_example);
 			$modelForm->api_example = 'http://'. $modelForm->api_example;
-			$data = file_get_contents($modelForm->api_example);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.8.0.1) Gecko');
+			curl_setopt($ch, CURLOPT_URL, $modelForm->api_example);
+			$data = curl_exec($ch);
 			echo CJSON::encode(array('content'=>"<pre>".$data."</pre>"));
 		}
 		Yii::app()->end();
