@@ -7,6 +7,7 @@
  * @property integer $id
  * @property string $name
  * @property string $symbol
+ * @property integer $round
  * @property integer $is_active
  * @property string $create_date
  * @property string $mod_date
@@ -30,12 +31,12 @@ class Currency extends MyActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, symbol, create_date, mod_date', 'required'),
-			array('is_active', 'numerical', 'integerOnly'=>true),
+			array('round, is_active', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>50),
 			array('symbol', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, symbol, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
+			array('id, name, symbol, round, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -59,6 +60,7 @@ class Currency extends MyActiveRecord
 			'id' => 'ID',
 			'name' => 'Name',
 			'symbol' => 'Symbol',
+			'round' => 'Round',
 			'is_active' => 'Is Active',
 			'create_date' => 'Create Date',
 			'mod_date' => 'Mod Date',
@@ -86,6 +88,7 @@ class Currency extends MyActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('symbol',$this->symbol,true);
+		$criteria->compare('round',$this->round);
 		$criteria->compare('is_active',$this->is_active);
 		$criteria->compare('create_date',$this->create_date,true);
 		$criteria->compare('mod_date',$this->mod_date,true);
@@ -116,5 +119,17 @@ class Currency extends MyActiveRecord
 	{
 		$model = self::model()->findByPk($id);
 		return $model->symbol;
+	}
+
+	/**
+	 * вернет количество знаков после запятой
+	 *
+	 * @param $id
+	 * @return mixed
+	 */
+	public static function getCountRound($id)
+	{
+		$model = self::model()->findByPk($id);
+		return $model->round;
 	}
 }

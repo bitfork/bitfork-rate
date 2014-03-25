@@ -5,7 +5,7 @@
 			<div class="">
 				<h5 class="text-black bold"><?php echo Yii::t('main', 'Bitfork rate'); ?></h5>
 				<i class="fa fa-2x <?php echo ($index['change_state']===RateIndex::CHANGE_DOWN) ? 'fa-sort-asc text-error' : 'fa-sort-desc text-success'; ?> inline p-b-10" style="vertical-align: super;"></i><!-- fa-sort-asc стрелка вниз, text-error красный цвет шрифта -->
-				<h1 class="text-<?php echo ($index['change_state']===RateIndex::CHANGE_DOWN) ? 'error' : 'success'; ?> bold inline no-margin"> <?php echo ViewPrice::GetResult($index['index'], Currency::getSymbol($index['id_currency'])); ?></h1>
+				<h1 class="text-<?php echo ($index['change_state']===RateIndex::CHANGE_DOWN) ? 'error' : 'success'; ?> bold inline no-margin"> <?php echo ViewPrice::GetResult($index['index'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])); ?></h1>
 			</div>
 		</div>
 		<div class="p-l-20 p-r-20 p-b-10 p-t-10 b-b b-grey">
@@ -15,7 +15,7 @@
 			</div>
 			<div class="pull-right">
 				<p class="text-black"><?php echo Yii::t('main', 'The range of trades for 24 hours'); ?></p>
-				<p class="text-<?php echo ($index['change_state']===RateIndex::CHANGE_DOWN) ? 'error' : 'success'; ?>"><?php echo ViewPrice::GetResult($range['min'], Currency::getSymbol($index['id_currency'])); ?> - <?php echo ViewPrice::GetResult($range['max'], Currency::getSymbol($index['id_currency'])); ?></p>
+				<p class="text-<?php echo ($index['change_state']===RateIndex::CHANGE_DOWN) ? 'error' : 'success'; ?>"><?php echo ViewPrice::GetResult($range['min'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])); ?> - <?php echo ViewPrice::GetResult($range['max'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])); ?></p>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -40,7 +40,7 @@
 					<div class="clearfix"></div>
 					<div class="pull-left">
 						<i class="fa <?php echo ($row['change_state']===RateIndex::CHANGE_DOWN) ? 'fa-sort-asc text-error' : 'fa-sort-desc text-success'; ?> inline p-b-10" style="vertical-align: middle;"></i>
-						<h4 class="text-<?php echo $state; ?> semi-bold inline"><?php echo ViewPrice::GetResult($row['avg_price'], Currency::getSymbol($index['id_currency'])); ?></h4>
+						<h4 class="text-<?php echo $state; ?> semi-bold inline"><?php echo ViewPrice::GetResult($row['avg_price'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])); ?></h4>
 					</div>
 					<div class="pull-right" style="line-height: 27px;"> <span class="label label-<?php echo $state_label; ?>" style="vertical-align: bottom;"><?php echo RateIndex::getStrChangeId($row['change_state']); ?> <?php echo $row['change_percent']; ?>%</span> </div>
 					<div class="clearfix"></div>

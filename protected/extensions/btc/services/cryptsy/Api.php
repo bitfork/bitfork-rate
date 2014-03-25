@@ -16,13 +16,13 @@ class Api extends ApiBase
 	public function getTicker($currency_to = 'btc', $currency_of = 'ltc')
 	{
 		$data = $this->query($this->getUrl('singlemarketdata', $currency_to, $currency_of));
-		if ($data!==false) {
-			$data['vol_cur'] = $data['volume'];
-			unset($data['volume']);
-			$data['buy'] = $data['bid'];
-			unset($data['bid']);
-			$data['sell'] = $data['ask'];
-			unset($data['ask']);
+		if ($data!==false and isset($data['return'],$data['return']['markets'],$data['return']['markets'][mb_strtoupper($currency_to, 'utf-8')])) {
+			$data_market = $data['return']['markets'][mb_strtoupper($currency_to, 'utf-8')];
+			$data = array();
+			$data['last'] = $data_market['lasttradeprice'];
+			$data['vol_cur'] = $data_market['volume'];
+			$data['high'] = 0;
+			$data['low'] = 0;
 			return $data;
 		}
 		$this->setMessageLog(__CLASS__ .' - getTicker не наден нужный елемент');
@@ -50,9 +50,15 @@ class Api extends ApiBase
 	 */
 	private function getIdPair($currency_to = 'btc', $currency_of = 'ltc')
 	{
+		$currency_to = mb_strtolower($currency_to, 'utf-8');
+		$currency_of = mb_strtolower($currency_of, 'utf-8');
 		$currency = 3;
-		if ($currency_to == 'btc' and $currency_of == 'ltc') {
+		if ($currency_to == 'ltc' and $currency_of == 'btc') {
 			$currency = 3;
+		} elseif ($currency_to == 'vtc' and $currency_of == 'btc') {
+			$currency = 151;
+		} elseif ($currency_to == 'doge' and $currency_of == 'btc') {
+			$currency = 132;
 		}
 		return $currency;
 	}

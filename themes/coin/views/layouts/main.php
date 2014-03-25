@@ -66,7 +66,7 @@
 					<div class="inline header-select">
 						<select id="source" name="pair" style="width:100%">
 							<?php foreach (Pair::model()->findAll() as $pair) { ?>
-								<option value="<?php echo $pair->id; ?>"><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></option>
+								<option value="<?php echo $pair->id; ?>"<?php echo (isset($_GET['pair']) and $pair->id == $_GET['pair']) ? ' selected="selectd"': ''; ?>><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></option>
 							<?php } ?>
 						</select>
 						<script language="javascript">

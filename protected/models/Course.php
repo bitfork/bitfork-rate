@@ -251,9 +251,9 @@ class Course extends MyActiveRecord
 	/**
 	 * расчет индекса для всех пар валют и каждой комбинации сервисов
 	 */
-	public static function calculateIndex()
+	public static function calculateIndex($id_pair=false)
 	{
-		$services = self::getPairServices();
+		$services = self::getPairServices($id_pair);
 
 		foreach ($services as $values) {
 			if (count($values['services'])>0)
@@ -267,10 +267,13 @@ class Course extends MyActiveRecord
 	 * @param bool $object id или объекты серисов
 	 * @return array
 	 */
-	public static function getPairServices($object=false)
+	public static function getPairServices($id_pair=false, $object=false)
 	{
 		$services = array();
-		$pairs = Pair::model()->findAll();
+		if ($id_pair===false)
+			$pairs = Pair::model()->findAll();
+		else
+			$pairs = Pair::model()->findAll('id=:id', array(':id'=>$id_pair));
 		foreach ($pairs as $pair) {
 			$services[$pair->id]['id_currency'] = $pair->id_currency;
 			$services[$pair->id]['id_currency_from'] = $pair->id_currency_from;
@@ -342,10 +345,10 @@ class Course extends MyActiveRecord
 	/**
 	 * получает от сервиса данные и сохраняет в db
 	 */
-	public static function parseAllService()
+	public static function parseAllService($id_pair=false)
 	{
 		$exchange = Yii::app()->exchange;
-		$services = self::getPairServices(true);
+		$services = self::getPairServices($id_pair, true);
 		foreach ($services as $values) {
 			foreach ($values['services'] as $service) {
 				$exchange->setService($service->name);

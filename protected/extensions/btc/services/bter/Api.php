@@ -16,18 +16,11 @@ class Api extends ApiBase
 	public function getTicker($currency_to = 'btc', $currency_of = 'ltc')
 	{
 		$data = $this->query($this->getUrl('ticker', $currency_to, $currency_of));
-		echo "<pre>";
-		print_r($data);
-		echo "</pre>";exit;
-		if ($data!==false) {
-			$data['last'] = $data['last_trade'];
-			unset($data['last_trade']);
-			$data['vol_cur'] = $data['volume'];
-			unset($data['volume']);
-			$data['buy'] = $data['highest_bid'];
-			unset($data['highest_bid']);
-			$data['sell'] = $data['lowest_ask'];
-			unset($data['lowest_ask']);
+		if ($data!==false and $data['result']!==false) {
+			unset($data['result']);
+			$data['vol_cur'] = $data['vol_'. mb_strtolower($currency_to, 'utf-8')];
+			unset($data['vol_'. mb_strtolower($currency_to, 'utf-8')]);
+			unset($data['vol_'. mb_strtolower($currency_of, 'utf-8')]);
 			return $data;
 		}
 		$this->setMessageLog(__CLASS__ .' - getTicker не наден нужный елемент');
