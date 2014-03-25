@@ -1,12 +1,6 @@
 <?php
 class CourseController extends Controller
 {
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	public $layout='//layouts/column2';
-
 	public function actionIndex($pair = null, $period = null)
 	{
 		// выбранные сервисы
@@ -19,8 +13,6 @@ class CourseController extends Controller
 				Yii::app()->session['select_services'] = $modelForm->services;
 			}
 		}
-
-
 
 		// выбранный период
 		$period = (int)$period;
@@ -48,19 +40,57 @@ class CourseController extends Controller
 				$servicesList = CHtml::listData($servicesAll, 'id_service', 'id_pair');
 			}
 
-			$data = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, $period, $modelForm->services);
-			$range = RateIndex::getRangeIndex($pair->id_currency_from, $pair->id_currency, $period, $modelForm->services);
+			$data[0] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 0, $modelForm->services);
+			$data[1] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 1, $modelForm->services);
+			$data[24] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 24, $modelForm->services);
+			$range = false;
+			if ($period > 0) {
+				$range = RateIndex::getRangeIndex($pair->id_currency_from, $pair->id_currency, $period, $modelForm->services);
+			}
 		} else {
 			throw new CHttpException(404, 'Not Found');
 		}
+
+		$apiExampleForm=new ApiExampleForm;
+
 		$this->render('index', array(
-			'index'=>$data['index'],
-			'range'=>$range,
-			'data'=>$data['services'],
 			'period'=>$period,
+			'data'=>$data,
+			'range'=>$range,
+			'pair'=>$pair,
+			'apiExampleForm'=>$apiExampleForm,
 			'modelForm'=>$modelForm,
 			'servicesList'=>$servicesList,
 		));
+	}
+
+	public function actionApiExample()
+	{
+		$modelForm=new ApiExampleForm;
+		$this->performAjaxValidation($modelForm);
+		if(isset($_POST['ApiExampleForm']))
+		{
+			$modelForm->attributes=$_POST['ApiExampleForm'];
+			$data = file_get_contents($modelForm->api_example);
+			echo CJSON::encode(array('content'=>"<pre>".$data."</pre>"));
+		}
+		Yii::app()->end();
+	}
+
+	/**
+	 * Performs the AJAX validation.
+	 * @param Staff $model the model to be validated
+	 */
+	protected function performAjaxValidation($model)
+	{
+		if(isset($_POST['ajax']))
+		{
+			$error = CActiveForm::validate($model);
+			if ($error != '[]') {
+				echo $error;
+				Yii::app()->end();
+			}
+		}
 	}
 
 	public function actionParse($id = 'btce')

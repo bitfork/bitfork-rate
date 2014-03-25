@@ -42,4 +42,9 @@ class MyBehavior extends Behavior
         $this->getOwner()->redirect($url, $terminate);
         $this->getOwner()->enableBehavior($this->behaviorName);
     }
+
+	public function showError($message)
+	{
+		$this->getRestService()->sendError(\rest\Service::ERR_TYPE_PARAM, $message);
+	}
 }

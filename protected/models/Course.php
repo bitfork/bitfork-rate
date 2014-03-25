@@ -331,6 +331,9 @@ class Course extends MyActiveRecord
 	 */
 	public static function getComb($services, $start = -1, $last = array())
 	{
+		// комбинации убрали, считаем только для всех сервисов
+		return array($services);
+
 		$comb = array();
 		for ($i = $start + 1; $i < count($services); $i++) {
 			$comb[] = array_merge($last, array($services[$i]));

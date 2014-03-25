@@ -1,7 +1,7 @@
 <?php
 return array(
-	array('api/<controller>/index', 'pattern' => 'api/<controller:(index)>', 'verb' => 'GET', 'parsingOnly' => true),
-	array('api/<controller>/index', 'pattern' => 'api/<controller:(index)>/<type>', 'verb' => 'GET', 'parsingOnly' => true),
+	array('api/<controller>/index', 'pattern' => 'api/<controller:(index)>/<from:\w+>/<to:\w+>/<period:\d+>', 'verb' => 'GET', 'parsingOnly' => true),
+	array('api/<controller>/<action>', 'pattern' => 'api/<controller:(index)>/<action:\w+>/<from:\w+>/<to:\w+>/<period:\d+>', 'verb' => 'GET', 'parsingOnly' => true),
 
 	array('api/<controller>/index', 'pattern' => 'api/<controller>', 'verb' => 'GET', 'parsingOnly' => true),
 	array('api/<controller>/create', 'pattern' => 'api/<controller>', 'verb' => 'POST', 'parsingOnly' => true),

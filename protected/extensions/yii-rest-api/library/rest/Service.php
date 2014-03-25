@@ -167,7 +167,7 @@ class Service extends \CComponent
      */
     public function sendError($type, $message, array $data = array(), $statusCode = 500)
     {
-        ob_clean();
+		if (ob_get_contents()) ob_end_clean();
 
         $data['type'] = $type;
         $data['message'] = $message;
