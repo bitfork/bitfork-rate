@@ -9,6 +9,7 @@
 		'clientOptions'=>array(
 			'validateOnSubmit'=>true,
 			'validateOnChange'=>true,
+			'beforeValidate'=>'js:apiBeforeValidate',
 			'afterValidate'=>'js:apiAfterValidate',
 		),
 	));
@@ -28,6 +29,10 @@
 
 </div>
 <script language="javascript">
+	function apiBeforeValidate(form) {
+		$('#responseApi').hide();
+		return true;
+	}
 	function apiAfterValidate(form, data, hasError) {
 		if(!hasError) {
 			$('#responseApi').html(data.content).show();

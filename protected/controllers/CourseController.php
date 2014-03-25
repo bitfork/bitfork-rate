@@ -71,6 +71,9 @@ class CourseController extends Controller
 		if(isset($_POST['ApiExampleForm']))
 		{
 			$modelForm->attributes=$_POST['ApiExampleForm'];
+			$modelForm->api_example = str_replace('http://', '', $modelForm->api_example);
+			$modelForm->api_example = str_replace('https://', '', $modelForm->api_example);
+			$modelForm->api_example = 'http://'. $modelForm->api_example;
 			$data = file_get_contents($modelForm->api_example);
 			echo CJSON::encode(array('content'=>"<pre>".$data."</pre>"));
 		}
