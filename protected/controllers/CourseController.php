@@ -76,6 +76,7 @@ class CourseController extends Controller
 			$modelForm->api_example = 'http://'. $modelForm->api_example;
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 			curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.8.0.1) Gecko');
 			curl_setopt($ch, CURLOPT_URL, $modelForm->api_example);
 			$data = curl_exec($ch);
