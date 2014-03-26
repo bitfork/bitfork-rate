@@ -213,7 +213,7 @@ class Course extends MyActiveRecord
 			$data[$k]['percent_for_index'] = $r['avg_volume'] / $sum; // процент объема биржи от суммы всех объемов бирж
 			$data[$k]['percent_price_for_index'] = $r['avg_price'] * $data[$k]['percent_for_index']; // цена курса которая влияет на индекс
 			$index['index'] += $data[$k]['percent_price_for_index']; // сумма всех курсов
-			$change = self::getChangePercent($r['id_service'], $date_start, $date_finish);
+			$change = self::getChangePercent($id_currency_from, $id_currency, $r['id_service'], $date_start, $date_finish);
 			$data[$k]['change_state'] = $change[0];
 			$data[$k]['change_percent'] = $change[1];
 		}
@@ -237,7 +237,7 @@ class Course extends MyActiveRecord
 		$index->period = $period;
 		$index->servises = implode(',', $combination);
 		$index->services_hash = md5($index->servises);
-		$index->index = round($data[0]['index'], 8);
+		$index->index = floor($data[0]['index'] * pow(10, 8)) / pow(10, 8); // округляем до 8 знаков в меньшую
 		$index->id_currency = $id_currency;
 		$index->id_currency_from = $id_currency_from;
 		$index->change_state = $data[0]['change_state'];
@@ -376,14 +376,15 @@ class Course extends MyActiveRecord
 	 * @param $date_finish
 	 * @return array|bool
 	 */
-	public static function getChangePercent($id_service, $date_start, $date_finish)
+	public static function getChangePercent($id_currency_from, $id_currency, $id_service, $date_start, $date_finish)
 	{
 		$sql = "
 			SELECT `first`.*
 			FROM (
 				SELECT `last`
 				FROM `". Course::model()->tableName() ."`
-				WHERE `id_service` = '". $id_service ."' AND
+				WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
+					`id_service` = '". $id_service ."' AND
 					`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
 				ORDER BY id ASC
 				LIMIT 1
@@ -393,7 +394,8 @@ class Course extends MyActiveRecord
 			FROM (
 				SELECT `last`
 				FROM `". Course::model()->tableName() ."`
-				WHERE `id_service` = '". $id_service ."' AND
+				WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
+					`id_service` = '". $id_service ."' AND
 					`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
 				ORDER BY id DESC
 				LIMIT 1
