@@ -237,7 +237,7 @@ class Course extends MyActiveRecord
 		$index->period = $period;
 		$index->servises = implode(',', $combination);
 		$index->services_hash = md5($index->servises);
-		$index->index = $data[0]['index'];
+		$index->index = round($data[0]['index'], 8);
 		$index->id_currency = $id_currency;
 		$index->id_currency_from = $id_currency_from;
 		$index->change_state = $data[0]['change_state'];
