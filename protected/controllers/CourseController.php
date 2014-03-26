@@ -71,9 +71,11 @@ class CourseController extends Controller
 		if(isset($_POST['ApiExampleForm']))
 		{
 			$modelForm->attributes=$_POST['ApiExampleForm'];
+			$modelForm->api_example = str_replace('http://www.', '', $modelForm->api_example);
 			$modelForm->api_example = str_replace('http://', '', $modelForm->api_example);
+			$modelForm->api_example = str_replace('https://www.', '', $modelForm->api_example);
 			$modelForm->api_example = str_replace('https://', '', $modelForm->api_example);
-			$modelForm->api_example = 'http://'. $modelForm->api_example;
+			$modelForm->api_example = 'http://www.'. $modelForm->api_example;
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
