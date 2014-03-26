@@ -16,7 +16,7 @@ class IndexController extends ApiController
 		$id_currency = $currencys[1];
 
 		$data=ApiRateIndex::getDateIndex($id_currency_from, $id_currency, $period);
-		$response['index'] = $data['index']['index'];
+		$response['index'] = sprintf("%.8f", $data['index']['index']);
 		$response['period'] = $period;
 		$this->render('view',array(
 			'data'=>$response,
@@ -38,11 +38,11 @@ class IndexController extends ApiController
 
 		$data=ApiRateIndex::getDateIndex($id_currency_from, $id_currency, $period);
 
-		$response['index']['index'] = $data['index']['index'];
+		$response['index']['index'] = sprintf("%.8f", $data['index']['index']);
 		$response['index']['change_state'] = RateIndex::getStrChangeId($data['index']['change_state']);
 		$response['index']['change_percent'] = $data['index']['change_percent'];
 		foreach ($data['services'] as $item) {
-			$response['services'][$item['name_service']]['price'] = $item['avg_price'];
+			$response['services'][$item['name_service']]['price'] = sprintf("%.8f", $item['avg_price']);
 			$response['services'][$item['name_service']]['volume'] = $item['avg_volume'];
 			$response['services'][$item['name_service']]['change_state'] = RateIndex::getStrChangeId($item['change_state']);
 			$response['services'][$item['name_service']]['change_percent'] = $item['change_percent'];
