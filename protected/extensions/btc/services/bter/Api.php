@@ -6,6 +6,7 @@ use btc\services\ApiBase;
 class Api extends ApiBase
 {
 	private $base_url = 'http://data.bter.com/';
+	public $sercice_url = 'bter.com';
 
 	/**
 	 * Возвращает краткую информацию о состоянии биржи.

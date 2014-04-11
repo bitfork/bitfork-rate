@@ -6,6 +6,7 @@ use btc\services\ApiBase;
 class Api extends ApiBase
 {
 	private $base_url = 'https://www.bitstamp.net/';
+	public $sercice_url = 'www.bitstamp.net';
 
 	/**
 	 * Возвращает краткую информацию о состоянии биржи.

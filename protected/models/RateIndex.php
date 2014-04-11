@@ -190,7 +190,7 @@ class RateIndex extends MyActiveRecord
 			$where_date = "AND `create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'";
 		}
 		$sql = "
-			SELECT `index`, `id_currency_from`, `id_currency`, `change_state`, `change_percent`, `data`
+			SELECT `index`, `id_currency_from`, `id_currency`, `change_state`, `change_percent`, `data`, `create_date`
 			FROM `". RateIndex::model()->tableName() ."`
 			WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
 				`period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' ". $where_date ."
@@ -209,7 +209,7 @@ class RateIndex extends MyActiveRecord
 
 		return (isset($data['index'])) ?
 			array('index'=>$data, 'services'=>$services) :
-			array('index'=>array('index' => 0, 'change_state' => RateIndex::CHANGE_NULL, 'change_percent' => 0, 'id_currency'=>$id_currency, 'id_currency_from'=>$id_currency_from), 'services'=>$services);
+			array('index'=>array('index' => 0, 'change_state' => RateIndex::CHANGE_NULL, 'change_percent' => 0, 'id_currency'=>$id_currency, 'id_currency_from'=>$id_currency_from, 'create_date'=>''), 'services'=>$services);
 	}
 
 	/**

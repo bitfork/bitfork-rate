@@ -6,6 +6,7 @@ use btc\services\ApiBase;
 class Api extends ApiBase
 {
 	private $base_url = 'https://data.btcchina.com/';
+	public $sercice_url = 'btcchina.com';
 
 	/**
 	 * Возвращает краткую информацию о состоянии биржи.

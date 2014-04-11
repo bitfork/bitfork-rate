@@ -74,4 +74,9 @@ class Service extends \CApplicationComponent
 	{
 		return $this->getServiceAdapter()->getTicker($currency_to, $currency_of);
 	}
+
+	public function getBaseUrl()
+	{
+		return $this->getServiceAdapter()->getBaseUrl();
+	}
 }

@@ -3,7 +3,7 @@ namespace btc\services;
 
 use btc\Service;
 
-class ApiBase extends Service
+class ApiBase
 {
 	private $errors_message = array();
 
@@ -63,5 +63,13 @@ class ApiBase extends Service
 	public function getMessageLog()
 	{
 		return $this->errors_message;
+	}
+
+	/**
+	 * вернет базовый урл
+	 */
+	public function getBaseUrl()
+	{
+		return $this->sercice_url;
 	}
 }

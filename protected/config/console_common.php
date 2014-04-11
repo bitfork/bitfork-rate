@@ -17,6 +17,7 @@ return array(
 			'username' => 'bitfork_rate',
 			'password' => 'US3W6yem',
 			'charset' => 'utf8',
+			'schemaCachingDuration' => 86400,
 		),
 		'log'=>array(
 			'class'=>'CLogRouter',

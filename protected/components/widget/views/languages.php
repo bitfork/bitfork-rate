@@ -1,14 +1,8 @@
 <?php // echo CHtml::tag('ul', array('class'=>'language'), implode("\n", $links)); ?>
 
-<div class="slimScrollDiv language-menu">
-	<div class="page-sidebar-wrapper">
-		<ul>
-			<li class="language-item">
-				<a href="<?php echo Yii::app()->createUrl('/'); ?>"><i class="fa fa-font"></i><span class="title">Язык</span></a>
-				<ul class="sub-menu">
-					<?php echo implode("\n", $links); ?>
-				</ul>
-			</li>
-		</ul>
-	</div>
-</div>
+<aside class="aside-lang main-inlineBlock">
+	<p class="aside-lang-current"><span class="ico-lang<?php echo mb_strtoupper(Yii::app()->language,'utf-8'); ?>"></span><span class="ico-triangleGray"></span></p>
+	<div class="aside-lang-list">
+		<?php echo implode("\n", $links); ?>
+	<div>
+</aside>

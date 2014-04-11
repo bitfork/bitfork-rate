@@ -58,10 +58,30 @@ return array(
 			)
 		),
 		'clientScript'=>array(
+			'coreScriptPosition'=>CClientScript::POS_END,
 			'scriptMap' => array(
-				'jquery.js'=>'/themes/coin/assets/plugins/jquery-1.8.3.min.js',
-				'jquery.min.js'=>'/themes/coin/assets/plugins/jquery-1.8.3.min.js',
-			)
+				'jquery.js'=>false,
+				'jquery.min.js'=>false,
+			),
+			'packages'=>array(
+				'app' => array(
+					'baseUrl'=>'/themes/coin/assets',
+					'js'=>array(
+						'js/css3-mediaqueries.js',
+						'js/jquery.placeholder-enhanced/jquery.placeholder-enhanced.min.js',
+						'js/fancyBox/source/jquery.fancybox.pack.js',
+						'js/fancyBox/source/helpers/jquery.fancybox-media.js',
+						'js/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js',
+						'js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js',
+						'js/ScrollToFixed/jquery-scrolltofixed-min.js',
+						'js/bitforkrate.js',
+					),
+				),
+				'chart' => array(
+					'baseUrl'=>'/themes/coin/assets/js/highstock',
+					'js'=>array('highstock.js', 'modules/exporting.js'),
+				),
+			),
 		),
 		'user'=>array(
 			// enable cookie-based authentication
@@ -98,6 +118,7 @@ return array(
 			'password' => 'US3W6yem',
 			'charset' => 'utf8',
 			'tablePrefix' => '',
+			'schemaCachingDuration' => 86400,
 		),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors

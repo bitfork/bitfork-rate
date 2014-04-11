@@ -6,6 +6,7 @@ use btc\services\ApiBase;
 class Api extends ApiBase
 {
 	private $base_url = 'https://api.vircurex.com/';
+	public $sercice_url = 'vircurex.com';
 
 	/**
 	 * Возвращает краткую информацию о состоянии биржи.

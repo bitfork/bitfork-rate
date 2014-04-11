@@ -6,6 +6,7 @@ use btc\services\ApiBase;
 class Api extends ApiBase
 {
 	private $base_url = 'https://btc-e.com/';
+	public $sercice_url = 'btc-e.com';
 
 	/**
 	 * Возвращает краткую информацию о состоянии биржи.

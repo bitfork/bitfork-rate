@@ -6,6 +6,7 @@ use btc\services\ApiBase;
 class Api extends ApiBase
 {
 	private $base_url = 'http://pubapi.cryptsy.com/';
+	public $sercice_url = 'cryptsy.com';
 
 	/**
 	 * Возвращает краткую информацию о состоянии биржи.

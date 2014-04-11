@@ -61,6 +61,7 @@ class CourseController extends Controller
 			'apiExampleForm'=>$apiExampleForm,
 			'modelForm'=>$modelForm,
 			'servicesList'=>$servicesList,
+			'linkProject'=>new LinkProject,
 		));
 	}
 
@@ -82,7 +83,21 @@ class CourseController extends Controller
 			curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.8.0.1) Gecko');
 			curl_setopt($ch, CURLOPT_URL, $modelForm->api_example);
 			$data = curl_exec($ch);
-			echo CJSON::encode(array('content'=>"<pre>".$data."</pre>"));
+			echo CJSON::encode(array('content'=>$data));
+		}
+		Yii::app()->end();
+	}
+
+	public function actionLinkProject()
+	{
+		$model=new LinkProject;
+		$this->performAjaxValidation($model);
+		if(isset($_POST['LinkProject']))
+		{
+			$model->attributes=$_POST['LinkProject'];
+			if ($model->save()) {
+				echo CJSON::encode(array('content'=>"Заявка отправленна"));
+			}
 		}
 		Yii::app()->end();
 	}
