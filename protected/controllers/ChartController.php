@@ -10,6 +10,7 @@ class ChartController extends Controller
 			$services[] = $service->id;
 		}
 		$criteria = new CDbCriteria;
+		$criteria->select = '*, (round((UNIX_TIMESTAMP(`create_date`))/60)*60) as `create_date`';
 		$criteria->condition = 'servises=:servises AND period=:period AND id_currency_from=:id_currency_from AND id_currency=:id_currency';
 		$criteria->params = array(
 			':period'=>$period,
@@ -17,6 +18,7 @@ class ChartController extends Controller
 			':id_currency_from'=>$pair->id_currency_from,
 			':id_currency'=>$pair->id_currency
 		);
+		$criteria->group = 'create_date';
 		if ($limit == 1) {
 			$criteria->order = 'id DESC';
 		}
@@ -24,7 +26,7 @@ class ChartController extends Controller
 		$index = RateIndex::model()->findAll($criteria);
 		$history = array();
 		foreach ($index as $row) {
-			$history[] = array('x'=>strtotime($row['create_date']) * 1000, 'y'=>(float)$row['index'], 'name'=>ViewPrice::GetResult($row['index'], $pair->currency->symbol, $pair->currency->round));
+			$history[] = array('x'=>$row['create_date'] * 1000, 'y'=>(float)$row['index'], 'name'=>ViewPrice::GetResult($row['index'], $pair->currency->symbol, $pair->currency->round));
 		}
 		echo CJSON::encode($history);
 	}
