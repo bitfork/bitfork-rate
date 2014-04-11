@@ -19,15 +19,13 @@ class ChartController extends Controller
 			':id_currency'=>$pair->id_currency
 		);
 		$criteria->group = 'create_date';
-		if ($limit == 1) {
-			$criteria->order = 'id DESC';
-		}
+		$criteria->order = 'id DESC';
 		$criteria->limit = $limit;
 		$index = RateIndex::model()->findAll($criteria);
 		$history = array();
 		foreach ($index as $row) {
 			$history[] = array('x'=>$row['create_date'] * 1000, 'y'=>(float)$row['index'], 'name'=>ViewPrice::GetResult($row['index'], $pair->currency->symbol, $pair->currency->round));
 		}
-		echo CJSON::encode($history);
+		echo CJSON::encode(array_reverse($history));
 	}
 }
