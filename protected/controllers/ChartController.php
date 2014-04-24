@@ -36,8 +36,8 @@ class ChartController extends Controller
 		}
 		$end = end($history);
 		$limit = ($max - $min) / 4;
-		$max = $end['y'] + $limit;
-		$min = $end['y'] - $limit;
+		$max += $limit;
+		$min -= $limit;
 		echo CJSON::encode(array(array_reverse($history), $max, $min));
 	}
 }
