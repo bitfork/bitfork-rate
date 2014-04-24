@@ -38,9 +38,6 @@ class ChartController extends Controller
 		if ($limit > 0) {
 			$max += $limit / 4;
 			$min -= $limit / 4;
-		} else {
-			$max = false;
-			$min = false;
 		}
 		echo CJSON::encode(array(array_reverse($history), $max, $min));
 	}

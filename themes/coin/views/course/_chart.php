@@ -4,6 +4,8 @@
 <script type="text/javascript">
 	$(function() {
 		$.getJSON('/index.php?r=chart/index&id_pair=<?php echo $id; ?>&period=0', function(data) {
+			var max_limit = data[1];
+			var min_limit = data[2];
 
 			// create the chart
 			$('#<?php echo $id_chart; ?>').highcharts('StockChart', {
@@ -42,13 +44,18 @@
 								$.getJSON('/index.php?r=chart/index&id_pair=<?php echo $id; ?>&period=0&limit=1', function(data) {
 									series.addPoint(data[0][0], true, true);
 									if (data[1]) {
+										var limit = (max_limit - min_limit) / 4;
+										if (max_limit < data[1]) {
+											max_limit = max_limit + limit;
+											min_limit = min_limit + limit;
+										}
+										if (data[1] < min_limit) {
+											min_limit = min_limit - limit;
+											max_limit = max_limit - limit;
+										}
 										yA.update({
-											max: data[1]
-										});
-									}
-									if (data[2]) {
-										yA.update({
-											min: data[2]
+											max: max_limit,
+											min: min_limit
 										});
 									}
 								});
@@ -76,8 +83,8 @@
 				},
 
 				yAxis : {
-					max: data[1], // максимальная точка графика
-					min: data[2], // минимальная точка графика
+					max: max_limit, // максимальная точка графика
+					min: min_limit, // минимальная точка графика
 					labels: {
 						align: 'right',
 						x: -3
