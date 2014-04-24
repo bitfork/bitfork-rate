@@ -23,11 +23,19 @@ class ChartController extends Controller
 		$criteria->limit = $limit;
 		$index = RateIndex::model()->findAll($criteria);
 		$history = array();
+		$max = null;
+		$min = null;
 		foreach ($index as $row) {
+			if ($max < $row['index'] or $max === null) {
+				$max = $row['index'];
+			}
+			if ($min > $row['index'] or $max === null) {
+				$min = $row['index'];
+			}
 			$history[] = array('x'=>$row['create_date'] * 1000, 'y'=>(float)$row['index'], 'name'=>ViewPrice::GetResult($row['index'], $pair->currency->symbol, $pair->currency->round));
 		}
 		$end = end($history);
-		$limit = $end['y'] / 4;
+		$limit = ($max - $min) / 4;
 		$max = $end['y'] + $limit;
 		$min = $end['y'] - $limit;
 		echo CJSON::encode(array(array_reverse($history), $max, $min));
