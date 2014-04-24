@@ -36,10 +36,21 @@
 					events : {
 						load : function() {
 							var series = this.series[0];
+							var yA = this.yAxis[0];
 							setInterval(function() {
 								/* обновляем график с интервалом */
 								$.getJSON('/index.php?r=chart/index&id_pair=<?php echo $id; ?>&period=0&limit=1', function(data) {
-									series.addPoint(data[0], true, true);
+									series.addPoint(data[0][0], true, true);
+									if (data[1]) {
+										yA.update({
+											max: data[1]
+										});
+									}
+									if (data[2]) {
+										yA.update({
+											min: data[2]
+										});
+									}
 								});
 							}, 60000);
 						}
@@ -65,6 +76,8 @@
 				},
 
 				yAxis : {
+					max: data[1], // максимальная точка графика
+					min: data[2], // минимальная точка графика
 					labels: {
 						align: 'right',
 						x: -3
@@ -91,7 +104,7 @@
 				series : [{
 					name : 'история до начала сессии',
 					lineWidth: 1,
-					data : data,
+					data : data[0],
 					type : 'area',
 					fillColor: 'rgba(0,95,155,0.5)',
 					color: '#0065A8',

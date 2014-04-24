@@ -26,6 +26,10 @@ class ChartController extends Controller
 		foreach ($index as $row) {
 			$history[] = array('x'=>$row['create_date'] * 1000, 'y'=>(float)$row['index'], 'name'=>ViewPrice::GetResult($row['index'], $pair->currency->symbol, $pair->currency->round));
 		}
-		echo CJSON::encode(array_reverse($history));
+		$end = end($history);
+		$limit = $end['y'] / 4;
+		$max = $end['y'] + $limit;
+		$min = $end['y'] - $limit;
+		echo CJSON::encode(array(array_reverse($history), $max, $min));
 	}
 }
