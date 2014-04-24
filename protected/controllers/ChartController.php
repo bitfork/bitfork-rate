@@ -29,15 +29,19 @@ class ChartController extends Controller
 			if ($max < $row['index'] or $max === null) {
 				$max = $row['index'];
 			}
-			if ($min > $row['index'] or $max === null) {
+			if ($min > $row['index'] or $min === null) {
 				$min = $row['index'];
 			}
 			$history[] = array('x'=>$row['create_date'] * 1000, 'y'=>(float)$row['index'], 'name'=>ViewPrice::GetResult($row['index'], $pair->currency->symbol, $pair->currency->round));
 		}
-		$end = end($history);
-		$limit = ($max - $min) / 4;
-		$max += $limit;
-		$min -= $limit;
+		$limit = ($max - $min);
+		if ($limit > 0) {
+			$max += $limit;
+			$min -= $limit;
+		} else {
+			$max = false;
+			$min = false;
+		}
 		echo CJSON::encode(array(array_reverse($history), $max, $min));
 	}
 }
