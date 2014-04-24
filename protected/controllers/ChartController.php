@@ -36,8 +36,8 @@ class ChartController extends Controller
 		}
 		$limit = ($max - $min);
 		if ($limit > 0) {
-			$max += $limit;
-			$min -= $limit;
+			$max += $limit / 4;
+			$min -= $limit / 4;
 		} else {
 			$max = false;
 			$min = false;
