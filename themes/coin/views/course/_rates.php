@@ -22,7 +22,7 @@
 								echo $exchange->getBaseUrl();
 							?>
 						</td>
-						<td><?php echo ViewPrice::GetResult($row['avg_price'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])); ?></td>
+						<td id="service_price_<?php echo $row['id_service']; ?>"><?php echo ViewPrice::GetResult($row['avg_price'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])); ?></td>
 					</tr>
 				<?php } ?>
 				</tbody>
@@ -34,10 +34,10 @@
 	<div class="main-grid-content_left">
 		<div class="main-padding_10">
 			<div class="main-grid-200">
-				<p class="text-font_big main-grid-sidebar_left"><?php echo ViewPrice::GetResult($index['index'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])); ?></p>
+				<p id="main_index" class="text-font_big main-grid-sidebar_left"><?php echo ViewPrice::GetResult($index['index'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])); ?></p>
 				<div class="main-grid-content_right">
 					<h3><?php echo Yii::t('main', 'Моментальный курс {cur_from}/{cur}', array('{cur_from}'=>$pair->currency_from->name,'{cur}'=>$pair->currency->name)); ?></h3>
-					<p><?php echo Yii::t('main', 'Последнее обновление'); ?> <?php echo date('D, d.m.y\, H:i', strtotime($index['create_date'])); ?> GMT+0400<br/>
+					<p><?php echo Yii::t('main', 'Последнее обновление'); ?> <span id="last_date_main_index"><?php echo date('D, d.m.y\, H:i', strtotime($index['create_date'])); ?></span> GMT+0400<br/>
 						<span class="text-tip"><?php echo Yii::t('main', 'Информация обновляется каждые 60 секунд'); ?></span>
 					</p>
 				</div>

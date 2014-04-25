@@ -12,12 +12,21 @@ return array(
 	'name'=>'bitfork',
 	'language' => 'ru',
 
+	'aliases'=>array(
+		'ws'=>realpath(__DIR__ . '/../extensions/websocket/components'),
+	),
 
 	// preloading 'log' component
 	'preload'=>array('log'),
 
 	// autoloading model and component classes
-	'import'=>require(dirname(__FILE__) . '/import.php'),
+	'import'=>CMap::mergeArray(
+		require(dirname(__FILE__) . '/import.php'),
+		array(
+			'ext.websocket.*',
+			'ext.websocket.components.*',
+		)
+	),
 
 	'modules'=>array(
 	),
@@ -76,6 +85,12 @@ return array(
 		),
 		'exchange' => array(
 			'class' => '\btc\Service',
+		),
+		'websocket' => array(
+			'class' => 'ws.Websocket',
+			'eventDriver' => '',
+			'websocket' => 'tcp://5.9.120.183:8002',
+			'localsocket' => 'tcp://5.9.120.183:8003',
 		),
 	),
 

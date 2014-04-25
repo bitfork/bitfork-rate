@@ -9,6 +9,10 @@ return array(
 	'name'=>'bitfork',
 	'language' => 'en',
 
+	'aliases'=>array(
+		'ws'=>realpath(__DIR__ . '/../extensions/websocket/components'),
+	),
+
 	// preloading 'log' component
 	'preload'=>array('log','restService'),
 
@@ -147,6 +151,12 @@ return array(
 		),
 		'session' => array (
 			'autoStart' => true,
+		),
+		'websocket' => array(
+			'class' => 'ws.Websocket',
+			'eventDriver' => '',
+			'websocket' => 'tcp://5.9.120.183:8002',
+			'localsocket' => 'tcp://5.9.120.183:8003',
 		),
 	),
 

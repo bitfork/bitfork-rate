@@ -1,8 +1,8 @@
 var WS = (function(){
 	var $this;
 	var ws;
-	//var url = 'ws://prometheus-seo.ru:8002/';
-	var url = 'ws://127.0.0.1:8002/';
+	var url = 'ws://prometheus-seo.ru:8002/';
+	//var url = 'ws://127.0.0.1:8002/';
 	var user = {};
 
 	return {

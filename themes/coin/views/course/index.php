@@ -63,3 +63,12 @@
 		$('#form-submit-example').trigger('click');
 	}
 </script>
+
+<?php
+Yii::app()->clientScript->registerScriptFile('/themes/coin/assets/js/page.js', CClientScript::POS_END);
+$js = 'Page.init('. $pair->id .');';
+Yii::app()->clientScript->registerScript('page',$js);
+Yii::app()->clientScript->registerScriptFile('/themes/coin/assets/js/ws.js', CClientScript::POS_END);
+$js = 'WS.init();';
+Yii::app()->clientScript->registerScript('ws',$js);
+?>

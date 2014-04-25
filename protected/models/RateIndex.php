@@ -133,6 +133,14 @@ class RateIndex extends MyActiveRecord
 		return parent::model($className);
 	}
 
+	public function afterSave()
+	{
+		parent::afterSave();
+		if ($this->isNewRecord) {
+			$this->sendUser();
+		}
+	}
+
 	/**
 	 * вернет последний индекс
 	 *
@@ -334,5 +342,35 @@ class RateIndex extends MyActiveRecord
 		if ($id === self::CHANGE_UP)
 			return '+';
 		return '';
+	}
+
+	/**
+	 * разослать новые данные пользователям
+	 */
+	public function sendUser()
+	{
+		$pair = Pair::model()->find('id_currency=:id_currency and id_currency_from=:id_currency_from',
+			array(
+				':id_currency'=>$this->id_currency,
+				':id_currency_from'=>$this->id_currency_from,
+			)
+		);
+		$index = self::getDateIndex($this->id_currency_from, $this->id_currency, 0, explode(',', $this->servises));
+		$symbol = Currency::getSymbol($this->id_currency);
+		$round = Currency::getCountRound($this->id_currency);
+		$services = $index['services'];
+		$data = array();
+		foreach ($services as $service) {
+			$data[] = array(
+				'id'=>$service['id_service'],
+				'price'=>ViewPrice::GetResult($service['avg_price'], $symbol, $round),
+			);
+		}
+		Yii::app()->websocket->send(array(
+			'pair'=>$pair->id,
+			'index'=>ViewPrice::GetResult($index['index']['index'], $symbol, $round),
+			'services'=>$data,
+			'date'=>date('D, d.m.y\, H:i', strtotime($index['index']['create_date'])),
+		));
 	}
 }
