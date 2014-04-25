@@ -4,10 +4,10 @@ class ChartController extends Controller
 	public function actionIndex($id_pair, $period = 0, $limit = 200)
 	{
 		$pair = Pair::model()->findByPk($id_pair);
-		$services_pair = ServicePair::model()->findAll('id_pair=:id_pair', array('id_pair'=>$id_pair));
+		$services_pair = ServicePair::model()->findAll(array('order'=>'id_service', 'condition'=>'id_pair=:id_pair', 'params'=>array('id_pair'=>$id_pair)));
 		$services = array();
 		foreach ($services_pair as $service) {
-			$services[] = $service->id;
+			$services[] = $service->id_service;
 		}
 		$criteria = new CDbCriteria;
 		$criteria->select = '*, (round((UNIX_TIMESTAMP(`create_date`))/60)*60) as `create_date`';
