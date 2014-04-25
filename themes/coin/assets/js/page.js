@@ -7,7 +7,6 @@ var Page = (function(){
 		},
 		update: function(data) {
 			if (this.pair == data.pair) {
-				console.log(1);
 				$('#main_index').html(data.index);
 				$('#last_date_main_index').html(data.date);
 				for (var key in data.services) {
