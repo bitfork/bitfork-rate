@@ -50,8 +50,9 @@ class ServiceCommand extends CConsoleCommand
 		return false;
 	}
 
-	public function actionRun()
+	public function actionRun($pair = false)
 	{
+		$this->_pidFile = str_replace('.pid', 'pair'. $pair .'.pid', $this->_pidFile);
 		if ($this->isProcess()) {
 			echo "процесс уже запущен";
 			Yii::app()->end();
@@ -61,9 +62,9 @@ class ServiceCommand extends CConsoleCommand
 		$i = 0;
 		while ($i<Yii::app()->params['count_step_service_run']) {
 			// собрать данные со всех сервисов
-			Course::parseAllService();
+			Course::parseAllService($pair);
 			// расчет индекса для каждой комбинации
-			Course::calculateIndex();
+			Course::calculateIndex($pair);
 			//echo $i;
 			$i++;
 			sleep($this->_sleep);
