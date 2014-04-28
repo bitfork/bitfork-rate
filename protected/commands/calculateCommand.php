@@ -1,7 +1,8 @@
 <?php
-class ServiceCommand extends CConsoleCommand
+// cron
+class CalculateCommand extends CConsoleCommand
 {
-	private $_pidFile = 'parse.pid';
+	private $_pidFile = 'calc.pid';
 
 	public function __construct()
 	{
@@ -59,11 +60,11 @@ class ServiceCommand extends CConsoleCommand
 		$this->startProcess();
 
 		$i = 0;
-		while ($i<Yii::app()->params['count_step_service']) {
-			// собрать данные со всех сервисов
-			Course::parseAllService($pair);
+		while ($i<Yii::app()->params['count_step_calculate']) {
+			// расчет индекса для каждой комбинации
+			Course::calculateIndex($pair);
 			$i++;
-			sleep(Yii::app()->params['sleep_step_service']);
+			sleep(Yii::app()->params['sleep_step_calculate']);
 		}
 		echo "stop";
 

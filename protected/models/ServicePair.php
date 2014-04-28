@@ -105,4 +105,25 @@ class ServicePair extends MyActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	public static function getCombId($services)
+	{
+		$sql = "
+			SELECT t2.id_pair
+			FROM (
+				SELECT t.id_pair, group_concat(`id_service` ORDER BY `id_service` ASC separator ',') as `comb`
+				FROM `". ServicePair::model()->tableName() ."` as t
+				GROUP BY t.`id_pair`
+			) as t2
+			WHERE t2.comb = '". $services ."'
+			LIMIT 1
+		";
+		$connection=Yii::app()->db;
+		$command=$connection->createCommand($sql);
+		$data = $command->queryRow();
+		if (isset($data['id_pair'])) {
+			return $data['id_pair'];
+		}
+		return 0;
+	}
 }

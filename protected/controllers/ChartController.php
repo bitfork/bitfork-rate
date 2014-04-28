@@ -10,7 +10,7 @@ class ChartController extends Controller
 			$services[] = $service->id_service;
 		}
 		$criteria = new CDbCriteria;
-		$criteria->select = '*, (round((UNIX_TIMESTAMP(`create_date`))/60)*60) as `create_date`';
+		$criteria->select = '*, UNIX_TIMESTAMP(`create_date`) as `create_date`';
 		$criteria->condition = 'servises=:servises AND period=:period AND id_currency_from=:id_currency_from AND id_currency=:id_currency';
 		$criteria->params = array(
 			':period'=>$period,
@@ -18,7 +18,6 @@ class ChartController extends Controller
 			':id_currency_from'=>$pair->id_currency_from,
 			':id_currency'=>$pair->id_currency
 		);
-		$criteria->group = 'create_date';
 		$criteria->order = 'id DESC';
 		$criteria->limit = $limit;
 		$index = RateIndex::model()->findAll($criteria);

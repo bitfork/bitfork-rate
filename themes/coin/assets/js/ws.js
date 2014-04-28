@@ -1,9 +1,8 @@
 var WS = (function(){
 	var $this;
 	var ws;
-	var url = 'ws://prometheus-seo.ru:8002/';
-	//var url = 'ws://127.0.0.1:8002/';
-	var user = {};
+	//var url = 'ws://prometheus-seo.ru:8002/';
+	var url = 'ws://127.0.0.1:8002/';
 
 	return {
 		init: function(){
@@ -25,7 +24,7 @@ var WS = (function(){
 				if (pack.cmd == 'data') {
 					Page.update(pack.data);
 				}
-				//$this.console(pack);
+				/*$this.console(pack);*/
 			};
 		},
 		console: function(data) {

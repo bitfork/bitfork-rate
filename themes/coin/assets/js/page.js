@@ -1,9 +1,12 @@
 var Page = (function(){
 	var pair;
+	var chart;
 
 	return {
-		init: function(pair){
+		init: function(pair, chart){
 			this.pair = pair;
+			this.chart = chart;
+			this.chart.update(0, 0);
 		},
 		update: function(data) {
 			if (this.pair == data.pair) {
@@ -13,6 +16,9 @@ var Page = (function(){
 					if (data.services.hasOwnProperty(key)) {
 						$('#service_price_'+ data.services[key].id +'').html(data.services[key].price);
 					}
+				}
+				if (this.chart != '') {
+					this.chart.update(data.index_num, data.timestamp, data.index);
 				}
 			}
 		}

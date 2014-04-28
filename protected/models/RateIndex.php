@@ -368,9 +368,11 @@ class RateIndex extends MyActiveRecord
 		}
 		Yii::app()->websocket->send(array(
 			'pair'=>$pair->id,
+			'index_num'=>$index['index']['index'],
 			'index'=>ViewPrice::GetResult($index['index']['index'], $symbol, $round),
 			'services'=>$data,
 			'date'=>date('D, d.m.y\, H:i', strtotime($index['index']['create_date'])),
+			'timestamp'=>strtotime($index['index']['create_date']) * 1000,
 		));
 	}
 }

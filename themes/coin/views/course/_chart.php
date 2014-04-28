@@ -2,131 +2,158 @@
 <?php $id_chart = 'chart-container-'. rand(0,9999); ?>
 
 <script type="text/javascript">
+	var ChartMain = (function(){
+		var $this;
+		var chart;
+		var id_chart = 0;
+		var id_pair = 0;
+		var max_limit = 0;
+		var min_limit = 0;
+
+		return {
+			init: function(id_chart, id_pair){
+				$this = this;
+				$this.id_chart = id_chart;
+				$this.id_pair = id_pair;
+
+				$.getJSON('/index.php?r=chart/index&id_pair='+ $this.id_pair +'&period=0', function(data) {
+
+					$this.max_limit = data[1];
+					$this.min_limit = data[2];
+
+					// create the chart
+					$('#'+ $this.id_chart).highcharts('StockChart', {
+						global: {
+							useUTC: true
+						},
+						navigation: {
+							buttonOptions: {
+								enabled: false
+							}
+						},
+						rangeSelector: {
+							enabled: false
+						},
+						navigator: {
+							enabled: false
+						},
+						scrollbar: {
+							enabled: false
+						},
+						exporting: {
+							enabled: false
+						},
+						/*title: {
+							text: 'заголовок'
+						},*/
+
+						chart : {
+							ignoreHiddenSeries: false,
+
+							events : {
+								load : function() {
+									$this.chart = this;
+								}
+							}
+						},
+
+						xAxis : {
+							type: 'datetime',
+							lineColor: '#000',
+							tickColor: '#000',
+							gridLineWidth: 1,
+							ordinal: false,
+							title: {
+								text: 'TIME',
+								align: 'high',
+								y: -30
+							},
+							labels: {
+								formatter: function() {
+									return Highcharts.dateFormat('%H:%M', this.value);
+								}
+							}
+						},
+
+						yAxis : {
+							max: $this.max_limit, // максимальная точка графика
+							min: $this.min_limit, // минимальная точка графика
+							labels: {
+								align: 'right',
+								x: -3
+							},
+							lineWidth: 1,
+							tickWidth: 1,
+							lineColor: '#000',
+							tickColor: '#000',
+							title: {
+								text: 'USD',
+								align: 'high',
+								x: 30
+							}
+						},
+
+						tooltip: {
+							formatter: function() {
+								var s = '<b>'+ Highcharts.dateFormat('%d.%m.%Y %H:%M', this.x) +'</b>';
+								s += '<br/>'+ this.points[0].point.name +'';
+								return s;
+							}
+						},
+
+						series : [{
+							name : 'история до начала сессии',
+							lineWidth: 1,
+							data : data[0],
+							type : 'area',
+							fillColor: 'rgba(0,95,155,0.5)',
+							color: '#0065A8',
+							//dashStyle: 'ShortDash',
+							marker : {
+								enabled : true,
+								radius : 2
+							},
+							shadow : true,
+							tooltip: {
+								valueDecimals: 2
+							}
+						}]
+					});
+				});
+			},
+			update: function(price, date, name){
+				if (typeof $this.chart === "undefined") {
+					return;
+				}
+				var series = $this.chart.series[0];
+				var yA = $this.chart.yAxis[0];
+				var point = {
+					'x': date,
+					'y': price,
+					'name': name
+				};
+				series.addPoint(point, true, true);
+				if (price) {
+					var limit = ($this.max_limit - $this.min_limit) / 4;
+					if ($this.max_limit < price) {
+						$this.max_limit = $this.max_limit + limit;
+						$this.min_limit = $this.min_limit + limit;
+					}
+					if (price < $this.min_limit) {
+						$this.min_limit = $this.min_limit - limit;
+						$this.max_limit = $this.max_limit - limit;
+					}
+					yA.update({
+						max: $this.max_limit,
+						min: $this.min_limit
+					});
+				}
+			}
+		}
+	})();
+
 	$(function() {
-		$.getJSON('/index.php?r=chart/index&id_pair=<?php echo $id; ?>&period=0', function(data) {
-			var max_limit = data[1];
-			var min_limit = data[2];
-
-			// create the chart
-			$('#<?php echo $id_chart; ?>').highcharts('StockChart', {
-				global: {
-					useUTC: true
-				},
-				navigation: {
-					buttonOptions: {
-						enabled: false
-					}
-				},
-				rangeSelector: {
-					enabled: false
-				},
-				navigator: {
-					enabled: false
-				},
-				scrollbar: {
-					enabled: false
-				},
-				exporting: {
-					enabled: false
-				},
-				/*title: {
-					text: 'заголовок'
-				},*/
-
-				chart : {
-					ignoreHiddenSeries: false,
-					events : {
-						load : function() {
-							var series = this.series[0];
-							var yA = this.yAxis[0];
-							setInterval(function() {
-								/* обновляем график с интервалом */
-								$.getJSON('/index.php?r=chart/index&id_pair=<?php echo $id; ?>&period=0&limit=1', function(data) {
-									series.addPoint(data[0][0], true, true);
-									if (data[1]) {
-										var limit = (max_limit - min_limit) / 4;
-										if (max_limit < data[1]) {
-											max_limit = max_limit + limit;
-											min_limit = min_limit + limit;
-										}
-										if (data[1] < min_limit) {
-											min_limit = min_limit - limit;
-											max_limit = max_limit - limit;
-										}
-										yA.update({
-											max: max_limit,
-											min: min_limit
-										});
-									}
-								});
-							}, 60000);
-						}
-					}
-				},
-
-				xAxis : {
-					type: 'datetime',
-					lineColor: '#000',
-					tickColor: '#000',
-					gridLineWidth: 1,
-					ordinal: false,
-					title: {
-						text: 'TIME',
-						align: 'high',
-						y: -30
-					},
-					labels: {
-						formatter: function() {
-							return Highcharts.dateFormat('%H:%M', this.value);
-						}
-					}
-				},
-
-				yAxis : {
-					max: max_limit, // максимальная точка графика
-					min: min_limit, // минимальная точка графика
-					labels: {
-						align: 'right',
-						x: -3
-					},
-					lineWidth: 1,
-					tickWidth: 1,
-					lineColor: '#000',
-					tickColor: '#000',
-					title: {
-						text: 'USD',
-						align: 'high',
-						x: 30
-					}
-				},
-
-				tooltip: {
-					formatter: function() {
-						var s = '<b>'+ Highcharts.dateFormat('%d.%m.%Y %H:%M', this.x) +'</b>';
-						s += '<br/>'+ this.points[0].point.name +'';
-						return s;
-					}
-				},
-
-				series : [{
-					name : 'история до начала сессии',
-					lineWidth: 1,
-					data : data[0],
-					type : 'area',
-					fillColor: 'rgba(0,95,155,0.5)',
-					color: '#0065A8',
-					//dashStyle: 'ShortDash',
-					marker : {
-						enabled : true,
-						radius : 2
-					},
-					shadow : true,
-					tooltip: {
-						valueDecimals: 2
-					}
-				}]
-			});
-		});
+		ChartMain.init('<?php echo $id_chart; ?>', '<?php echo $id; ?>');
 	});
 
 </script>
