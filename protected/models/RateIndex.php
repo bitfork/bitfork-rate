@@ -349,6 +349,9 @@ class RateIndex extends MyActiveRecord
 	 */
 	public function sendUser()
 	{
+		if ($this->period != 0) {
+			return;
+		}
 		$pair = Pair::model()->find('id_currency=:id_currency and id_currency_from=:id_currency_from',
 			array(
 				':id_currency'=>$this->id_currency,
@@ -366,6 +369,7 @@ class RateIndex extends MyActiveRecord
 				'price'=>ViewPrice::GetResult($service['avg_price'], $symbol, $round),
 			);
 		}
+		echo "1\n";
 		Yii::app()->websocket->send(array(
 			'pair'=>$pair->id,
 			'index_num'=>round($index['index']['index'], 2),
