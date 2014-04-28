@@ -95,7 +95,8 @@
 
 						tooltip: {
 							formatter: function() {
-								var s = '<b>'+ Highcharts.dateFormat('%d.%m.%Y %H:%M', this.x) +'</b>';
+								var s = '<b>'+ Highcharts.dateFormat('%d.%m.%Y', this.x) +'</b>';
+								s += '<br/><b>'+ Highcharts.dateFormat('%H:%M:%S', this.x) +'</b>';
 								s += '<br/>'+ this.points[0].point.name +'';
 								return s;
 							}
@@ -133,19 +134,15 @@
 					'name': name
 				};
 				series.addPoint(point, true, true);
-				if (price) {
-					var limit = ($this.max_limit - $this.min_limit) / 4;
-					if ($this.max_limit < price) {
-						$this.max_limit = $this.max_limit + limit;
-						$this.min_limit = $this.min_limit + limit;
-					}
-					if (price < $this.min_limit) {
-						$this.min_limit = $this.min_limit - limit;
-						$this.max_limit = $this.max_limit - limit;
-					}
+				var limit = (series.dataMax - series.dataMin);
+				if (limit > 0) {
+					var max = series.dataMax + (limit / 4);
+					var min = series.dataMin - (limit / 4);
+					console.log(series.dataMax +' = '+ max);
+					console.log(series.dataMin +' = '+ min);
 					yA.update({
-						max: $this.max_limit,
-						min: $this.min_limit
+						max: max,
+						min: min
 					});
 				}
 			}

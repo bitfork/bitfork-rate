@@ -24,7 +24,9 @@ return CMap::mergeArray(
 		),
 		'params'=>array(
 			'local'=>true, // на локалке для подстановки ip для запуска консольных команд
-			'count_step_service_run'=>5
+			'count_step_service_run'=>5,
+			'count_step_calculate'=>2,
+			'sleep_step_calculate'=>2,
 		),
 	)
 );

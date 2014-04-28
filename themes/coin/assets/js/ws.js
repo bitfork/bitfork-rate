@@ -24,7 +24,7 @@ var WS = (function(){
 				if (pack.cmd == 'data') {
 					Page.update(pack.data);
 				}
-				$this.console(pack);
+				/*$this.console(pack);*/
 			};
 		},
 		console: function(data) {
