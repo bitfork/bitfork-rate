@@ -138,8 +138,6 @@
 				if (limit > 0) {
 					var max = series.dataMax + (limit / 4);
 					var min = series.dataMin - (limit / 4);
-					console.log(series.dataMax +' = '+ max);
-					console.log(series.dataMin +' = '+ min);
 					yA.update({
 						max: max,
 						min: min
