@@ -176,9 +176,11 @@ class Course extends MyActiveRecord
 			$select = "t.id_service, t2.name as name_service, t.last as avg_price, t.vol_cur as avg_volume";
 			$order = 'ORDER BY id DESC';
 		}
+		/*
+		по сервисам теперь не ищем, нет смысла тк просто смотрится пара, а какие севисы учавствуют без разницы
 		if (is_array($id_services) and count($id_services)>0) {
 			$where[] = 'id_service IN ('. implode(',', $id_services) .')';
-		}
+		}*/
 		if (count($where)>0) {
 			$where = 'WHERE '. implode(' AND ', $where);
 		} else {
@@ -250,14 +252,17 @@ class Course extends MyActiveRecord
 
 	/**
 	 * расчет индекса для всех пар валют и каждой комбинации сервисов
+	 *
+	 * @param bool $id_pair
+	 * @param null $period
 	 */
-	public static function calculateIndex($id_pair=false)
+	public static function calculateIndex($id_pair=false, $period=null)
 	{
 		$services = self::getPairServices($id_pair);
 
 		foreach ($services as $values) {
 			if (count($values['services'])>0)
-				self::calculateByServices($values['services'], $values['id_currency_from'], $values['id_currency']);
+				self::calculateByServices($values['services'], $values['id_currency_from'], $values['id_currency'], $period);
 		}
 	}
 
@@ -299,11 +304,17 @@ class Course extends MyActiveRecord
 	 * @param $services
 	 * @param $id_currency_from
 	 * @param $id_currency
+	 * @param null $set_period
 	 */
-	public static function calculateByServices($services, $id_currency_from, $id_currency)
+	public static function calculateByServices($services, $id_currency_from, $id_currency, $set_period = null)
 	{
 		$combinations = self::getComb($services);
-		foreach (self::$periods as $period) {
+		if ($set_period === null) {
+			$periods = self::$periods;
+		} else {
+			$periods = array((int)$set_period);
+		}
+		foreach ($periods as $period) {
 			foreach ($combinations as $combination) {
 				$date_start = new DateTime();
 				$date_start->modify('-'. $period .' hour');

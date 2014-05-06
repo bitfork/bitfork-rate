@@ -50,9 +50,9 @@ class CalculateCommand extends CConsoleCommand
 		return false;
 	}
 
-	public function actionRun($pair = false)
+	public function actionRun($pair = false, $period = null)
 	{
-		$this->_pidFile = str_replace('.pid', 'pair'. $pair .'.pid', $this->_pidFile);
+		$this->_pidFile = str_replace('.pid', 'pair-'. $pair .'-'. $period .'.pid', $this->_pidFile);
 		if ($this->isProcess()) {
 			echo "процесс уже запущен";
 			Yii::app()->end();
@@ -62,7 +62,7 @@ class CalculateCommand extends CConsoleCommand
 		$i = 0;
 		while ($i<Yii::app()->params['count_step_calculate']) {
 			// расчет индекса для каждой комбинации
-			Course::calculateIndex($pair);
+			Course::calculateIndex($pair, $period);
 			$i++;
 			sleep(Yii::app()->params['sleep_step_calculate']);
 		}

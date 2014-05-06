@@ -177,14 +177,6 @@ class RateIndex extends MyActiveRecord
 	 */
 	public static function getDateIndex($id_currency_from, $id_currency, $period, $id_services = null, $date_start = null, $date_finish = null)
 	{
-		if ($id_services===null) {
-			$id_services = array();
-			$pair = Pair::model()->find('id_currency_from=:id_currency_from and id_currency=:id_currency', array(':id_currency_from'=>$id_currency_from,':id_currency'=>$id_currency));
-			$servicesAll = ServicePair::model()->findAll('id_pair=:id_pair', array(':id_pair'=>$pair->id));
-			foreach ($servicesAll as $service) {
-				$id_services[] = $service->id_service;
-			}
-		}
 		if ($date_start===true) {
 			$date_start = new DateTime();
 			$date_start->modify('-'. $period .' hour');
@@ -201,7 +193,7 @@ class RateIndex extends MyActiveRecord
 			SELECT `index`, `id_currency_from`, `id_currency`, `change_state`, `change_percent`, `data`, `create_date`
 			FROM `". RateIndex::model()->tableName() ."`
 			WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
-				`period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' ". $where_date ."
+				`period` = ". $period ." ". $where_date ."
 			ORDER BY `id` DESC
 			LIMIT 1
 		";
@@ -245,8 +237,7 @@ class RateIndex extends MyActiveRecord
 			SELECT MIN(`index`) as `min`, MAX(`index`) as `max`
 			FROM `". RateIndex::model()->tableName() ."`
 			WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
-				`period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' AND
-				`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
+				`period` = ". $period ." AND `create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
 		";
 		$connection=Yii::app()->db;
 		$command=$connection->createCommand($sql);
@@ -282,8 +273,7 @@ class RateIndex extends MyActiveRecord
 				SELECT `index`
 				FROM `". RateIndex::model()->tableName() ."`
 				WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
-					`period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' AND
-					`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
+					`period` = ". $period ." AND `create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
 				ORDER BY id ASC
 				LIMIT 1
 			) as `first`
@@ -293,8 +283,7 @@ class RateIndex extends MyActiveRecord
 				SELECT `index`
 				FROM `". RateIndex::model()->tableName() ."`
 				WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
-					`period` = ". $period ." AND `services_hash` = '". md5(implode(',', $id_services)) ."' AND
-					`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
+					`period` = ". $period ." AND `create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
 				ORDER BY id DESC
 				LIMIT 1
 			) as `last`
@@ -311,10 +300,12 @@ class RateIndex extends MyActiveRecord
 		$last = $data[1]['index'];
 
 		if ($first<$last) {
-			$percent = (($last - $first) * 100) / $first;
+			if ($first>0) $percent = (($last - $first) * 100) / $first;
+			else $percent = $last * 100;
 			$change = self::CHANGE_UP;
 		} elseif ($last<$first) {
-			$percent = (($first - $last) * 100) / $last;
+			if ($last>0) $percent = (($first - $last) * 100) / $last;
+			else $percent = $first * 100;
 			$change = self::CHANGE_DOWN;
 		} else {
 			$percent = 0;
@@ -369,7 +360,6 @@ class RateIndex extends MyActiveRecord
 				'price'=>ViewPrice::GetResult($service['avg_price'], $symbol, $round),
 			);
 		}
-		echo "1\n";
 		Yii::app()->websocket->send(array(
 			'pair'=>$pair->id,
 			'index_num'=>round($index['index']['index'], 2),
