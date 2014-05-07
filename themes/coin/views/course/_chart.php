@@ -112,7 +112,7 @@
 							//dashStyle: 'ShortDash',
 							marker : {
 								enabled : true,
-								radius : 2
+								radius : 1
 							},
 							shadow : true,
 							tooltip: {
