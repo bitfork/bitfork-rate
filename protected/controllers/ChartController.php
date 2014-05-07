@@ -25,7 +25,8 @@ class ChartController extends Controller
 			if ($min > $row['index'] or $min === null) {
 				$min = $row['index'];
 			}
-			$history[] = array('x'=>$row['create_date'].'000', 'y'=>(float)$row['index'], 'name'=>ViewPrice::GetResult($row['index'], $pair->currency->symbol, $pair->currency->round));
+			$index_num = round((float)$row['index'], $pair->currency->round);
+			$history[] = array('x'=>$row['create_date'].'000', 'y'=>$index_num, 'name'=>ViewPrice::GetResult($row['index'], $pair->currency->symbol, $pair->currency->round));
 		}
 		$limit = ($max - $min);
 		if ($limit > 0) {
