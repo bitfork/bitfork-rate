@@ -6,7 +6,7 @@ return CMap::mergeArray(
 			// переопределяем компонент db
 			'db'=>array(
 				'class'=>'system.db.CDbConnection',
-				'connectionString' => 'mysql:host=localhost;dbname=bitfork',
+				'connectionString' => 'mysql:host=localhost;dbname=bittest',
 				'emulatePrepare' => true,
 				'username' => 'root',
 				'password' => '',

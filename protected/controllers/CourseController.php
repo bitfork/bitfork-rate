@@ -41,8 +41,8 @@ class CourseController extends Controller
 			}
 
 			$data[0] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 0, $modelForm->services);
-			$data[1] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 1, $modelForm->services);
-			$data[24] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 24, $modelForm->services);
+			$data[60] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 60, $modelForm->services);
+			$data[1440] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 1440, $modelForm->services);
 			$range = false;
 			if ($period > 0) {
 				$range = RateIndex::getRangeIndex($pair->id_currency_from, $pair->id_currency, $period, $modelForm->services);

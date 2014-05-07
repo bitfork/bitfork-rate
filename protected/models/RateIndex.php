@@ -179,7 +179,7 @@ class RateIndex extends MyActiveRecord
 	{
 		if ($date_start===true) {
 			$date_start = new DateTime();
-			$date_start->modify('-'. $period .' hour');
+			$date_start->modify('-'. $period .' minutes');
 			$date_start = $date_start->format('Y-m-d H:i:s');
 		}
 		if ($date_finish===true) {
@@ -227,7 +227,7 @@ class RateIndex extends MyActiveRecord
 	{
 		if ($date_start===null) {
 			$date_start = new DateTime();
-			$date_start->modify('-'. $period .' hour');
+			$date_start->modify('-'. $period .' minutes');
 			$date_start = $date_start->format('Y-m-d H:i:s');
 		}
 		if ($date_finish===null) {
@@ -249,55 +249,31 @@ class RateIndex extends MyActiveRecord
 	/**
 	 * вернет на сколько % изменился индекс и в какую сторону
 	 *
+	 * @param $index
 	 * @param $id_currency_from
 	 * @param $id_currency
 	 * @param $period
-	 * @param $id_services
-	 * @param null $date_start
-	 * @param null $date_finish
 	 * @return array
 	 */
-	public static function getChangePercent($id_currency_from, $id_currency, $period, $id_services, $date_start = null, $date_finish = null)
+	public static function getChangePercent($index, $id_currency_from, $id_currency, $period)
 	{
-		if ($date_start===null) {
-			$date_start = new DateTime();
-			$date_start->modify('-'. $period .' hour');
-			$date_start = $date_start->format('Y-m-d H:i:s');
-		}
-		if ($date_finish===null) {
-			$date_finish = date('Y-m-d H:i:s');
-		}
 		$sql = "
-			SELECT `first`.*
-			FROM (
-				SELECT `index`
-				FROM `". RateIndex::model()->tableName() ."`
-				WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
-					`period` = ". $period ." AND `create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
-				ORDER BY id ASC
-				LIMIT 1
-			) as `first`
-			UNION
-			SELECT `last`.*
-			FROM (
-				SELECT `index`
-				FROM `". RateIndex::model()->tableName() ."`
-				WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
-					`period` = ". $period ." AND `create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
-				ORDER BY id DESC
-				LIMIT 1
-			) as `last`
+			SELECT `index`
+			FROM `". RateIndex::model()->tableName() ."`
+			WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND `period` = ". $period ."
+			ORDER BY id DESC
+			LIMIT 1
 		";
 
 		$connection=Yii::app()->db;
 		$command=$connection->createCommand($sql);
-		$data = $command->queryAll();
+		$data = $command->queryRow();
 
-		if (!isset($data[0]) or !isset($data[1]))
+		if (!isset($data['index']))
 			return array(self::CHANGE_NULL, 0);
 
-		$first = $data[0]['index'];
-		$last = $data[1]['index'];
+		$first = $data['index'];
+		$last = $index;
 
 		if ($first<$last) {
 			if ($first>0) $percent = (($last - $first) * 100) / $first;

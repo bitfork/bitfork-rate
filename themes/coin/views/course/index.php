@@ -17,17 +17,17 @@
 		<article class="col-3">
 			<div class="main-block_gray">
 				<h4><?php echo Yii::t('main', 'Средний курс за час {cur_from}/{cur}', array('{cur_from}'=>$pair->currency_from->name,'{cur}'=>$pair->currency->name)); ?></h4>
-				<p class="text-font_big"><?php echo ViewPrice::GetResult($data[1]['index']['index'], Currency::getSymbol($data[1]['index']['id_currency']), Currency::getCountRound($data[1]['index']['id_currency'])); ?></p>
+				<p class="text-font_big"><?php echo ViewPrice::GetResult($data[60]['index']['index'], Currency::getSymbol($data[60]['index']['id_currency']), Currency::getCountRound($data[60]['index']['id_currency'])); ?></p>
 			</div>
-			<a class="btn-blue btn-block" href="javascript:showUrlApi('<?php echo $this->createAbsoluteUrl("/api/index/index", array("from"=>$pair->currency_from->name,"to"=>$pair->currency->name,"period"=>1)); ?>');"><?php echo Yii::t('main', 'Сгенерировать код API'); ?></a>
+			<a class="btn-blue btn-block" href="javascript:showUrlApi('<?php echo $this->createAbsoluteUrl("/api/index/index", array("from"=>$pair->currency_from->name,"to"=>$pair->currency->name,"period"=>60)); ?>');"><?php echo Yii::t('main', 'Сгенерировать код API'); ?></a>
 		</article>
 
 		<article class="col-3">
 			<div class="main-block_gray">
 				<h4><?php echo Yii::t('main', 'Средний курс за 24 часа {cur_from}/{cur}', array('{cur_from}'=>$pair->currency_from->name,'{cur}'=>$pair->currency->name)); ?></h4>
-				<p class="text-font_big"><?php echo ViewPrice::GetResult($data[24]['index']['index'], Currency::getSymbol($data[24]['index']['id_currency']), Currency::getCountRound($data[24]['index']['id_currency'])); ?></p>
+				<p class="text-font_big"><?php echo ViewPrice::GetResult($data[1440]['index']['index'], Currency::getSymbol($data[1440]['index']['id_currency']), Currency::getCountRound($data[1440]['index']['id_currency'])); ?></p>
 			</div>
-			<a class="btn-blue btn-block" href="javascript:showUrlApi('<?php echo $this->createAbsoluteUrl("/api/index/index", array("from"=>$pair->currency_from->name,"to"=>$pair->currency->name,"period"=>24)); ?>');"><?php echo Yii::t('main', 'Сгенерировать код API'); ?></a>
+			<a class="btn-blue btn-block" href="javascript:showUrlApi('<?php echo $this->createAbsoluteUrl("/api/index/index", array("from"=>$pair->currency_from->name,"to"=>$pair->currency->name,"period"=>1440)); ?>');"><?php echo Yii::t('main', 'Сгенерировать код API'); ?></a>
 		</article>
 	</div>
 

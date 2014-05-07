@@ -18,6 +18,8 @@
  * @property double $sell
  * @property string $updated
  * @property string $server_time
+ * @property integer $change_state
+ * @property double $change_percent
  * @property integer $is_active
  * @property string $create_date
  * @property string $mod_date
@@ -32,7 +34,7 @@ class Course extends MyActiveRecord
 	const BTC		= 2;
 
 	// переоды времени за которые считается индекс
-	public static $periods = array('последняя'=>0, '1ч'=>1, '24ч'=>24, '7д'=>168);
+	public static $periods = array('последняя'=>0, '15м'=>15, '1ч'=>60, '24ч'=>1440, '7д'=>10080);
 	// возможные пары валют
 	public static $pairs = array(array(self::BTC,self::USD));
 
@@ -53,12 +55,12 @@ class Course extends MyActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id_service, id_currency, id_currency_from, high, low, create_date, mod_date', 'required'),
-			array('id_service, id_currency, id_currency_from, is_active', 'numerical', 'integerOnly'=>true),
-			array('high, low, avg, vol, vol_cur, last, buy, sell', 'numerical'),
+			array('id_service, id_currency, id_currency_from, change_state, is_active', 'numerical', 'integerOnly'=>true),
+			array('high, low, avg, vol, vol_cur, last, buy, sell, change_percent', 'numerical'),
 			array('updated, server_time', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, id_service, id_currency, id_currency_from, high, low, avg, vol, vol_cur, last, buy, sell, updated, server_time, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
+			array('id, id_service, id_currency, id_currency_from, high, low, avg, vol, vol_cur, last, buy, sell, updated, server_time, change_state, change_percent, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -95,6 +97,8 @@ class Course extends MyActiveRecord
 			'sell' => 'Sell',
 			'updated' => 'Updated',
 			'server_time' => 'Server Time',
+			'change_state' => 'Change State',
+			'change_percent' => 'Change Percent',
 			'is_active' => 'Is Active',
 			'create_date' => 'Create Date',
 			'mod_date' => 'Mod Date',
@@ -133,6 +137,8 @@ class Course extends MyActiveRecord
 		$criteria->compare('sell',$this->sell);
 		$criteria->compare('updated',$this->updated,true);
 		$criteria->compare('server_time',$this->server_time,true);
+		$criteria->compare('change_state',$this->change_state);
+		$criteria->compare('change_percent',$this->change_percent);
 		$criteria->compare('is_active',$this->is_active);
 		$criteria->compare('create_date',$this->create_date,true);
 		$criteria->compare('mod_date',$this->mod_date,true);
@@ -165,7 +171,7 @@ class Course extends MyActiveRecord
 	 */
 	public static function getAvgData($id_currency_from, $id_currency, $period, $date_start, $date_finish, $id_services = null)
 	{
-		$select = "t.id_service, t2.name as name_service, AVG(t.last) as avg_price, AVG(t.vol_cur) as avg_volume";
+		$select = "t.id_service, t2.name as name_service, AVG(t.last) as avg_price, AVG(t.vol_cur) as avg_volume, t.change_state, t.change_percent";
 		$where = array();
 		$order = '';
 		$where[] = "`id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency;
@@ -173,14 +179,13 @@ class Course extends MyActiveRecord
 			$where[] = "`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'";
 		} else {
 			// с каждой биржи получаем только последние данные
-			$select = "t.id_service, t2.name as name_service, t.last as avg_price, t.vol_cur as avg_volume";
+			$select = "t.id_service, t2.name as name_service, t.last as avg_price, t.vol_cur as avg_volume, t.change_state, t.change_percent";
 			$order = 'ORDER BY id DESC';
 		}
-		/*
-		по сервисам теперь не ищем, нет смысла тк просто смотрится пара, а какие севисы учавствуют без разницы
+		// по сервисам смотрим тк какие то сервисы могут быть выключенны
 		if (is_array($id_services) and count($id_services)>0) {
 			$where[] = 'id_service IN ('. implode(',', $id_services) .')';
-		}*/
+		}
 		if (count($where)>0) {
 			$where = 'WHERE '. implode(' AND ', $where);
 		} else {
@@ -198,6 +203,7 @@ class Course extends MyActiveRecord
 			GROUP BY t.id_service
 			ORDER BY t.`id`
 		";
+
 		$connection=Yii::app()->db;
 		$command=$connection->createCommand($sql);
 		$data = $command->queryAll();
@@ -215,11 +221,10 @@ class Course extends MyActiveRecord
 			$data[$k]['percent_for_index'] = $r['avg_volume'] / $sum; // процент объема биржи от суммы всех объемов бирж
 			$data[$k]['percent_price_for_index'] = $r['avg_price'] * $data[$k]['percent_for_index']; // цена курса которая влияет на индекс
 			$index['index'] += $data[$k]['percent_price_for_index']; // сумма всех курсов
-			$change = self::getChangePercent($id_currency_from, $id_currency, $r['id_service'], $date_start, $date_finish);
-			$data[$k]['change_state'] = $change[0];
-			$data[$k]['change_percent'] = $change[1];
+			$data[$k]['change_state'] = $r['change_state'];
+			$data[$k]['change_percent'] = $r['change_percent'];
 		}
-		$change = RateIndex::getChangePercent($id_currency_from, $id_currency, $period, $id_services, $date_start, $date_finish);
+		$change = RateIndex::getChangePercent($index['index'], $id_currency_from, $id_currency, $period);
 		$index['change_state'] = $change[0];
 		$index['change_percent'] = $change[1];
 
@@ -317,7 +322,7 @@ class Course extends MyActiveRecord
 		foreach ($periods as $period) {
 			foreach ($combinations as $combination) {
 				$date_start = new DateTime();
-				$date_start->modify('-'. $period .' hour');
+				$date_start->modify('-'. $period .' minutes');
 				$date_start = $date_start->format('Y-m-d H:i:s');
 				$data = Course::model()->getAvgData(
 					$id_currency_from,
@@ -368,11 +373,16 @@ class Course extends MyActiveRecord
 				$exchange->setService($service->name);
 				$results = $exchange->getTicker($values['currency_from']->name, $values['currency']->name);
 				if ($results!==false) {
+					// считаем изменение в курсе
+					$change = self::getChangePercent($results['last'], $values['currency_from']->id, $values['currency']->id, $service->id);
+
 					$model = new Course;
 					$model->attributes=$results;
 					$model->id_service = $service->id;
 					$model->id_currency = $values['id_currency'];
 					$model->id_currency_from = $values['id_currency_from'];
+					$model->change_state = $change[0];
+					$model->change_percent = $change[1];
 					$model->save();
 				}
 			}
@@ -382,46 +392,31 @@ class Course extends MyActiveRecord
 	/**
 	 * вернет на сколько % изменился цена и в какую сторону
 	 *
-	 * @param $id_services
-	 * @param $date_start
-	 * @param $date_finish
-	 * @return array|bool
+	 * @param $course
+	 * @param $id_currency_from
+	 * @param $id_currency
+	 * @param $id_service
+	 * @return array
 	 */
-	public static function getChangePercent($id_currency_from, $id_currency, $id_service, $date_start, $date_finish)
+	public static function getChangePercent($course, $id_currency_from, $id_currency, $id_service)
 	{
 		$sql = "
-			SELECT `first`.*
-			FROM (
-				SELECT `last`
-				FROM `". Course::model()->tableName() ."`
-				WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
-					`id_service` = '". $id_service ."' AND
-					`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
-				ORDER BY id ASC
-				LIMIT 1
-			) as `first`
-			UNION
-			SELECT `last`.*
-			FROM (
-				SELECT `last`
-				FROM `". Course::model()->tableName() ."`
-				WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND
-					`id_service` = '". $id_service ."' AND
-					`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'
-				ORDER BY id DESC
-				LIMIT 1
-			) as `last`
+			SELECT `last`
+			FROM `". Course::model()->tableName() ."`
+			WHERE `id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency ." AND `id_service` = '". $id_service ."'
+			ORDER BY id DESC
+			LIMIT 1
 		";
 
 		$connection=Yii::app()->db;
 		$command=$connection->createCommand($sql);
-		$data = $command->queryAll();
+		$data = $command->queryRow();
 
-		if (!isset($data[0]) or !isset($data[1]))
+		if (!isset($data['last']))
 			return array(RateIndex::CHANGE_NULL, 0);
 
-		$first = $data[0]['last'];
-		$last = $data[1]['last'];
+		$first = $course;
+		$last = $data['last'];
 
 		if ($first<$last) {
 			$percent = (($last - $first) * 100) / $first;
