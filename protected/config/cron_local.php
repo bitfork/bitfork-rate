@@ -26,7 +26,7 @@ return CMap::mergeArray(
 			'local'=>true, // на локалке для подстановки ip для запуска консольных команд
 			'count_step_service'=>2,
 			'sleep_step_service'=>2,
-			'count_step_calculate'=>2,
+			'count_step_calculate'=>10,
 			'sleep_step_calculate'=>2,
 		),
 	)

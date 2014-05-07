@@ -59,13 +59,19 @@ class CalculateCommand extends CConsoleCommand
 		}
 		$this->startProcess();
 
-		$i = 0;
-		while ($i<Yii::app()->params['count_step_calculate']) {
-			// расчет индекса для каждой комбинации
+		if (empty($period) and $period!==null) {
+			// если переид 0 то имитируем бесконечный цыкл с интервалом в 5 сек
+			$i = 0;
+			while ($i<Yii::app()->params['count_step_calculate']) {
+				// расчет индекса для каждой комбинации
+				Course::calculateIndex($pair, $period);
+				$i++;
+				sleep(Yii::app()->params['sleep_step_calculate']);
+			}
+		} else {
 			Course::calculateIndex($pair, $period);
-			$i++;
-			sleep(Yii::app()->params['sleep_step_calculate']);
 		}
+
 		echo "stop";
 
 		$this->stopProcess();

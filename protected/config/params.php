@@ -13,6 +13,6 @@ return array(
 	'fee'=>0.0001,
 	'count_step_service'=>100,
 	'sleep_step_service'=>3,
-	'count_step_calculate'=>30,
-	'sleep_step_calculate'=>30,
+	'count_step_calculate'=>100,
+	'sleep_step_calculate'=>5,
 );
