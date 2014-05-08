@@ -1,5 +1,7 @@
 <?php
 return array(
+	'Битфорк индекс курса криптовалют. Курс bitcoin, litecoin и других криптовалют.' => 'BITFORK-RATE.COM - CRYPTOCURRENCY INDEX',
+	'Битфорк индекс курса криптовалют. Курс биткоин (bitcoin) к доллару USD, курс litecoin к доллару USD.  Бесплатное API для сторонних интернет сайтов. Настраиваемые параметры курса криптовалют.' => 'At the moment, the platform gives you the opportunity to show the Bitcoin rate to the U.S. dollar based on the trading volume and the latest prices on the data from btc-e.com and bitstamp.net',
 	'Bitfork-rate.com - индекс криптовалют' => 'Bitfork-rate.com - CryptoCurrency Index',
 	'бесплатный, настраиваемый сервис с открытым кодом, дающий вам возможность получать необходимые виды котировок на рынке криптовалют (биткоин, лайткоин и другие форк валюты). Настраиваемое по параметрам API.' => 'presents you free open source project for tracking popular cryptocurrencies rates in one place. Bitfork-rate.com uses all cryptocurrencies exchanges that possible for getting more reliable cryptocurrencies index. Get and customize for your needs cryptocurrency rates with BITFORK-RATE API!',
 	'Бесплатный api для получения котировок криптовалют на вашем сайте' => 'Free api for getting cryptocurrency index for your website',

@@ -21,9 +21,18 @@ class Controller extends RController
 	 */
 	public $breadcrumbs=array();
 
-	public $pageTitle = 'Битфорк индекс курса криптовалют. Курс bitcoin, litecoin и других криптовалют.';
+	public $pageTitle = '';
 	public $pageKeywords = '';
-	public $pageDescription = 'Битфорк индекс курса криптовалют. Курс биткоин (bitcoin) к доллару USD, курс litecoin к доллару USD.  Бесплатное API для сторонних интернет сайтов. Настраиваемые параметры курса криптовалют.';
+	public $pageDescription = '';
+
+	public function init()
+	{
+		parent::init();
+
+		$this->pageTitle = Yii::t('main', 'Битфорк индекс курса криптовалют. Курс bitcoin, litecoin и других криптовалют.');
+		$this->pageKeywords = '';
+		$this->pageDescription = Yii::t('main', 'Битфорк индекс курса криптовалют. Курс биткоин (bitcoin) к доллару USD, курс litecoin к доллару USD.  Бесплатное API для сторонних интернет сайтов. Настраиваемые параметры курса криптовалют.');
+	}
 
 	/*public function filters()
 	{
