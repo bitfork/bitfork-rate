@@ -6,7 +6,7 @@ class ArchiveCommand extends CConsoleCommand
 	{
 		RateIndex::partition();
 		Course::partition();
-		
+
 		echo "stop";
 	}
 }
