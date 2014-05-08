@@ -16,7 +16,7 @@ return array(
 	'Курс' => 'index',
 	'Добавить другую биржу' => 'Add cryptocurrency exchange',
 	'Последнее обновление' => 'Last updated',
-	'Информация обновляется каждые 60 секунд' => 'Information is updating every 60 seconds',
+	'Информация обновляется каждые 5 - 10 секунд' => 'Information is updating every 5 - 10 seconds',
 	'График изменения за 24 часа' => 'Cryptocurrency exchange rate chart (24 hr)',
 	'Сгенерировать код' => 'Get API code',
 	'Обновить код' => 'Refresh API code',

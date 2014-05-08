@@ -38,7 +38,7 @@
 				<div class="main-grid-content_right">
 					<h3><?php echo Yii::t('main', 'Моментальный курс {cur_from}/{cur}', array('{cur_from}'=>$pair->currency_from->name,'{cur}'=>$pair->currency->name)); ?></h3>
 					<p><?php echo Yii::t('main', 'Последнее обновление'); ?> <span id="last_date_main_index"><?php echo date('D, d.m.y\, H:i', strtotime($index['create_date'])); ?></span> GMT+0400<br/>
-						<span class="text-tip"><?php echo Yii::t('main', 'Информация обновляется каждые 60 секунд'); ?></span>
+						<span class="text-tip"><?php echo Yii::t('main', 'Информация обновляется каждые 5 - 10 секунд'); ?></span>
 					</p>
 				</div>
 			</div>
