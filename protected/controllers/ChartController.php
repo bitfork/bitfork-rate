@@ -1,7 +1,7 @@
 <?php
 class ChartController extends Controller
 {
-	public function actionIndex($id_pair, $period = 0, $limit = 200)
+	public function actionIndex($id_pair, $period = 0, $limit = 500)
 	{
 		$pair = Pair::model()->findByPk($id_pair);
 		$criteria = new CDbCriteria;
