@@ -345,4 +345,48 @@ class RateIndex extends MyActiveRecord
 			'timestamp'=>strtotime($index['index']['create_date']) * 1000,
 		));
 	}
+
+	/**
+	 * архивирование данных
+	 */
+	public static function partition()
+	{
+		//найти id записи до которой нужно удалить
+		$date_start = new DateTime();
+		$date_start->modify('-7 day');
+		$date_limit = $date_start->getTimestamp();
+
+		$sql = "
+			SELECT `id`
+			FROM `rate_index`
+			WHERE UNIX_TIMESTAMP(`create_date`) > '". $date_limit ."'
+			ORDER BY id
+			LIMIT 1
+		";
+
+		$connection=Yii::app()->db;
+		$command=$connection->createCommand($sql);
+		$data = $command->queryRow();
+
+		if (isset($data['id'])) {
+			$transaction = Yii::app()->db->beginTransaction();
+			try {
+				$sql = "
+					INSERT INTO `rate_index_archive` (
+						`id`,`period`,`servises`,`services_hash`,`index`,`id_currency`,`id_currency_from`,`change_state`,`change_percent`,`data`,`is_active`,`create_date`,`mod_date`
+					)
+					SELECT * FROM `rate_index` WHERE id < ". $data['id'] ."
+				";
+				$command=$connection->createCommand($sql);
+				$command->execute();
+				$sql = "DELETE FROM `rate_index` WHERE id < ". $data['id'] ."";
+				$command=$connection->createCommand($sql);
+				$command->execute();
+
+				$transaction->commit();
+			} catch (Exception $e) {
+				$transaction->rollback();
+			}
+		}
+	}
 }

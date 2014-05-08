@@ -436,4 +436,48 @@ class Course extends MyActiveRecord
 
 		return array($change, round($percent, $round));
 	}
+
+	/**
+	 * архивирование данных
+	 */
+	public static function partition()
+	{
+		//найти id записи до которой нужно удалить
+		$date_start = new DateTime();
+		$date_start->modify('-7 day');
+		$date_limit = $date_start->getTimestamp();
+
+		$sql = "
+			SELECT `id`
+			FROM `course`
+			WHERE UNIX_TIMESTAMP(`create_date`) > '". $date_limit ."'
+			ORDER BY id
+			LIMIT 1
+		";
+
+		$connection=Yii::app()->db;
+		$command=$connection->createCommand($sql);
+		$data = $command->queryRow();
+
+		if (isset($data['id'])) {
+			$transaction = Yii::app()->db->beginTransaction();
+			try {
+				$sql = "
+					INSERT INTO `course_archive` (
+						`id`,`id_service`,`id_currency`,`id_currency_from`,`high`,`low`,`avg`,`vol`,`vol_cur`,`last`,`buy`,`sell`,`updated`,`server_time`,`change_state`,`change_percent`,`is_active`,`create_date`,`mod_date`
+					)
+					SELECT * FROM `course` WHERE id < ". $data['id'] ."
+				";
+				$command=$connection->createCommand($sql);
+				$command->execute();
+				$sql = "DELETE FROM `course` WHERE id < ". $data['id'] ."";
+				$command=$connection->createCommand($sql);
+				$command->execute();
+
+				$transaction->commit();
+			} catch (Exception $e) {
+				$transaction->rollback();
+			}
+		}
+	}
 }
