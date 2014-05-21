@@ -47,9 +47,9 @@
 				<p class="text-font_mid main-grid-sidebar_left line-arrowBack"><span><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></span></p>
 				<div class="main-grid-content_right">
 					<h3><?php echo Yii::t('main', 'График изменения за 24 часа'); ?></h3>
-					<?php echo $this->renderPartial('_chart', array('id'=>$pair->id)); ?>
 				</div>
 			</div>
+			<?php echo $this->renderPartial('_chart', array('id'=>$pair->id)); ?>
 		</div>
 	</div>
 </section>
