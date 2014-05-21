@@ -152,4 +152,4 @@
 	});
 
 </script>
-<div id="<?php echo $id_chart; ?>" style="height: 300px; min-width: 500px"></div>
+<div id="<?php echo $id_chart; ?>" style="height: 300px; width: 100%"></div>

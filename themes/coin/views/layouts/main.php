@@ -25,8 +25,10 @@
 	<script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/selectivizr-1.0.2/selectivizr-min.js"></script>
 	<![endif]-->
 
-	<link rel="icon" href="/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 	<script>
@@ -49,7 +51,7 @@
 
 			<?php $this->widget('MyMenu',array(
 				'items'=>array(
-					array('label'=>Yii::t('main', 'Формула расчета'), 'url'=>array('/course/index')),
+					array('label'=>Yii::t('main', 'Формула расчета'), 'url'=>array('/site/formula')),
 					array('label'=>Yii::t('main', 'API'), 'url'=>array('/course/index')),
 					array('label'=>Yii::t('main', 'О нас'), 'url'=>array('/course/index')),
 				),
