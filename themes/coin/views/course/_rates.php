@@ -35,7 +35,7 @@
 
 	<div class="main-grid-content_left">
 		<div class="main-padding_10">
-			<div class="main-grid-300">
+			<div class="main-grid-340">
 				<div class="main-grid-sidebar_left">
 					<p class="main-bordered-double text-font_mid text-center">
 						<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/loader.gif" alt="Updating..." id="loader-index" style="display: none;left: 20px;position: absolute;top: 38px;">
@@ -52,7 +52,7 @@
 				</div>
 			</div>
 
-			<div id="index-graph_title" class="main-grid-300">
+			<div id="index-graph_title" class="main-grid-340">
 				<p class="text-font_mid main-grid-sidebar_left line-arrowBack"><span><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></span></p>
 				<div class="main-grid-content_right">
 					<h3><?php echo Yii::t('main', 'График изменения за 24 часа'); ?></h3>
