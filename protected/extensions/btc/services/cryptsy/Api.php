@@ -56,10 +56,14 @@ class Api extends ApiBase
 		$currency = 3;
 		if ($currency_to == 'ltc' and $currency_of == 'btc') {
 			$currency = 3;
+		} elseif ($currency_to == 'btc' and $currency_of == 'usd') {
+			$currency = 2;
 		} elseif ($currency_to == 'vtc' and $currency_of == 'btc') {
 			$currency = 151;
 		} elseif ($currency_to == 'doge' and $currency_of == 'btc') {
 			$currency = 132;
+		} elseif ($currency_to == 'ppc' and $currency_of == 'btc') {
+			$currency = 28;
 		}
 		return $currency;
 	}
