@@ -341,7 +341,7 @@ class RateIndex extends MyActiveRecord
 			'index_num'=>round($index['index']['index'], $round),
 			'index'=>ViewPrice::GetResult($index['index']['index'], $symbol, $round),
 			'services'=>$data,
-			'date'=>date('D, d.m.y\, H:i', strtotime($index['index']['create_date'])),
+			'date'=>date('D, d.m.y\, H:i:s', strtotime($index['index']['create_date'])),
 			'timestamp'=>strtotime($index['index']['create_date']) * 1000,
 		));
 	}
