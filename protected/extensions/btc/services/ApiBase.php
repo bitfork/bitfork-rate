@@ -38,8 +38,15 @@ class ApiBase
 			return false;
 		}
 		if (isset($dec['error'])) {
-			$this->setMessageLog($dec['error'] .' - '. $url);
-			return false;
+			if (strpos($url,'https://api.kraken.com/')!==false) {
+				if (count($dec['error'])>0) {
+					$this->setMessageLog(var_export($dec['error'], true) .' - '. $url);
+					return false;
+				}
+			} else {
+				$this->setMessageLog($dec['error'] .' - '. $url);
+				return false;
+			}
 		}
 		return $dec;
 	}

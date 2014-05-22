@@ -13,6 +13,7 @@ class Service extends \CApplicationComponent
 		'vircurex'	=> array('class' => '\btc\services\vircurex\Api'),
 		'cryptsy'	=> array('class' => '\btc\services\cryptsy\Api'),
 		'bter'		=> array('class' => '\btc\services\bter\Api'),
+		'kraken'	=> array('class' => '\btc\services\kraken\Api'),
 	);
 
 	/**
