@@ -12,12 +12,13 @@ var Page = (function(){
 		},
 		update: function(data) {
 			if (this.pair == data.pair) {
-				$('#main_index').html('Updating...');
+				$('#loader-index').show();
 				setTimeout( function(){$this.up(data);} , 1000);
 			}
 		},
 		up: function(data) {
 			$('#main_index').html(data.index);
+			$('#loader-index').hide();
 			$('#last_date_main_index').html(data.date);
 			for (var key in data.services) {
 				if (data.services.hasOwnProperty(key)) {

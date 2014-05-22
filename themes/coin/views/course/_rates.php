@@ -34,7 +34,14 @@
 	<div class="main-grid-content_left">
 		<div class="main-padding_10">
 			<div class="main-grid-300">
-				<div class="main-grid-sidebar_left"><p id="main_index" class="main-bordered-double text-font_mid text-center"><?php echo ViewPrice::GetResult($index['index'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])); ?></p></div>
+				<div class="main-grid-sidebar_left">
+					<p class="main-bordered-double text-font_mid text-center">
+						<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/loader.gif" alt="Updating..." id="loader-index" style="display: none;left: 17px;position: absolute;top: 33px;">
+						<span id="main_index">
+							<?php echo ViewPrice::GetResult($index['index'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])); ?>
+						</span>
+					</p>
+				</div>
 				<div class="main-grid-content_right">
 					<h3><?php echo Yii::t('main', 'Моментальный курс {cur_from}/{cur}', array('{cur_from}'=>$pair->currency_from->name,'{cur}'=>$pair->currency->name)); ?></h3>
 					<p><?php echo Yii::t('main', 'Последнее обновление'); ?> <span id="last_date_main_index"><?php echo date('D, d.m.y\, H:i', strtotime($index['create_date'])); ?></span> GMT+0400<br/>
