@@ -38,7 +38,7 @@
 			<div class="main-grid-300">
 				<div class="main-grid-sidebar_left">
 					<p class="main-bordered-double text-font_mid text-center">
-						<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/loader.gif" alt="Updating..." id="loader-index" style="display: none;left: 17px;position: absolute;top: 33px;">
+						<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/loader.gif" alt="Updating..." id="loader-index" style="display: none;left: 20px;position: absolute;top: 38px;">
 						<span id="main_index">
 							<?php echo ViewPrice::GetResult($index['index'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])); ?>
 						</span>
