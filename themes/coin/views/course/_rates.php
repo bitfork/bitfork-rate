@@ -8,6 +8,7 @@
 					<th><?php echo Yii::t('main', 'Название биржы'); ?></th>
 					<th><?php echo Yii::t('main', 'URL биржы'); ?></th>
 					<th><?php echo Yii::t('main', 'Курс'); ?> <?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></th>
+					<th><?php echo Yii::t('main', 'Volume, %'); ?></th>
 				</tr>
 				</thead>
 				<tbody>
@@ -23,6 +24,7 @@
 							?>
 						</td>
 						<td id="service_price_<?php echo $row['id_service']; ?>"><?php echo ViewPrice::GetResult($row['avg_price'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])); ?></td>
+						<td id="service_volume_<?php echo $row['id_service']; ?>"><?php echo round(($row['percent_for_index'] * 100), 2); ?>%</td>
 					</tr>
 				<?php } ?>
 				</tbody>
@@ -44,7 +46,7 @@
 				</div>
 				<div class="main-grid-content_right">
 					<h3><?php echo Yii::t('main', 'Моментальный курс {cur_from}/{cur}', array('{cur_from}'=>$pair->currency_from->name,'{cur}'=>$pair->currency->name)); ?></h3>
-					<p><?php echo Yii::t('main', 'Последнее обновление'); ?> <span id="last_date_main_index"><?php echo date('D, d.m.y\, H:i', strtotime($index['create_date'])); ?></span> GMT+0400<br/>
+					<p><?php echo Yii::t('main', 'Последнее обновление'); ?> <span id="last_date_main_index"><?php echo date('D, d.m.y\, H:i:s', strtotime($index['create_date'])); ?></span> GMT+0400<br/>
 						<span class="text-tip"><?php echo Yii::t('main', 'Информация обновляется каждые 5 - 10 секунд'); ?></span>
 					</p>
 				</div>

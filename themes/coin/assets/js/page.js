@@ -23,6 +23,7 @@ var Page = (function(){
 			for (var key in data.services) {
 				if (data.services.hasOwnProperty(key)) {
 					$('#service_price_'+ data.services[key].id +'').html(data.services[key].price);
+					$('#service_volume_'+ data.services[key].id +'').html(data.services[key].volume);
 				}
 			}
 			if (this.chart != '') {
