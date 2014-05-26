@@ -1,5 +1,6 @@
 <?php
 return array(
+	array('api/index/index', 'pattern' => 'api/<from:\w+>/<to:\w+>/<period:\d+>', 'verb' => 'GET', 'parsingOnly' => true),
 	array('api/<controller>/index', 'pattern' => 'api/<controller:(index)>/<from:\w+>/<to:\w+>/<period:\d+>', 'verb' => 'GET', 'parsingOnly' => true),
 	array('api/<controller>/<action>', 'pattern' => 'api/<controller:(index)>/<action:\w+>/<from:\w+>/<to:\w+>/<period:\d+>', 'verb' => 'GET', 'parsingOnly' => true),
 
