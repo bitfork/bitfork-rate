@@ -52,7 +52,7 @@
 			<?php $this->widget('MyMenu',array(
 				'items'=>array(
 					array('label'=>Yii::t('main', 'Формула расчета'), 'url'=>array('/site/formula')),
-					array('label'=>Yii::t('main', 'API'), 'url'=>array('/course/index')),
+					array('label'=>Yii::t('main', 'Free API'), 'url'=>array('/site/api')),
 					array('label'=>Yii::t('main', 'GitHub'), 'url'=>'https://github.com/bitfork/bitfork-rate','linkOptions'=>array('target'=>'_blank')),
 				),
 				'id'=>'header-nav',

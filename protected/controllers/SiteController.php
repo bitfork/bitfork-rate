@@ -37,6 +37,17 @@ class SiteController extends Controller
 		$this->render('formula');
 	}
 
+	public function actionApi()
+	{
+		$apiExampleForm=new ApiExampleForm;
+		$this->render('api', array(
+			'pairs'=>Pair::model()->findAll(),
+			'pair_1'=>Pair::model()->findByPk(1),
+			'pair_2'=>Pair::model()->findByPk(2),
+			'apiExampleForm'=>$apiExampleForm,
+		));
+	}
+
 	/**
 	 * This is the action to handle external exceptions.
 	 */

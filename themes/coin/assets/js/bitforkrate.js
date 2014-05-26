@@ -41,7 +41,7 @@ jQuery(document).ready(function($) {
   	
   
   $(window).load(function(){
-  		$('header').scrollToFixed();
+      $('header').scrollToFixed();
   	});
 	  
 });
