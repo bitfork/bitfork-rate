@@ -11,14 +11,6 @@ return array(
 
 	// application components
 	'components'=>array(
-		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=bitfork_rate',
-			'emulatePrepare' => true,
-			'username' => 'bitfork_rate',
-			'password' => 'US3W6yem',
-			'charset' => 'utf8',
-			'schemaCachingDuration' => 86400,
-		),
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
