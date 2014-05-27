@@ -23,8 +23,8 @@
 								echo $exchange->getBaseUrl();
 							?>
 						</td>
-						<td id="service_price_<?php echo $row['id_service']; ?>"><?php echo ViewPrice::GetResult($row['avg_price'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])); ?></td>
-						<td id="service_volume_<?php echo $row['id_service']; ?>"><?php echo round(($row['percent_for_index'] * 100), 2); ?>%</td>
+						<td id="service_price_<?php echo $row['id_service']; ?>"><?php echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])) : 'loss'; ?></td>
+						<td id="service_volume_<?php echo $row['id_service']; ?>"><?php echo ($row['percent_for_index']>0) ? round(($row['percent_for_index'] * 100), 2) .'%' : 'loss'; ?></td>
 					</tr>
 				<?php } ?>
 				</tbody>
