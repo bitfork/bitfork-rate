@@ -4,3 +4,6 @@
 /protected/runtime
 /protected/controllers/TestController.php
 tmp.txt
+/protected/config/console_server.php
+/protected/config/cron_server.php
+/protected/config/main_server.php
