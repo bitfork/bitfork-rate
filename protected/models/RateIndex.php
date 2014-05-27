@@ -333,8 +333,8 @@ class RateIndex extends MyActiveRecord
 		foreach ($services as $service) {
 			$data[] = array(
 				'id'=>$service['id_service'],
-				'price'=>ViewPrice::GetResult($service['avg_price'], $symbol, $round),
-				'volume'=>round(($service['percent_for_index'] * 100), 2),
+				'price'=>(($service['avg_price']>0) ? ViewPrice::GetResult($service['avg_price'], $symbol, $round) : 'loss'),
+				'volume'=>(($service['percent_for_index']>0) ? round(($service['percent_for_index'] * 100), 2) : 'loss'),
 			);
 		}
 		Yii::app()->websocket->send(array(
