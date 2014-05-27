@@ -90,7 +90,7 @@
 	<h2>Start using bitfork index today</h2>
 	<div class="main-zoom">
 		<div class="main-col3">
-			<a class="imgWrap-140" href="<?php echo $this->createUrl('/integration/create'); ?>" class="fancybox fancybox.ajax" data-fancybox-type="ajax"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitforkDevelop.jpg"/></a>
+			<a class="imgWrap-140 fancybox fancybox.ajax" href="<?php echo $this->createUrl('/integration/create'); ?>" data-fancybox-type="ajax"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitforkDevelop.jpg"/></a>
 			<h3><a href="<?php echo $this->createUrl('/integration/create'); ?>" class="fancybox fancybox.ajax" data-fancybox-type="ajax">Order integration</a></h3>
 		</div>
 		<div class="main-col3">
