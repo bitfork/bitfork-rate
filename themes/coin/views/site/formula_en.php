@@ -94,12 +94,12 @@
 			<h3><a href="#">Order integration</a></h3>
 		</div>
 		<div class="main-col3">
-			<a class="imgWrap-140" href="#"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/api.jpg"/></a>
-			<h3><a href="#">integrate themselves</a></h3>
+			<a class="imgWrap-140" href="<?php echo $this->createUrl('/site/api'); ?>"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/api.jpg"/></a>
+			<h3><a href="<?php echo $this->createUrl('/site/api'); ?>">integrate themselves</a></h3>
 		</div>
 		<div class="main-col3">
 			<a class="imgWrap-140" href="https://github.com/bitfork/bitfork-rate"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/github.jpg"/></a>
-			<h3><a href="#">Download the source from GitHub</a></h3>
+			<h3><a href="https://github.com/bitfork/bitfork-rate">Download the source from GitHub</a></h3>
 		</div>
 	</div>
 </div>
