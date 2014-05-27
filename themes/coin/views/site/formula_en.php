@@ -90,16 +90,16 @@
 	<h2>Start using bitfork index today</h2>
 	<div class="main-zoom">
 		<div class="main-col3">
-			<a class="imgWrap-140" href="#"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitforkDevelop.jpg"/></a>
-			<h3><a href="#">Order integration</a></h3>
+			<a class="imgWrap-140" href="<?php echo $this->createUrl('/integration/create'); ?>" class="fancybox fancybox.ajax" data-fancybox-type="ajax"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitforkDevelop.jpg"/></a>
+			<h3><a href="<?php echo $this->createUrl('/integration/create'); ?>" class="fancybox fancybox.ajax" data-fancybox-type="ajax">Order integration</a></h3>
 		</div>
 		<div class="main-col3">
 			<a class="imgWrap-140" href="<?php echo $this->createUrl('/site/api'); ?>"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/api.jpg"/></a>
 			<h3><a href="<?php echo $this->createUrl('/site/api'); ?>">integrate themselves</a></h3>
 		</div>
 		<div class="main-col3">
-			<a class="imgWrap-140" href="https://github.com/bitfork/bitfork-rate"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/github.jpg"/></a>
-			<h3><a href="https://github.com/bitfork/bitfork-rate">Download the source from GitHub</a></h3>
+			<a class="imgWrap-140" target="_blank" href="https://github.com/bitfork/bitfork-rate"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/github.jpg"/></a>
+			<h3><a target="_blank" href="https://github.com/bitfork/bitfork-rate">Download the source from GitHub</a></h3>
 		</div>
 	</div>
 </div>
