@@ -34,7 +34,9 @@ class SiteController extends Controller
 
 	public function actionFormula()
 	{
-		$this->render('formula');
+		$this->pageTitle = Yii::t('main', 'Formula estimate crypto currency  price index | Bitfork-rate.com');
+		$this->pageDescription = Yii::t('main', 'Price index calculation example and formula description. Bitfork-rate.com using price and volume from popular bitcoin, litecoin and other crypto currencies exchanges.');
+		$this->render('formula_'. Yii::app()->getLanguage());
 	}
 
 	public function actionApi()

@@ -1,7 +1,10 @@
 <?php
 return array(
-	'Битфорк индекс курса криптовалют. Курс bitcoin, litecoin и других криптовалют.' => 'BITFORK-RATE.COM - CRYPTOCURRENCY INDEX',
-	'Битфорк индекс курса криптовалют. Курс биткоин (bitcoin) к доллару USD, курс litecoin к доллару USD.  Бесплатное API для сторонних интернет сайтов. Настраиваемые параметры курса криптовалют.' => 'At the moment, the platform gives you the opportunity to show the Bitcoin rate to the U.S. dollar based on the trading volume and the latest prices on the data from btc-e.com and bitstamp.net',
+	'Битфорк индекс курса криптовалют. Курс bitcoin, litecoin и других криптовалют.' => 'Битфорк индекс курса криптовалют. Курс bitcoin, litecoin и других криптовалют.',
+	'Битфорк индекс курса криптовалют. Курс биткоин (bitcoin) к доллару USD, курс litecoin к доллару USD.  Бесплатное API для сторонних интернет сайтов. Настраиваемые параметры курса криптовалют.' => 'Битфорк индекс курса криптовалют. Курс биткоин (bitcoin) к доллару USD, курс litecoin к доллару USD.  Бесплатное API для сторонних интернет сайтов. Настраиваемые параметры курса криптовалют.',
+	'Formula estimate crypto currency  price index | Bitfork-rate.com' => 'Formula estimate crypto currency  price index | Bitfork-rate.com',
+	'Price index calculation example and formula description. Bitfork-rate.com using price and volume from popular bitcoin, litecoin and other crypto currencies exchanges.' => 'Price index calculation example and formula description. Bitfork-rate.com using price and volume from popular bitcoin, litecoin and other crypto currencies exchanges.',
+
 	'Bitfork-rate.com - индекс криптовалют' => 'Bitfork-rate.com - индекс криптовалют',
 	'бесплатный, настраиваемый сервис с открытым кодом, дающий вам возможность получать необходимые виды котировок на рынке криптовалют (биткоин, лайткоин и другие форк валюты). Настраиваемое по параметрам API.' => 'бесплатный, настраиваемый сервис с открытым кодом, дающий вам возможность получать необходимые виды котировок на рынке криптовалют (биткоин, лайткоин и другие форк валюты). Настраиваемое по параметрам API.',
 	'Бесплатный api для получения котировок криптовалют на вашем сайте' => 'Бесплатный api для получения котировок криптовалют на вашем сайте',
