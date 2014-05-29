@@ -62,13 +62,13 @@
 			<section class="main-right">
 				<select id="source" class="main-inlineBlock" name="pair">
 					<?php foreach (Pair::model()->findAll() as $pair) { ?>
-					<option value="<?php echo $pair->id; ?>"<?php echo (isset($_GET['pair']) and $pair->id == $_GET['pair']) ? ' selected="selectd"': ''; ?>><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></option>
+					<option value="<?php echo $pair->currency_from->name .'-'. $pair->currency->name; ?>"<?php echo (isset($_GET['pair']) and $pair->id == $_GET['pair']) ? ' selected="selectd"': ''; ?>><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></option>
 					<?php } ?>
 				</select>
 				<script language="javascript">
 					$( document ).ready(function() {
 						$('select[id=source]').change(function(){
-							window.location = '<?php echo $this->createUrl('/course/index', array('pair'=>'')); ?>'+$(this).find('option:selected').val();
+							window.location = '<?php echo $this->createUrl('/course/index'); ?>price-'+$(this).find('option:selected').val();
 						});
 					});
 				</script>

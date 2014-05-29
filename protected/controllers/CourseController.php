@@ -1,8 +1,10 @@
 <?php
 class CourseController extends Controller
 {
-	public function actionIndex($pair = null, $period = null)
+	public function actionIndex($from = 'BTC', $to = 'USD', $period=0)
 	{
+		$pair = $this->getPair($from, $to, $period);
+
 		// выбранные сервисы
 		$modelForm=new ServicesForm;
 		if(isset($_POST['ServicesForm']))
@@ -14,41 +16,27 @@ class CourseController extends Controller
 			}
 		}
 
-		// выбранный период
-		$period = (int)$period;
-		if (!in_array($period, Course::$periods)) {
-			$period = 0;
-		}
+		// список сервисов для формы
+		$servicesAll = ServicePair::model()->findAll('id_pair=:id_pair', array(':id_pair'=>$pair->id));
 
-		if ($pair===null) {
-			$pair = 1;
-		}
-		$pair = Pair::model()->findByPk($pair);
-		if ($pair!==null) {
-			// список сервисов для формы
-			$servicesAll = ServicePair::model()->findAll('id_pair=:id_pair', array(':id_pair'=>$pair->id));
-
-			// выбранные снрвисы
-			if (Yii::app()->session['select_services_'.$pair->id]===null) {
-				foreach ($servicesAll as $service) {
-					$modelForm->services[] = $service->id_service;
-				}
-				Yii::app()->session['select_services_'.$pair->id] = $modelForm->services;
-				$servicesList = CHtml::listData($servicesAll, 'id_service', 'id_pair');
-			} else {
-				$modelForm->services = Yii::app()->session['select_services_'.$pair->id];
-				$servicesList = CHtml::listData($servicesAll, 'id_service', 'id_pair');
+		// выбранные снрвисы
+		if (Yii::app()->session['select_services_'.$pair->id]===null) {
+			foreach ($servicesAll as $service) {
+				$modelForm->services[] = $service->id_service;
 			}
-
-			$data[0] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 0, $modelForm->services);
-			$data[60] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 60, $modelForm->services);
-			$data[1440] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 1440, $modelForm->services);
-			$range = false;
-			if ($period > 0) {
-				$range = RateIndex::getRangeIndex($pair->id_currency_from, $pair->id_currency, $period, $modelForm->services);
-			}
+			Yii::app()->session['select_services_'.$pair->id] = $modelForm->services;
+			$servicesList = CHtml::listData($servicesAll, 'id_service', 'id_pair');
 		} else {
-			throw new CHttpException(404, 'Not Found');
+			$modelForm->services = Yii::app()->session['select_services_'.$pair->id];
+			$servicesList = CHtml::listData($servicesAll, 'id_service', 'id_pair');
+		}
+
+		$data[0] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 0, $modelForm->services);
+		$data[60] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 60, $modelForm->services);
+		$data[1440] = RateIndex::getDateIndex($pair->id_currency_from, $pair->id_currency, 1440, $modelForm->services);
+		$range = false;
+		if ($period > 0) {
+			$range = RateIndex::getRangeIndex($pair->id_currency_from, $pair->id_currency, $period, $modelForm->services);
 		}
 
 		$apiExampleForm=new ApiExampleForm;
@@ -143,5 +131,34 @@ class CourseController extends Controller
 		}
 
 		$this->render('parse', array('results'=>$results));
+	}
+
+	private function getPair($from, $to, $period)
+	{
+		$currency = mb_strtoupper($to, 'utf-8');
+		$currency_from = mb_strtoupper($from, 'utf-8');
+
+		if (!in_array($period, Course::$periods)) {
+			throw new CHttpException(404, 'Not Found');
+		}
+		$criteria = new CDbCriteria;
+		$criteria->addInCondition('name', array($currency, $currency_from));
+		$currencys = Currency::model()->findAll($criteria);
+		foreach ($currencys as $cur) {
+			if ($cur->name == $currency) $id_currency = $cur->id;
+			if ($cur->name == $currency_from) $id_currency_from = $cur->id;
+		}
+		if (!isset($id_currency) or !isset($id_currency_from)) {
+			throw new CHttpException(404, 'Not Found');
+		}
+		$pair = Pair::model()->find(
+			'id_currency=:id_currency and id_currency_from=:id_currency_from',
+			array(':id_currency'=>$id_currency, ':id_currency_from'=>$id_currency_from)
+		);
+		if ($pair===null) {
+			throw new CHttpException(404, 'Not Found');
+		}
+
+		return $pair;
 	}
 }
