@@ -7,7 +7,7 @@ class ApiBase
 {
 	private $errors_message = array();
 
-	public function query($url, $post_data = null, $headers = null)
+	public function query($url, $post_data = null, $headers = null, $xml = false)
 	{
 		$ch = null;
 		if (is_null($ch)) {
@@ -32,6 +32,10 @@ class ApiBase
 			$this->setMessageLog('Could not get reply: '.curl_error($ch) .' - '. $url, 'error');
 			return false;
 		}
+
+		if ($xml===true)
+			return $res;
+
 		$dec = json_decode($res, true);
 		if (!$dec) {
 			$this->setMessageLog('Invalid data received, please make sure connection is working and requested API exists - '. $url);

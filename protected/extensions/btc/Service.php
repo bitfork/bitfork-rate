@@ -14,6 +14,9 @@ class Service extends \CApplicationComponent
 		'cryptsy'	=> array('class' => '\btc\services\cryptsy\Api'),
 		'bter'		=> array('class' => '\btc\services\bter\Api'),
 		'kraken'	=> array('class' => '\btc\services\kraken\Api'),
+		'goc'	=> array('class' => '\btc\services\goc\Api'),
+		'cryptotrade'	=> array('class' => '\btc\services\cryptotrade\Api'),
+		'mcxnow'	=> array('class' => '\btc\services\mcxnow\Api')
 	);
 
 	/**
@@ -74,6 +77,11 @@ class Service extends \CApplicationComponent
 	public function getTicker($currency_to = 'btc', $currency_of = 'usd')
 	{
 		return $this->getServiceAdapter()->getTicker($currency_to, $currency_of);
+	}
+
+	public function getDepth($currency_to = 'btc', $currency_of = 'usd')
+	{
+		return $this->getServiceAdapter()->getDepth($currency_to, $currency_of);
 	}
 
 	public function getBaseUrl()
