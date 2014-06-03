@@ -62,7 +62,10 @@
 			<section class="main-right">
 				<select id="source" class="main-inlineBlock" name="pair">
 					<?php foreach (Pair::model()->findAll() as $pair) { ?>
-					<option value="<?php echo $pair->currency_from->name .'-'. $pair->currency->name; ?>"<?php echo (isset($_GET['pair']) and $pair->id == $_GET['pair']) ? ' selected="selectd"': ''; ?>><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></option>
+						<option
+							value="<?php echo $pair->currency_from->name .'-'. $pair->currency->name; ?>"
+							<?php echo (isset($_GET['from'],$_GET['to']) and $pair->currency_from->name == $_GET['from'] and $pair->currency->name == $_GET['to']) ? ' selected="selectd"': ''; ?>
+						><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></option>
 					<?php } ?>
 				</select>
 				<script language="javascript">

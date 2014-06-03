@@ -5,10 +5,19 @@
 			<table class="table-dotted">
 				<thead>
 				<tr>
-					<th><?php echo Yii::t('main', 'Название биржы'); ?></th>
 					<th><?php echo Yii::t('main', 'URL биржы'); ?></th>
-					<th><?php echo Yii::t('main', 'Курс'); ?> <?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></th>
+					<th>
+						<?php echo Yii::t('main', 'Курс'); ?>
+						<?php
+						if (!empty($pair->id_currency_intermed)) {
+							echo $pair->currency_from->name .' / '. $pair->currency_intermed->name;
+						} else {
+							echo $pair->currency_from->name .' / '. $pair->currency->name;
+						}
+						?>
+					</th>
 					<th><?php echo Yii::t('main', 'Volume, %'); ?></th>
+					<th><?php echo Yii::t('main', 'Курс'); ?> <?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></th>
 				</tr>
 				</thead>
 				<tbody>
@@ -16,19 +25,29 @@
 				<tr><td colspan="3"></td></tr>
 				<?php foreach ($data as $row) { ?>
 					<tr>
-						<td><?php echo $row['name_service']; ?></td>
 						<td>
 							<?php
-								$exchange->setService($row['name_service']);
-								echo $exchange->getBaseUrl();
+							$exchange->setService($row['name_service']);
+							echo $exchange->getBaseUrl();
 							?>
 						</td>
-						<td id="service_price_<?php echo $row['id_service']; ?>"><?php echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], Currency::getSymbol($index['id_currency']), Currency::getCountRound($index['id_currency'])) : 'loss'; ?></td>
+						<td id="service_price_in_<?php echo $row['id_service']; ?>">
+							<?php
+							if (!empty($pair->id_currency_intermed)) {
+								echo ($row['price_intermed_2']>0) ? ViewPrice::GetResult($row['price_intermed_2'], $pair->currency_intermed->symbol, $pair->currency_intermed->round) : 'loss';
+							} else {
+								echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], $pair->currency->symbol, $pair->currency->round) : 'loss';
+							}
+							?>
+						</td>
 						<td id="service_volume_<?php echo $row['id_service']; ?>">
 							<?php
 							$percent = (float)$row['percent_for_index'] * 100;
 							echo ($percent>0) ? (($percent >= 0.1) ? round($percent, 2) .'%' : '< 0.1 %') : 'loss';
 							?>
+						</td>
+						<td id="service_price_<?php echo $row['id_service']; ?>">
+							<?php echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], $pair->currency->symbol, $pair->currency->round) : 'loss'; ?>
 						</td>
 					</tr>
 				<?php } ?>

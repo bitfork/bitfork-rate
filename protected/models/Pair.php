@@ -7,6 +7,7 @@
  * @property integer $id
  * @property integer $id_currency
  * @property integer $id_currency_from
+ * @property integer $id_currency_intermed
  * @property integer $is_active
  * @property string $create_date
  * @property string $mod_date
@@ -30,10 +31,10 @@ class Pair extends MyActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id_currency, id_currency_from, create_date, mod_date', 'required'),
-			array('id_currency, id_currency_from, is_active', 'numerical', 'integerOnly'=>true),
+			array('id_currency, id_currency_from, id_currency_intermed, is_active', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, id_currency, id_currency_from, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
+			array('id, id_currency, id_currency_from, id_currency_intermed, is_active, create_date, mod_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,6 +48,7 @@ class Pair extends MyActiveRecord
 		return array(
 			'currency' => array(self::BELONGS_TO, 'Currency', 'id_currency'),
 			'currency_from' => array(self::BELONGS_TO, 'Currency', 'id_currency_from'),
+			'currency_intermed' => array(self::BELONGS_TO, 'Currency', 'id_currency_intermed'),
 			'service_pair' => array(self::HAS_MANY, 'ServicePair', 'id_pair'),
 		);
 	}
@@ -60,6 +62,7 @@ class Pair extends MyActiveRecord
 			'id' => 'ID',
 			'id_currency' => 'Id Currency',
 			'id_currency_from' => 'Id Currency From',
+			'id_currency_intermed' => 'Id Currency Intermed',
 			'is_active' => 'Is Active',
 			'create_date' => 'Create Date',
 			'mod_date' => 'Mod Date',
@@ -87,6 +90,7 @@ class Pair extends MyActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('id_currency',$this->id_currency);
 		$criteria->compare('id_currency_from',$this->id_currency_from);
+		$criteria->compare('id_currency_intermed',$this->id_currency_intermed);
 		$criteria->compare('is_active',$this->is_active);
 		$criteria->compare('create_date',$this->create_date,true);
 		$criteria->compare('mod_date',$this->mod_date,true);

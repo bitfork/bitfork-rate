@@ -333,9 +333,16 @@ class RateIndex extends MyActiveRecord
 		foreach ($services as $service) {
 			$percent = (float)$service['percent_for_index'] * 100;
 			$percent = ($percent>0) ? (($percent >= 0.1) ? round($percent, 2) .'%' : '< 0.1 %') : 'loss';
+			$price = (($service['avg_price']>0) ? ViewPrice::GetResult($service['avg_price'], $symbol, $round) : 'loss');
+			if (!empty($pair->id_currency_intermed)) {
+				$price_intermed = (($service['price_intermed_2']>0) ? ViewPrice::GetResult($service['price_intermed_2'], $pair->currency_intermed->symbol, $pair->currency_intermed->round) : 'loss');
+			} else {
+				$price_intermed = $price;
+			}
 			$data[] = array(
 				'id'=>$service['id_service'],
-				'price'=>(($service['avg_price']>0) ? ViewPrice::GetResult($service['avg_price'], $symbol, $round) : 'loss'),
+				'price_intermed'=>$price_intermed,
+				'price'=>$price,
 				'volume'=>$percent,
 			);
 		}

@@ -257,18 +257,59 @@ class Course extends MyActiveRecord
 
 	/**
 	 * расчет индекса для всех пар валют и каждой комбинации сервисов
-	 *
-	 * @param bool $id_pair
+	 * @param $id_pair
 	 * @param null $period
+	 * @return bool
 	 */
-	public static function calculateIndex($id_pair=false, $period=null)
+	public static function calculateIndex($id_pair, $period=null)
 	{
-		$services = self::getPairServices($id_pair);
-
-		foreach ($services as $values) {
-			if (count($values['services'])>0)
-				self::calculateByServices($values['services'], $values['id_currency_from'], $values['id_currency'], $period);
+		$pair = self::getIntermedPair($id_pair);
+		if ($pair===false) {
+			return false;
 		}
+
+		if (is_array($pair)) {
+			$services_1 = self::getPairServices($pair[0]);
+			$services_2 = self::getPairServices($pair[1]);
+			self::calculateByServicesIntermed($services_1, $services_2, $pair[2], $period);
+		} else {
+			$services = self::getPairServices($id_pair);
+			foreach ($services as $values) {
+				if (count($values['services'])>0)
+					self::calculateByServices($values['services'], $values['id_currency_from'], $values['id_currency'], $period);
+			}
+		}
+	}
+
+	/**
+	 * получаем пары если есть промежуточный или если нет то просто пару
+	 * @param $id_pair
+	 * @return array|bool
+	 */
+	public static function getIntermedPair($id_pair)
+	{
+		$pair = Pair::model()->findByPk($id_pair);
+		if ($pair===null) {
+			return false;
+		}
+		if (empty($pair->id_currency_intermed)) {
+			return $id_pair;
+		}
+		$pair_1 = Pair::model()->find('id_currency=:id_currency and id_currency_from=:id_currency_intermed', array(
+			':id_currency'=>$pair->id_currency,
+			':id_currency_intermed'=>$pair->id_currency_intermed,
+		));
+		if ($pair_1===null) {
+			return false;
+		}
+		$pair_2 = Pair::model()->find('id_currency=:id_currency_intermed and id_currency_from=:id_currency_from', array(
+			':id_currency_intermed'=>$pair->id_currency_intermed,
+			':id_currency_from'=>$pair->id_currency_from,
+		));
+		if ($pair_2===null) {
+			return false;
+		}
+		return array($pair_1->id, $pair_2->id, $pair);
 	}
 
 	/**
@@ -333,6 +374,79 @@ class Course extends MyActiveRecord
 					$combination
 				);
 				self::saveIndex($id_currency_from, $id_currency, $period, $combination, $data);
+			}
+		}
+	}
+
+	public static function calculateByServicesIntermed($services_1, $services_2, $pair, $set_period = null)
+	{
+		$services_1 = array_shift($services_1);
+		$services_2 = array_shift($services_2);
+		$services = array_intersect($services_1['services'], $services_2['services']);
+		if (count($services)<=0)
+			return false;
+
+		$combinations = self::getComb($services);
+		if ($set_period === null) {
+			$periods = self::$periods;
+		} else {
+			$periods = array((int)$set_period);
+		}
+		foreach ($periods as $period) {
+			foreach ($combinations as $combination) {
+				$date_start = new DateTime();
+				$date_start->modify('-'. $period .' minutes');
+				$date_start = $date_start->format('Y-m-d H:i:s');
+				$date_finish = date('Y-m-d H:i:s');
+
+				// получаем данные для сервисов по первой паре
+				$data_1 = Course::model()->getAvgData(
+					$services_1['id_currency_from'],
+					$services_1['id_currency'],
+					$period,
+					$date_start,
+					$date_finish,
+					$combination
+				);
+
+				// получаем данные для сервисов по второй паре
+				$data_2 = Course::model()->getAvgData(
+					$services_2['id_currency_from'],
+					$services_2['id_currency'],
+					$period,
+					$date_start,
+					$date_finish,
+					$combination
+				);
+
+				// считаем индекс по новой, и новую цену
+				$data_2[0]['index'] = 0;
+				foreach ($data_2[1] as $key => $service_data) {
+					// сохраняем как промежуточную цену
+					$data_2[1][$key]['price_intermed_1'] = 0;
+					$data_2[1][$key]['price_intermed_2'] = $data_2[1][$key]['avg_price'];
+					$r = false;
+					foreach ($data_1[1] as $service_1_data) {
+						if ($service_1_data['id_service'] == $service_data['id_service']) {
+							$data_2[1][$key]['price_intermed_1'] = $data_1[1][$key]['avg_price'];
+							// считаем новыю цену по курсам двух пар валют
+							$r = true;
+							break;
+						}
+					}
+					if ($r===false) {
+						unset($data_2[1][$key]);
+						continue;
+					}
+					$data_2[1][$key]['avg_price'] = $data_2[1][$key]['price_intermed_2'] * $data_2[1][$key]['price_intermed_1'];
+					$data_2[1][$key]['percent_price_for_index'] = $data_2[1][$key]['avg_price'] * $data_2[1][$key]['percent_for_index']; // цена курса которая влияет на индекс
+					$data_2[0]['index'] += $data_2[1][$key]['percent_price_for_index']; // сумма всех курсов
+				}
+				$change = RateIndex::getChangePercent($data_2[0]['index'], $pair->id_currency_from, $pair->id_currency, $period);
+				$data_2[0]['change_state'] = $change[0];
+				$data_2[0]['change_percent'] = $change[1];
+
+				self::saveIndex($pair->id_currency_from, $pair->id_currency, $period, $combination, $data_2);
 			}
 		}
 	}
