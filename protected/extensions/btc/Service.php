@@ -16,7 +16,8 @@ class Service extends \CApplicationComponent
 		'kraken'	=> array('class' => '\btc\services\kraken\Api'),
 		'goc'	=> array('class' => '\btc\services\goc\Api'),
 		'cryptotrade'	=> array('class' => '\btc\services\cryptotrade\Api'),
-		'mcxnow'	=> array('class' => '\btc\services\mcxnow\Api')
+		'mcxnow'	=> array('class' => '\btc\services\mcxnow\Api'),
+		'mintpal'	=> array('class' => '\btc\services\mintpal\Api'),
 	);
 
 	/**
