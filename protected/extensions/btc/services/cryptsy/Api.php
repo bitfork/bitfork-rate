@@ -64,6 +64,8 @@ class Api extends ApiBase
 			$currency = 132;
 		} elseif ($currency_to == 'ppc' and $currency_of == 'btc') {
 			$currency = 28;
+		} elseif ($currency_to == 'drk' and $currency_of == 'btc') {
+			$currency = 155;
 		}
 		return $currency;
 	}
