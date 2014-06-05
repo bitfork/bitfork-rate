@@ -47,7 +47,7 @@
 <div id="wrapper">
 	<header role="banner">
 		<div class="main-setWidth main-clearfix">
-			<a id="header-top" href="/"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/logo.jpg"/></a>
+			<a id="header-top" href="<?php echo $this->createUrl('/'); ?>"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/logo.jpg"/></a>
 
 			<?php $this->widget('MyMenu',array(
 				'items'=>array(
@@ -63,7 +63,7 @@
 				<select id="source" class="main-inlineBlock" name="pair">
 					<?php foreach (Pair::model()->findAll() as $pair) { ?>
 						<option
-							value="<?php echo $pair->currency_from->name .'-'. $pair->currency->name; ?>"
+							value="<?php echo $this->createUrl('/course/index', array('from'=>$pair->currency_from->name,'to'=>$pair->currency->name)); ?>"
 							<?php echo (isset($_GET['from'],$_GET['to']) and $pair->currency_from->name == $_GET['from'] and $pair->currency->name == $_GET['to']) ? ' selected="selectd"': ''; ?>
 						><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></option>
 					<?php } ?>
@@ -71,7 +71,7 @@
 				<script language="javascript">
 					$( document ).ready(function() {
 						$('select[id=source]').change(function(){
-							window.location = '<?php echo $this->createUrl('/course/index'); ?>price-'+$(this).find('option:selected').val();
+							window.location = $(this).find('option:selected').val();
 						});
 					});
 				</script>
@@ -92,6 +92,9 @@
 			<span>@2014</span>
 			<a href="http://bitfork-develop.com" target="_blank">Bitfork-develop.com</a>
 			<a href="#"><?php echo Yii::t('main', 'Связаться с нами'); ?></a>
+			<div class="main-right">
+				<a href="<?php echo $this->createUrl('/site/map'); ?>"><?php echo Yii::t('main', 'Site map'); ?></a>
+			</div>
 		</div>
 	</footer>
 </div>

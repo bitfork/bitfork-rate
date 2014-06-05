@@ -108,7 +108,6 @@ return array(
 			'rules'=>CMap::mergeArray(
 				require(dirname(__FILE__) . '/api_rules.php'),
 				array(
-					'/'=>'course/index',
 					'price-<from:\w+>-<to:\w+>' => 'course/index',
 					'price-<from:\w+>-<to:\w+>-<period:\d+>' => 'course/index',
 					'<controller:\w+>/<id:\d+>'=>'<controller>/view',

@@ -46,7 +46,7 @@ class DMultilangHelper
 		return $url;
 	}
 
-	public static function addLangToUrl($url)
+	public static function addLangToUrl($url, $lang = null)
 	{
 		if (self::enabled())
 		{
@@ -58,7 +58,10 @@ class DMultilangHelper
 				array_shift($domains);
 
 			if (!$isHasLang && !$isDefaultLang)
-				array_unshift($domains, Yii::app()->getLanguage());
+				if ($lang === null)
+					array_unshift($domains, Yii::app()->getLanguage());
+				elseif ($lang != Yii::app()->params['defaultLanguage'])
+					array_unshift($domains, $lang);
 
 			$url = '/' . implode('/', $domains);
 		}

@@ -33,4 +33,5 @@ return array(
 	'API' => 'API',
 	'О нас' => 'About',
 	'индекс криптовалют' => 'Crypto Currency Index',
+	'Site map' => 'Site map',
 );
