@@ -53,7 +53,7 @@
 				<?php } ?>
 				</tbody>
 			</table>
-			<a class="btn-blue btn-block" href="#"><?php echo Yii::t('main', 'Добавить другую биржу'); ?></a>
+			<a class="btn-blue btn-block fancybox fancybox.ajax" href="<?php echo $this->createUrl('/course/linkExchange'); ?>"><?php echo Yii::t('main', 'Добавить другую биржу'); ?></a>
 		</div>
 	</div>
 

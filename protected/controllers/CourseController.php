@@ -90,6 +90,23 @@ class CourseController extends Controller
 		Yii::app()->end();
 	}
 
+	public function actionLinkExchange()
+	{
+		$model=new LinkProject;
+		$this->performAjaxValidation($model);
+		if(isset($_POST['LinkProject']))
+		{
+			$model->attributes=$_POST['LinkProject'];
+			if ($model->save()) {
+				echo CJSON::encode(array('content'=>"Заявка отправленна"));
+			}
+			Yii::app()->end();
+		}
+		$this->renderPartial('_link_exchange_form', array(
+			'model'=>$model
+		), false, true);
+	}
+
 	/**
 	 * Performs the AJAX validation.
 	 * @param Staff $model the model to be validated
