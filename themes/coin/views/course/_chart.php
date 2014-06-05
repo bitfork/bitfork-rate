@@ -16,7 +16,7 @@
 				$this.id_chart = id_chart;
 				$this.id_pair = id_pair;
 
-				$.getJSON('/index.php?r=chart/index&id_pair='+ $this.id_pair +'&period=0', function(data) {
+				$.getJSON('<?php echo $this->createUrl('/chart/index'); ?>?id_pair='+ $this.id_pair +'&period=0', function(data) {
 
 					$this.max_limit = data[1];
 					$this.min_limit = data[2];
