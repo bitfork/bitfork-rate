@@ -37,7 +37,7 @@
 
 	<div class="main-grid-content_left">
 		<h2>Url scheme for obtaining data:</h2>
-		<a class="main-padding_10 img-wrap-block fancybox" title="Url scheme for obtaining data:" style="max-width:800px;" href=""><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/api_formula_en.jpg"/></a>
+		<a class="main-padding_10 img-wrap-block fancybox" title="Url scheme for obtaining data:" style="max-width:800px;" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/api_formula_en.jpg"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/api_formula_en.jpg"/></a>
 	</div>
 </section>
 
