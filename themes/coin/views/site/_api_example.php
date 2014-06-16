@@ -14,14 +14,14 @@ $rand = rand(0,99);
 <table class="table-bordless">
 	<tbody>
 	<tr>
-		<td><h3>Get запрос:</h3></td>
+		<td><h3><?php echo Yii::t('main', 'Get запрос'); ?>:</h3></td>
 		<td>
 			<?php echo $form->textField($apiExampleForm,'api_example',array('class'=>'inp-mid')); ?>
 		</td>
 		<td></td>
 	</tr>
 	<tr>
-		<td><h3>Ответ в формате JSON:</h3></td>
+		<td><h3><?php echo Yii::t('main', 'Ответ в формате JSON'); ?>:</h3></td>
 		<td>
 			<textarea class="inp-mid textarea-mid responseApi"></textarea>
 		</td>

@@ -382,7 +382,7 @@ class Course extends MyActiveRecord
 	{
 		$services_1 = array_shift($services_1);
 		$services_2 = array_shift($services_2);
-		$services = array_intersect($services_1['services'], $services_2['services']);
+		$services = $services_2['services'];
 		if (count($services)<=0)
 			return false;
 
@@ -399,15 +399,8 @@ class Course extends MyActiveRecord
 				$date_start = $date_start->format('Y-m-d H:i:s');
 				$date_finish = date('Y-m-d H:i:s');
 
-				// получаем данные для сервисов по первой паре
-				$data_1 = Course::model()->getAvgData(
-					$services_1['id_currency_from'],
-					$services_1['id_currency'],
-					$period,
-					$date_start,
-					$date_finish,
-					$combination
-				);
+				// получаем индекс по первой паре
+				$data_1 = RateIndex::getDateIndex($services_1['id_currency_from'], $services_1['id_currency'], 0);
 
 				// получаем данные для сервисов по второй паре
 				$data_2 = Course::model()->getAvgData(
@@ -423,21 +416,8 @@ class Course extends MyActiveRecord
 				$data_2[0]['index'] = 0;
 				foreach ($data_2[1] as $key => $service_data) {
 					// сохраняем как промежуточную цену
-					$data_2[1][$key]['price_intermed_1'] = 0;
+					$data_2[1][$key]['price_intermed_1'] = $data_1['index']['index'];
 					$data_2[1][$key]['price_intermed_2'] = $data_2[1][$key]['avg_price'];
-					$r = false;
-					foreach ($data_1[1] as $service_1_data) {
-						if ($service_1_data['id_service'] == $service_data['id_service']) {
-							$data_2[1][$key]['price_intermed_1'] = $data_1[1][$key]['avg_price'];
-							// считаем новыю цену по курсам двух пар валют
-							$r = true;
-							break;
-						}
-					}
-					if ($r===false) {
-						unset($data_2[1][$key]);
-						continue;
-					}
 					$data_2[1][$key]['avg_price'] = $data_2[1][$key]['price_intermed_2'] * $data_2[1][$key]['price_intermed_1'];
 					$data_2[1][$key]['percent_price_for_index'] = $data_2[1][$key]['avg_price'] * $data_2[1][$key]['percent_for_index']; // цена курса которая влияет на индекс
 					$data_2[0]['index'] += $data_2[1][$key]['percent_price_for_index']; // сумма всех курсов

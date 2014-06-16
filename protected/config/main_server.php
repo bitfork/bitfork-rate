@@ -10,8 +10,8 @@ return CMap::mergeArray(
 			'db'=>array(
 				'connectionString' => 'mysql:host=localhost;dbname=bitfork_rate',
 				'emulatePrepare' => true,
-				'username' => 'root',
-				'password' => '',
+				'username' => 'bitfork_rate',
+				'password' => '3CSwhQ7H',
 				'charset' => 'utf8',
 				'tablePrefix' => '',
 				'schemaCachingDuration' => 86400,

@@ -34,4 +34,6 @@ return array(
 	'О нас' => 'About',
 	'индекс криптовалют' => 'Crypto Currency Index',
 	'Site map' => 'Site map',
+	'Get запрос' => 'GET request',
+	'Ответ в формате JSON' => 'Response in JSON format',
 );
