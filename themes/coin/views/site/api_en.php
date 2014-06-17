@@ -65,7 +65,7 @@
 <div class="main-grid-340-40 main-margTop2">
 	<div class="main-grid-sidebar_right">
 		<div id="sidebar1" class="main-padding_10">
-			<h3>Навигация по примерам</h3>
+			<h3>Navigation to examples</h3>
 			<div class="main-padding_10 main-block_grayLight main-bordered-double list-links">
 				<a href="#sec1">Getting exchange rate BITCOIN /U.S. DOLLAR</a>
 				<a href="#sec2">Getting average rate per hour BITCOIN /U.S. DOLLAR</a>
@@ -149,7 +149,7 @@
 <hr class="hr-double hr-bigMarg"/>
 <div class="main-grid-340-40 main-margTop2">
 	<div class="main-grid-sidebar_right">
-		<h2>Доступные валютные пары</h2>
+		<h2>Available currency pairs</h2>
 		<div class="main-padding_10 main-block_grayLight main-bordered-double">
 			<table class="table-info">
 				<tr>
