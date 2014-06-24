@@ -18,6 +18,7 @@ class Service extends \CApplicationComponent
 		'cryptotrade'	=> array('class' => '\btc\services\cryptotrade\Api'),
 		'mcxnow'	=> array('class' => '\btc\services\mcxnow\Api'),
 		'mintpal'	=> array('class' => '\btc\services\mintpal\Api'),
+		'cryptonit'	=> array('class' => '\btc\services\cryptonit\Api'),
 	);
 
 	/**

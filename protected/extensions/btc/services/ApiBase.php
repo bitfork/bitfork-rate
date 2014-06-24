@@ -22,7 +22,7 @@ class ApiBase
 			$post_data = http_build_query($post_data, '', '&');
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
 		}
-		if (is_array($post_data)) {
+		if (is_array($headers)) {
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		}
 
