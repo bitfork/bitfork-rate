@@ -3,7 +3,14 @@
 /* @var $model Integration */
 /* @var $form CActiveForm */
 ?>
-
+<style>
+.form {width: 600px; heeght: 500px;}
+.form .row {width: 600px; margin-bottom: 10px;}
+.form label {float: left; width: 100px}
+.form input, .form textarea {width: 400px;}
+.form textarea {height: 150px;}
+.form input[type="submit"] {width: 150px;}
+</style>
 <div class="form">
 
 	<?php $form=$this->beginWidget('CActiveForm', array(
@@ -23,24 +30,24 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'email'); ?>
-		<?php echo $form->textField($model,'email',array('size'=>60,'maxlength'=>1024)); ?>
+		<?php echo $form->textField($model,'email'); ?>
 		<?php echo $form->error($model,'email'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'site'); ?>
-		<?php echo $form->textField($model,'site',array('size'=>60,'maxlength'=>1024)); ?>
+		<?php echo $form->textField($model,'site'); ?>
 		<?php echo $form->error($model,'site'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'comment'); ?>
-		<?php echo $form->textArea($model,'comment',array('rows'=>6, 'cols'=>50)); ?>
+		<?php echo $form->textArea($model,'comment'); ?>
 		<?php echo $form->error($model,'comment'); ?>
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton('Send'); ?>
 	</div>
 
 	<?php echo $form->errorSummary($model, '', '', array('class'=>'msg-err')); ?>

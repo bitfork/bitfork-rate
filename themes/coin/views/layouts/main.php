@@ -91,7 +91,7 @@
 		<div class="main-setWidth">
 			<span>@2014</span>
 			<a href="http://bitfork-develop.com" target="_blank">Bitfork-develop.com</a>
-			<a href="#"><?php echo Yii::t('main', 'Связаться с нами'); ?></a>
+			<a class="fancybox fancybox.ajax" href="/integration/create" data-fancybox-type="ajax"><?php echo Yii::t('main', 'Связаться с нами'); ?></a>
 			<div class="main-right">
 				<a href="<?php echo $this->createUrl('/site/map'); ?>"><?php echo Yii::t('main', 'Site map'); ?></a>
 			</div>
