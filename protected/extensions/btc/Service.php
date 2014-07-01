@@ -20,6 +20,7 @@ class Service extends \CApplicationComponent
 		'mintpal'	=> array('class' => '\btc\services\mintpal\Api'),
 		'cryptonit'	=> array('class' => '\btc\services\cryptonit\Api'),
 		'itbit'	=> array('class' => '\btc\services\itbit\Api'),
+		'bitfinex'	=> array('class' => '\btc\services\bitfinex\Api'),
 	);
 
 	/**
