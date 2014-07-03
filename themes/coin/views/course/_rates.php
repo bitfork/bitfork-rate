@@ -29,9 +29,15 @@
 					return $a['percent_for_index'] < $b['percent_for_index'] ? 1 : -1;
 				}
 				uasort($data, 'myCmp');
+				$i = 1;
+				$c = 6;
 				?>
 				<?php foreach ($data as $row) { ?>
+					<?php if ($i<=$c) { ?>
 					<tr>
+					<?php } else {?>
+					<tr style="display: none" class="hide-row">
+					<?php } ?>
 						<td>
 							<?php
 							$exchange->setService($row['name_service']);
@@ -57,6 +63,16 @@
 							<?php echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], $pair->currency->symbol, $pair->currency->round) : 'loss'; ?>
 						</td>
 					</tr>
+					<?php if ($i==$c+1) { ?>
+					<tr>
+						<td colspan="4">
+							<a href="javascript:;" class="btn-blue btn-block" onclick="$('tr.hide-row').toggle();$(this).hide();">
+								<?php echo Yii::t('main', 'Others show'); ?>
+							</a>
+						</td>
+					</tr>
+					<?php } ?>
+					<?php $i++; ?>
 				<?php } ?>
 				</tbody>
 			</table>

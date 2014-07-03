@@ -36,4 +36,5 @@ return array(
 	'Site map' => 'Site map',
 	'Get запрос' => 'GET request',
 	'Ответ в формате JSON' => 'Response in JSON format',
+	'Others show' => 'Others show',
 );
