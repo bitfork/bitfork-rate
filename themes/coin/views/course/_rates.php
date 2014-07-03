@@ -23,6 +23,13 @@
 				<tbody>
 				<?php $exchange = Yii::app()->exchange; ?>
 				<tr><td colspan="3"></td></tr>
+				<?php
+				function myCmp($a, $b) {
+					if ($a['percent_for_index'] === $b['percent_for_index']) return 0;
+					return $a['percent_for_index'] < $b['percent_for_index'] ? 1 : -1;
+				}
+				uasort($data, 'myCmp');
+				?>
 				<?php foreach ($data as $row) { ?>
 					<tr>
 						<td>
