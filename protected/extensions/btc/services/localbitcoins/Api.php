@@ -21,6 +21,8 @@ class Api extends ApiBase
 			$data = array();
 			$data['last'] = $data_market['USD']['rates']['last'];
 			$data['vol_cur'] = $data_market['USD']['volume_btc'];
+			$data['high'] = 1;
+			$data['low'] = 1;
 			return $data;
 		}
 		$this->setMessageLog(__CLASS__ .' - getTicker не наден нужный елемент');
