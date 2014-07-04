@@ -2,7 +2,7 @@
 	<div class="main-grid-sidebar_right">
 		<div class="main-padding_10">
 			<h3><?php echo Yii::t('main', 'При подсчете курса мы используем:'); ?></h3>
-			<table class="table-dotted">
+			<table class="table-dotted table-hover-tr">
 				<thead>
 				<tr>
 					<th><?php echo Yii::t('main', 'URL биржы'); ?></th>
