@@ -3,8 +3,8 @@ var Page = (function(){
 	var pair;
 	var chart;
 
-	var html_nowrap1 = '<span class="text-nowrap">';
-	var html_nowrap2 = '</span>';
+	var html_nowrap1 = '<p class="text-nowrap">';
+	var html_nowrap2 = '</p>';
 
 	return {
 		init: function(pair, chart){

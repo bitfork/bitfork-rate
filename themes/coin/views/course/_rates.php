@@ -8,7 +8,7 @@
 					<th><?php echo Yii::t('main', 'URL биржы'); ?></th>
 					<th>
 						<?php echo Yii::t('main', 'Курс'); ?>
-						<span class="text-small text-nowrap">
+						<p class="text-small text-nowrap">
 							<?php
 							if (!empty($pair->id_currency_intermed)) {
 								echo $pair->currency_from->name .' / '. $pair->currency_intermed->name;
@@ -16,12 +16,12 @@
 								echo $pair->currency_from->name .' / '. $pair->currency->name;
 							}
 							?>
-						</span>
+						</p>
 					</th>
 					<th><?php echo Yii::t('main', 'Volume, %'); ?></th>
 					<th>
 						<?php echo Yii::t('main', 'Курс'); ?> 
-						<span class="text-small text-nowrap"><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></span>
+						<p class="text-small text-nowrap"><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></p>
 					</th>
 				</tr>
 				</thead>
