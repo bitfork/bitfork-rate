@@ -27,7 +27,7 @@
 				</thead>
 				<tbody>
 				<?php $exchange = Yii::app()->exchange; ?>
-				<tr><td colspan="4"></td></tr>
+				<tr class="tr-nohover"><td colspan="4"></td></tr>
 				<?php
 				function myCmp($a, $b) {
 					if ($a['percent_for_index'] === $b['percent_for_index']) return 0;
@@ -73,7 +73,7 @@
 						</td>
 					</tr>
 					<?php if ($i==$c+1) { ?>
-					<tr>
+					<tr class="tr-nohover">
 						<td colspan="4">
 							<p class="text-center m-t-5 m-b-5">
 								<a href="javascript:;" class="text-a-dotted" onclick="$('tr.hide-row').toggle('slow');$(this).parent().parent().hide();">
