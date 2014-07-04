@@ -8,21 +8,26 @@
 					<th><?php echo Yii::t('main', 'URL биржы'); ?></th>
 					<th>
 						<?php echo Yii::t('main', 'Курс'); ?>
-						<?php
-						if (!empty($pair->id_currency_intermed)) {
-							echo $pair->currency_from->name .' / '. $pair->currency_intermed->name;
-						} else {
-							echo $pair->currency_from->name .' / '. $pair->currency->name;
-						}
-						?>
+						<span class="text-small text-nowrap">
+							<?php
+							if (!empty($pair->id_currency_intermed)) {
+								echo $pair->currency_from->name .' / '. $pair->currency_intermed->name;
+							} else {
+								echo $pair->currency_from->name .' / '. $pair->currency->name;
+							}
+							?>
+						</span>
 					</th>
 					<th><?php echo Yii::t('main', 'Volume, %'); ?></th>
-					<th><?php echo Yii::t('main', 'Курс'); ?> <?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></th>
+					<th>
+						<?php echo Yii::t('main', 'Курс'); ?> 
+						<span class="text-small text-nowrap"><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></span>
+					</th>
 				</tr>
 				</thead>
 				<tbody>
 				<?php $exchange = Yii::app()->exchange; ?>
-				<tr><td colspan="3"></td></tr>
+				<tr><td colspan="4"></td></tr>
 				<?php
 				function myCmp($a, $b) {
 					if ($a['percent_for_index'] === $b['percent_for_index']) return 0;
@@ -45,13 +50,15 @@
 							?>
 						</td>
 						<td id="service_price_in_<?php echo $row['id_service']; ?>">
-							<?php
-							if (!empty($pair->id_currency_intermed)) {
-								echo ($row['price_intermed_2']>0) ? ViewPrice::GetResult($row['price_intermed_2'], $pair->currency_intermed->symbol, $pair->currency_intermed->round) : 'loss';
-							} else {
-								echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], $pair->currency->symbol, $pair->currency->round) : 'loss';
-							}
-							?>
+							<span class="text-nowrap">
+								<?php
+								if (!empty($pair->id_currency_intermed)) {
+									echo ($row['price_intermed_2']>0) ? ViewPrice::GetResult($row['price_intermed_2'], $pair->currency_intermed->symbol, $pair->currency_intermed->round) : 'loss';
+								} else {
+									echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], $pair->currency->symbol, $pair->currency->round) : 'loss';
+								}
+								?>
+							</span>
 						</td>
 						<td id="service_volume_<?php echo $row['id_service']; ?>">
 							<?php
@@ -60,15 +67,19 @@
 							?>
 						</td>
 						<td id="service_price_<?php echo $row['id_service']; ?>">
-							<?php echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], $pair->currency->symbol, $pair->currency->round) : 'loss'; ?>
+							<span class="text-nowrap">
+								<?php echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], $pair->currency->symbol, $pair->currency->round) : 'loss'; ?>
+							</span>
 						</td>
 					</tr>
 					<?php if ($i==$c+1) { ?>
 					<tr>
 						<td colspan="4">
-							<a href="javascript:;" class="btn-blue btn-block" onclick="$('tr.hide-row').toggle();$(this).hide();">
-								<?php echo Yii::t('main', 'Others show'); ?>
-							</a>
+							<p class="text-center m-t-5 m-b-5">
+								<a href="javascript:;" class="text-a-dotted" onclick="$('tr.hide-row').toggle('slow');$(this).parent().parent().hide();">
+									<?php echo Yii::t('main', 'Show more'); ?>
+								</a>
+							</p>
 						</td>
 					</tr>
 					<?php } ?>
