@@ -1,92 +1,94 @@
-<section class="main-bordered-vertical main-separated-vertical main-grid-380 main-grid380_bord main-block_grayLight">
+<section class="main-bordered-vertical main-separated-vertical main-grid-400 main-grid400_bord main-block_grayLight">
 	<div class="main-grid-sidebar_right">
 		<div class="main-padding_10">
 			<h3><?php echo Yii::t('main', 'При подсчете курса мы используем:'); ?></h3>
-			<table class="table-dotted table-hover-tr">
-				<thead>
-				<tr>
-					<th><?php echo Yii::t('main', 'URL биржы'); ?></th>
-					<th>
-						<?php echo Yii::t('main', 'Курс'); ?>
-						<p class="text-small text-nowrap">
-							<?php
-							if (!empty($pair->id_currency_intermed)) {
-								echo $pair->currency_from->name .' / '. $pair->currency_intermed->name;
-							} else {
-								echo $pair->currency_from->name .' / '. $pair->currency->name;
-							}
-							?>
-						</p>
-					</th>
-					<th><?php echo Yii::t('main', 'Volume, %'); ?></th>
-					<th>
-						<?php echo Yii::t('main', 'Курс'); ?> 
-						<p class="text-small text-nowrap"><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></p>
-					</th>
-				</tr>
-				</thead>
-				<tbody>
-				<?php $exchange = Yii::app()->exchange; ?>
-				<tr class="tr-nohover"><td colspan="4"></td></tr>
-				<?php
-				function myCmp($a, $b) {
-					if ($a['percent_for_index'] === $b['percent_for_index']) return 0;
-					return $a['percent_for_index'] < $b['percent_for_index'] ? 1 : -1;
-				}
-				uasort($data, 'myCmp');
-				$i = 1;
-				$c = 6;
-				?>
-				<?php foreach ($data as $row) { ?>
-					<?php if ($i<=$c) { ?>
+			<div class="main-overflow-x">
+				<table class="table-dotted table-hover-tr">
+					<thead>
 					<tr>
-					<?php } else {?>
-					<tr style="display: none" class="hide-row">
-					<?php } ?>
-						<td>
-							<?php
-							$exchange->setService($row['name_service']);
-							echo $exchange->getBaseUrl();
-							?>
-						</td>
-						<td id="service_price_in_<?php echo $row['id_service']; ?>">
-							<span class="text-nowrap">
+						<th><?php echo Yii::t('main', 'URL биржы'); ?></th>
+						<th>
+							<?php echo Yii::t('main', 'Курс'); ?>
+							<p class="text-small text-nowrap">
 								<?php
 								if (!empty($pair->id_currency_intermed)) {
-									echo ($row['price_intermed_2']>0) ? ViewPrice::GetResult($row['price_intermed_2'], $pair->currency_intermed->symbol, $pair->currency_intermed->round) : 'loss';
+									echo $pair->currency_from->name .' / '. $pair->currency_intermed->name;
 								} else {
-									echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], $pair->currency->symbol, $pair->currency->round) : 'loss';
+									echo $pair->currency_from->name .' / '. $pair->currency->name;
 								}
 								?>
-							</span>
-						</td>
-						<td id="service_volume_<?php echo $row['id_service']; ?>">
-							<?php
-							$percent = (float)$row['percent_for_index'] * 100;
-							echo ($percent>0) ? (($percent >= 0.1) ? round($percent, 2) .'%' : '< 0.1 %') : 'loss';
-							?>
-						</td>
-						<td id="service_price_<?php echo $row['id_service']; ?>">
-							<span class="text-nowrap">
-								<?php echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], $pair->currency->symbol, $pair->currency->round) : 'loss'; ?>
-							</span>
-						</td>
-					</tr>
-					<?php if ($i==$c+1) { ?>
-					<tr class="tr-nohover">
-						<td colspan="4">
-							<p class="text-center m-t-5 m-b-5">
-								<a href="javascript:;" class="text-a-dotted" onclick="$('tr.hide-row').toggle('slow');$(this).parent().parent().hide();">
-									<?php echo Yii::t('main', 'Show more'); ?>
-								</a>
 							</p>
-						</td>
+						</th>
+						<th><?php echo Yii::t('main', 'Volume, %'); ?></th>
+						<th>
+							<?php echo Yii::t('main', 'Курс'); ?> 
+							<p class="text-small text-nowrap"><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></p>
+						</th>
 					</tr>
+					</thead>
+					<tbody>
+					<?php $exchange = Yii::app()->exchange; ?>
+					<tr class="tr-nohover"><td colspan="4"></td></tr>
+					<?php
+					function myCmp($a, $b) {
+						if ($a['percent_for_index'] === $b['percent_for_index']) return 0;
+						return $a['percent_for_index'] < $b['percent_for_index'] ? 1 : -1;
+					}
+					uasort($data, 'myCmp');
+					$i = 1;
+					$c = 6;
+					?>
+					<?php foreach ($data as $row) { ?>
+						<?php if ($i<=$c) { ?>
+						<tr>
+						<?php } else {?>
+						<tr style="display: none" class="hide-row">
+						<?php } ?>
+							<td>
+								<?php
+								$exchange->setService($row['name_service']);
+								echo $exchange->getBaseUrl();
+								?>
+							</td>
+							<td id="service_price_in_<?php echo $row['id_service']; ?>">
+								<span class="text-nowrap">
+									<?php
+									if (!empty($pair->id_currency_intermed)) {
+										echo ($row['price_intermed_2']>0) ? ViewPrice::GetResult($row['price_intermed_2'], $pair->currency_intermed->symbol, $pair->currency_intermed->round) : 'loss';
+									} else {
+										echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], $pair->currency->symbol, $pair->currency->round) : 'loss';
+									}
+									?>
+								</span>
+							</td>
+							<td id="service_volume_<?php echo $row['id_service']; ?>">
+								<?php
+								$percent = (float)$row['percent_for_index'] * 100;
+								echo ($percent>0) ? (($percent >= 0.1) ? round($percent, 2) .'%' : '< 0.1 %') : 'loss';
+								?>
+							</td>
+							<td id="service_price_<?php echo $row['id_service']; ?>">
+								<span class="text-nowrap">
+									<?php echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], $pair->currency->symbol, $pair->currency->round) : 'loss'; ?>
+								</span>
+							</td>
+						</tr>
+						<?php if ($i==$c+1) { ?>
+						<tr class="tr-nohover">
+							<td colspan="4">
+								<p class="text-center m-t-5 m-b-5">
+									<a href="javascript:;" class="text-a-dotted" onclick="$('tr.hide-row').toggle('slow');$(this).parent().parent().hide();">
+										<?php echo Yii::t('main', 'Show more'); ?>
+									</a>
+								</p>
+							</td>
+						</tr>
+						<?php } ?>
+						<?php $i++; ?>
 					<?php } ?>
-					<?php $i++; ?>
-				<?php } ?>
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			</div>
 			<a class="btn-blue btn-block fancybox fancybox.ajax" href="<?php echo $this->createUrl('/course/linkExchange'); ?>"><?php echo Yii::t('main', 'Добавить другую биржу'); ?></a>
 		</div>
 	</div>
