@@ -87,7 +87,7 @@
 		<?php echo $content; ?>
 	</section>
 
-	<footer role="contentinfo">
+	<footer role="contentinfo" class="test">
 		<div class="main-setWidth">
 			<span>@2014</span>
 			<a href="http://bitfork-develop.com" target="_blank">Bitfork-develop.com</a>
