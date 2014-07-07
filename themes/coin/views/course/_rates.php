@@ -80,18 +80,18 @@
 								</span>
 							</td>
 						</tr>
-						<?php if ($i==$c+1) { ?>
-						<tr class="tr-nohover">
-							<td colspan="4">
-								<p class="text-center m-t-5 m-b-5">
-									<a id="js-index-exchanges-toogle" href="javascript:;" class="text-a-dotted">
-										<?php echo Yii::t('main', 'Show more'); ?>
-									</a>
-								</p>
-							</td>
-						</tr>
-						<?php } ?>
 						<?php $i++; ?>
+					<?php } ?>
+					<?php if (count($data)>$c) { ?>
+					<tr class="tr-nohover">
+						<td colspan="4">
+							<p class="text-center m-t-5 m-b-5">
+								<a id="js-index-exchanges-toogle" href="javascript:;" class="text-a-dotted">
+									<?php echo Yii::t('main', 'Show more'); ?>
+								</a>
+							</p>
+						</td>
+					</tr>
 					<?php } ?>
 					</tbody>
 				</table>
