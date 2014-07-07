@@ -175,7 +175,7 @@ class Course extends MyActiveRecord
 		$where = array();
 		$order = '';
 		$where[] = "`id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency;
-		if ($period > 0 and $date_start!==null and $date_finish!==null) {
+		if ($period > 0 and $date_start!==null and $date_finish!==null and $date_start!=$date_finish) {
 			$where[] = "`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'";
 		} else {
 			// с каждой биржи получаем только последние данные
