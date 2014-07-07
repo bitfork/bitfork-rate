@@ -95,9 +95,10 @@
 					<?php } ?>
 					</tbody>
 				</table>
-				<script language="javascript">
-					$('#js-init_changeObj').changeVolume({currency: '<?php echo $pair->currency_from->symbol; ?>'});
-				</script>
+				<?php
+				$js = "$('#js-init_changeObj').changeVolume({currency: '". $pair->currency_from->symbol ."'});";
+				Yii::app()->clientScript->registerScript('currency',$js);
+				?>
 			</div>
 			<a class="btn-blue btn-block fancybox fancybox.ajax" href="<?php echo $this->createUrl('/course/linkExchange'); ?>"><?php echo Yii::t('main', 'Добавить другую биржу'); ?></a>
 		</div>
