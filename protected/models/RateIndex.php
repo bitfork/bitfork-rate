@@ -328,7 +328,7 @@ class RateIndex extends MyActiveRecord
 		$index = self::getDateIndex($this->id_currency_from, $this->id_currency, 0, explode(',', $this->servises));
 		$symbol = Currency::getSymbol($this->id_currency);
 		$round = Currency::getCountRound($this->id_currency);
-		$symbol_from = Currency::getSymbol($this->id_currency_from);
+		$symbol_from = ' '; //Currency::getSymbol($this->id_currency_from);
 		$round_from = 2; //Currency::getCountRound($this->id_currency_from);
 		$services = $index['services'];
 		$data = array();

@@ -3,7 +3,7 @@
 		<div class="main-padding_10">
 			<h3><?php echo Yii::t('main', 'При подсчете курса мы используем:'); ?></h3>
 			<div class="main-overflow-x">
-				<table class="table-dotted table-hover-tr">
+				<table id="js-init_changeObj" class="table-dotted table-hover-tr">
 					<thead>
 					<tr>
 						<th><?php echo Yii::t('main', 'URL биржы'); ?></th>
@@ -70,7 +70,7 @@
 										?>
 									</span>
 									<span class="volume_shift_2">
-										<?php echo ViewPrice::GetResult($row['avg_volume'], $pair->currency_from->symbol, 2/*$pair->currency_from->round*/); ?>
+										<?php echo ViewPrice::GetResult($row['avg_volume'], ' ', 2); ?>
 									</span>
 								</aside>
 							</td>
@@ -95,6 +95,9 @@
 					<?php } ?>
 					</tbody>
 				</table>
+				<script language="javascript">
+					$('#js-init_changeObj').changeVolume({currency: '<?php echo $pair->currency_from->symbol; ?>'});
+				</script>
 			</div>
 			<a class="btn-blue btn-block fancybox fancybox.ajax" href="<?php echo $this->createUrl('/course/linkExchange'); ?>"><?php echo Yii::t('main', 'Добавить другую биржу'); ?></a>
 		</div>
