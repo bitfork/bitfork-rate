@@ -19,7 +19,7 @@
 								?>
 							</p>
 						</th>
-						<th><?php echo Yii::t('main', 'Volume, %'); ?></th>
+						<th class="volume_col"><?php echo Yii::t('main', 'Volume'); ?> <p id="volume_measure" class="text-small text-nowrap">%</p></th>
 						<th>
 							<?php echo Yii::t('main', 'Курс'); ?> 
 							<p class="text-small text-nowrap"><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></p>
@@ -61,11 +61,18 @@
 									?>
 								</span>
 							</td>
-							<td id="service_volume_<?php echo $row['id_service']; ?>">
-								<?php
-								$percent = (float)$row['percent_for_index'] * 100;
-								echo ($percent>0) ? (($percent >= 0.1) ? round($percent, 2) .'%' : '< 0.1 %') : 'loss';
-								?>
+							<td id="service_volume_<?php echo $row['id_service']; ?>" class="volume_col">
+								<aside class="volume_shift">
+									<span class="volume_shift_1">
+										<?php
+										$percent = (float)$row['percent_for_index'] * 100;
+										echo ($percent>0) ? (($percent >= 0.1) ? round($percent, 2) .'%' : '&lt; 0.1 %') : 'loss';
+										?>
+									</span>
+									<span class="volume_shift_2">
+										<?php echo ViewPrice::GetResult($row['avg_volume'], $pair->currency_from->symbol, $pair->currency_from->round); ?>
+									</span>
+								</aside>
 							</td>
 							<td id="service_price_<?php echo $row['id_service']; ?>">
 								<span class="text-nowrap">

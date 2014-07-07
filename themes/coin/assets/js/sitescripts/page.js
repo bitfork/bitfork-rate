@@ -27,7 +27,8 @@ var Page = (function(){
 				if (data.services.hasOwnProperty(key)) {
 					$('#service_price_in_'+ data.services[key].id +'').html(html_nowrap1 + data.services[key].price_intermed + html_nowrap2);
 					$('#service_price_'+ data.services[key].id +'').html(html_nowrap1 + data.services[key].price + html_nowrap2);
-					$('#service_volume_'+ data.services[key].id +'').html(data.services[key].volume);
+					$('#service_volume_'+ data.services[key].id +' .volume_shift_1').html(data.services[key].percent);
+					$('#service_volume_'+ data.services[key].id +' .volume_shift_2').html(data.services[key].volume);
 				}
 			}
 			if (this.chart != '') {

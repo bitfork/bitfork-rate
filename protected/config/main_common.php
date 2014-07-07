@@ -78,7 +78,8 @@ return array(
 						'js/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js',
 						'js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js',
 						'js/ScrollToFixed/jquery-scrolltofixed-min.js',
-						'js/bitforkrate.js',
+						'js/sitescripts/bitforkrate.js',
+						'js/sitescripts/page-index.js',
 					),
 				),
 				'chart' => array(

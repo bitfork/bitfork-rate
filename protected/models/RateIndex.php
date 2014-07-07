@@ -328,6 +328,8 @@ class RateIndex extends MyActiveRecord
 		$index = self::getDateIndex($this->id_currency_from, $this->id_currency, 0, explode(',', $this->servises));
 		$symbol = Currency::getSymbol($this->id_currency);
 		$round = Currency::getCountRound($this->id_currency);
+		$symbol_from = Currency::getSymbol($this->id_currency_from);
+		$round_from = Currency::getCountRound($this->id_currency_from);
 		$services = $index['services'];
 		$data = array();
 		foreach ($services as $service) {
@@ -343,7 +345,8 @@ class RateIndex extends MyActiveRecord
 				'id'=>$service['id_service'],
 				'price_intermed'=>$price_intermed,
 				'price'=>$price,
-				'volume'=>$percent,
+				'percent'=>$percent,
+				'volume'=>ViewPrice::GetResult($service['avg_volume'], $symbol_from, $round_from),
 			);
 		}
 		Yii::app()->websocket->send(array(
