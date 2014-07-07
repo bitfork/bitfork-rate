@@ -118,7 +118,7 @@ class Integration extends MyActiveRecord
 		}
 	}
 
-	public function send()
+	public function sendMail()
 	{
 		$_admin_from = 'robot';
 		$_admin_email = 'robot@bitfork-rate.com';
