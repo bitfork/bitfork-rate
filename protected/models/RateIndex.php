@@ -329,7 +329,7 @@ class RateIndex extends MyActiveRecord
 		$symbol = Currency::getSymbol($this->id_currency);
 		$round = Currency::getCountRound($this->id_currency);
 		$symbol_from = Currency::getSymbol($this->id_currency_from);
-		$round_from = Currency::getCountRound($this->id_currency_from);
+		$round_from = 2; //Currency::getCountRound($this->id_currency_from);
 		$services = $index['services'];
 		$data = array();
 		foreach ($services as $service) {

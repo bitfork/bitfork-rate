@@ -70,7 +70,7 @@
 										?>
 									</span>
 									<span class="volume_shift_2">
-										<?php echo ViewPrice::GetResult($row['avg_volume'], $pair->currency_from->symbol, $pair->currency_from->round); ?>
+										<?php echo ViewPrice::GetResult($row['avg_volume'], $pair->currency_from->symbol, 2/*$pair->currency_from->round*/); ?>
 									</span>
 								</aside>
 							</td>
