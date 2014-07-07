@@ -84,7 +84,7 @@
 						<tr class="tr-nohover">
 							<td colspan="4">
 								<p class="text-center m-t-5 m-b-5">
-									<a href="javascript:;" class="text-a-dotted" onclick="$('tr.hide-row').toggle('slow');$(this).parent().parent().hide();">
+									<a id="js-index-exchanges-toogle" href="javascript:;" class="text-a-dotted">
 										<?php echo Yii::t('main', 'Show more'); ?>
 									</a>
 								</p>
