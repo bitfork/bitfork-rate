@@ -55,11 +55,6 @@ return array(
 					'class'=>'CFileLogRoute',
 					'levels'=>'error, warning',
 				),
-				array(
-					'class'=>'CEmailLogRoute',
-					'levels'=>'error, warning',
-					'emails'=>'vol4444@yandex.ru',
-				),
 				// uncomment the following to show log messages on web pages
 				/*
 				array(

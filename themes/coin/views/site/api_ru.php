@@ -35,7 +35,7 @@
 
 	<div class="main-grid-content_left">
 		<h2>Как генерируется URL для получения данных</h2>
-		<a class="main-padding_10 img-wrap-block fancybox" title="Как генерируется URL для получения данных" style="max-width:800px;" href=""><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/api_formula.jpg"/></a>
+		<a class="main-padding_10 img-wrap-block fancybox" title="Как генерируется URL для получения данных" style="max-width:800px;" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/api_formula.jpg"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/api_formula.jpg"/></a>
 	</div>
 </section>
 

@@ -37,7 +37,7 @@
 
 	<div class="main-grid-content_left">
 		<h2>Url scheme for obtaining data:</h2>
-		<a class="main-padding_10 img-wrap-block fancybox" title="Url scheme for obtaining data:" style="max-width:800px;" href=""><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/api_formula.jpg"/></a>
+		<a class="main-padding_10 img-wrap-block fancybox" title="Url scheme for obtaining data:" style="max-width:800px;" href="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/api_formula_en.jpg"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/api_formula_en.jpg"/></a>
 	</div>
 </section>
 
@@ -65,14 +65,14 @@
 <div class="main-grid-340-40 main-margTop2">
 	<div class="main-grid-sidebar_right">
 		<div id="sidebar1" class="main-padding_10">
-			<h3>Навигация по примерам</h3>
+			<h3>Navigation to examples</h3>
 			<div class="main-padding_10 main-block_grayLight main-bordered-double list-links">
-				<a href="#sec1">Получение моментального курса Bitcoin к доллару США</a>
-				<a href="#sec2">Получение среднего за час курса Bitcoin к доллару США</a>
-				<a href="#sec3">Получение среднего за сутки курса Bitcoin к доллару США</a>
-				<a href="#sec4">Получение моментального курса Litecoin к Bitcoin</a>
-				<a href="#sec5">Получение среднего за час курса Litecoin к Bitcoin</a>
-				<a href="#sec6">Получение среднего за сутки курса Litecoin к Bitcoin</a>
+				<a href="#sec1">Getting exchange rate BITCOIN /U.S. DOLLAR</a>
+				<a href="#sec2">Getting average rate per hour BITCOIN /U.S. DOLLAR</a>
+				<a href="#sec3">Getting average rate per day BITCOIN /U.S. DOLLAR</a>
+				<a href="#sec4">Getting exchange rate LTC\BTC</a>
+				<a href="#sec5">Getting average rate per hour LTC\BTC</a>
+				<a href="#sec6">Getting average rate per day LTC\BTC</a>
 				<a href="#sec7">CONSTRUCTOR FOR OTHER CURRENCY PAIR</a>
 			</div>
 		</div>
@@ -88,7 +88,7 @@
 		</article>
 
 		<article id="sec2" class="main-margTop2">
-			<h3>Получение среднего за час курса Bitcoin к доллару США</h3>
+			<h3>Getting average rate per hour BITCOIN /U.S. DOLLAR</h3>
 			<div class="main-block_graySimple main-padding_10">
 				<?php $apiExampleForm->api_example = $this->createAbsoluteUrl("/api/".$pair_1->currency_from->name ."/". $pair_1->currency->name ."/60"); ?>
 				<?php echo $this->renderPartial('_api_example', array('apiExampleForm'=>$apiExampleForm)); ?>
@@ -96,7 +96,7 @@
 		</article>
 
 		<article id="sec3" class="main-margTop2">
-			<h3>Получение среднего за сутки курса Bitcoin к доллару США</h3>
+			<h3>Getting average rate per day BITCOIN /U.S. DOLLAR</h3>
 			<div class="main-block_graySimple main-padding_10">
 				<?php $apiExampleForm->api_example = $this->createAbsoluteUrl("/api/".$pair_1->currency_from->name ."/". $pair_1->currency->name ."/1440"); ?>
 				<?php echo $this->renderPartial('_api_example', array('apiExampleForm'=>$apiExampleForm)); ?>
@@ -104,7 +104,7 @@
 		</article>
 
 		<article id="sec4" class="main-margTop2">
-			<h3>Получение моментального курса Litecoin к Bitcoin</h3>
+			<h3>Getting exchange rate LTC\BTC</h3>
 			<div class="main-block_graySimple main-padding_10">
 				<?php $apiExampleForm->api_example = $this->createAbsoluteUrl("/api/".$pair_2->currency_from->name ."/". $pair_2->currency->name ."/0"); ?>
 				<?php echo $this->renderPartial('_api_example', array('apiExampleForm'=>$apiExampleForm)); ?>
@@ -112,7 +112,7 @@
 		</article>
 
 		<article id="sec5" class="main-margTop2">
-			<h3>Получение среднего за час курса Litecoin к Bitcoin</h3>
+			<h3>Getting average rate per hour LTC\BTC</h3>
 			<div class="main-block_graySimple main-padding_10">
 				<?php $apiExampleForm->api_example = $this->createAbsoluteUrl("/api/".$pair_2->currency_from->name ."/". $pair_2->currency->name ."/60"); ?>
 				<?php echo $this->renderPartial('_api_example', array('apiExampleForm'=>$apiExampleForm)); ?>
@@ -120,7 +120,7 @@
 		</article>
 
 		<article id="sec6" class="main-margTop2">
-			<h3>Получение среднего за сутки курса Litecoin к Bitcoin</h3>
+			<h3>Getting average rate per day LTC\BTC</h3>
 			<div class="main-block_graySimple main-padding_10">
 				<?php $apiExampleForm->api_example = $this->createAbsoluteUrl("/api/".$pair_2->currency_from->name ."/". $pair_2->currency->name ."/1440"); ?>
 				<?php echo $this->renderPartial('_api_example', array('apiExampleForm'=>$apiExampleForm)); ?>
@@ -149,7 +149,7 @@
 <hr class="hr-double hr-bigMarg"/>
 <div class="main-grid-340-40 main-margTop2">
 	<div class="main-grid-sidebar_right">
-		<h2>Доступные валютные пары</h2>
+		<h2>Available currency pairs</h2>
 		<div class="main-padding_10 main-block_grayLight main-bordered-double">
 			<table class="table-info">
 				<tr>
@@ -212,9 +212,9 @@
 						<td><h3>Period:</h3></td>
 						<td>
 							<select class="inp-mid" name="period">
-								<option value="0">Моментальный курс</option>
-								<option value="60">Курс за час</option>
-								<option value="1440">Курс за сутки</option>
+								<option value="0">Instant rate</option>
+								<option value="60">Per hour</option>
+								<option value="1440">Per day</option>
 							</select>
 						</td>
 						<td></td>

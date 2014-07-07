@@ -14,10 +14,18 @@ class Service extends \CApplicationComponent
 		'cryptsy'	=> array('class' => '\btc\services\cryptsy\Api'),
 		'bter'		=> array('class' => '\btc\services\bter\Api'),
 		'kraken'	=> array('class' => '\btc\services\kraken\Api'),
-		'goc'	=> array('class' => '\btc\services\goc\Api'),
-		'cryptotrade'	=> array('class' => '\btc\services\cryptotrade\Api'),
+		'goc'		=> array('class' => '\btc\services\goc\Api'),
+		'cryptotrade'		=> array('class' => '\btc\services\cryptotrade\Api'),
 		'mcxnow'	=> array('class' => '\btc\services\mcxnow\Api'),
 		'mintpal'	=> array('class' => '\btc\services\mintpal\Api'),
+		'cryptonit'	=> array('class' => '\btc\services\cryptonit\Api'),
+		'itbit'		=> array('class' => '\btc\services\itbit\Api'),
+		'bitfinex'	=> array('class' => '\btc\services\bitfinex\Api'),
+		'localbitcoins'		=> array('class' => '\btc\services\localbitcoins\Api'),
+		'hitbtc'	=> array('class' => '\btc\services\hitbtc\Api'),
+		'bitex'		=> array('class' => '\btc\services\bitex\Api'),
+		'bitkonan'	=> array('class' => '\btc\services\bitkonan\Api'),
+		'therocktrading'	=> array('class' => '\btc\services\therocktrading\Api'),
 	);
 
 	/**

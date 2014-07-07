@@ -1,11 +1,11 @@
 <?php
 return array(
-	'Битфорк индекс курса криптовалют. Курс bitcoin, litecoin и других криптовалют.' => 'Bitfork-rate.com - crypto currency price index.',
+	'Битфорк индекс курса криптовалют. Курс bitcoin, litecoin и других криптовалют.' => 'Bitfork-rate.com - Bitcoin and other crypto currency price index.',
 	'Битфорк индекс курса криптовалют. Курс биткоин (bitcoin) к доллару USD, курс litecoin к доллару USD.  Бесплатное API для сторонних интернет сайтов. Настраиваемые параметры курса криптовалют.' => 'Global bitcoin, litecoin, vertcoin and other currencies price index. Free open source project for tracking popular crypto currencies rates in one place.',
 	'Formula estimate crypto currency  price index | Bitfork-rate.com' => 'Formula estimate crypto currency  price index | Bitfork-rate.com',
 	'Price index calculation example and formula description. Bitfork-rate.com using price and volume from popular bitcoin, litecoin and other crypto currencies exchanges.' => 'Price index calculation example and formula description. Bitfork-rate.com using price and volume from popular bitcoin, litecoin and other crypto currencies exchanges.',
 
-	'Bitfork-rate.com - индекс криптовалют' => 'Bitfork-rate.com - CryptoCurrency Index',
+	'Bitfork-rate.com - индекс криптовалют' => 'Bitfork-rate.com - Bitcoin and other crypto currency price index',
 	'бесплатный, настраиваемый сервис с открытым кодом, дающий вам возможность получать необходимые виды котировок на рынке криптовалют (биткоин, лайткоин и другие форк валюты). Настраиваемое по параметрам API.' => 'presents you free open source project for tracking popular cryptocurrencies rates in one place. Bitfork-rate.com uses all cryptocurrencies exchanges that possible for getting more reliable cryptocurrencies index. Get and customize for your needs cryptocurrency rates with BITFORK-RATE API!',
 	'Бесплатный api для получения котировок криптовалют на вашем сайте' => 'Free api for getting cryptocurrency index for your website',
 	'Моментальный курс {cur_from}/{cur}' => 'REAL-TIME {cur_from}/{cur} index',
@@ -36,4 +36,5 @@ return array(
 	'Site map' => 'Site map',
 	'Get запрос' => 'GET request',
 	'Ответ в формате JSON' => 'Response in JSON format',
+	'Others show' => 'Others show',
 );

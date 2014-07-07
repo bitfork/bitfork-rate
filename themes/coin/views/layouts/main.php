@@ -47,39 +47,39 @@
 <div id="wrapper">
 	<header role="banner">
 		<div class="main-setWidth main-clearfix">
-			<a id="header-top" href="<?php echo $this->createUrl('/'); ?>"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/logo.jpg"/></a>
+			<section class="main-left">
+					<a class="logo" href="<?php echo $this->createUrl('/'); ?>"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitfork-rate-logo.svg" onerror="this.onerror=null; this.src='<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitfork-rate-logo.jpg'"/></a>
+					<?php $this->widget('MyMenu',array(
+						'items'=>array(
+							array('label'=>Yii::t('main', 'Формула расчета'), 'url'=>array('/site/formula')),
+							array('label'=>Yii::t('main', 'Free API'), 'url'=>array('/site/api')),
+							array('label'=>Yii::t('main', 'GitHub'), 'url'=>'https://github.com/bitfork/bitfork-rate','linkOptions'=>array('target'=>'_blank')),
+						),
+						'id'=>'header-nav',
+					)); ?>
+				</section>
 
-			<?php $this->widget('MyMenu',array(
-				'items'=>array(
-					array('label'=>Yii::t('main', 'Формула расчета'), 'url'=>array('/site/formula')),
-					array('label'=>Yii::t('main', 'Free API'), 'url'=>array('/site/api')),
-					array('label'=>Yii::t('main', 'GitHub'), 'url'=>'https://github.com/bitfork/bitfork-rate','linkOptions'=>array('target'=>'_blank')),
-				),
-				'id'=>'header-nav',
-			)); ?>
-
-
-			<section class="main-right">
-				<select id="source" class="main-inlineBlock" name="pair">
-					<?php foreach (Pair::model()->findAll() as $pair) { ?>
-						<option
-							value="<?php echo $this->createUrl('/course/index', array('from'=>$pair->currency_from->name,'to'=>$pair->currency->name)); ?>"
-							<?php echo (isset($_GET['from'],$_GET['to']) and $pair->currency_from->name == $_GET['from'] and $pair->currency->name == $_GET['to']) ? ' selected="selectd"': ''; ?>
-						><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></option>
-					<?php } ?>
-				</select>
-				<script language="javascript">
-					$( document ).ready(function() {
-						$('select[id=source]').change(function(){
-							window.location = $(this).find('option:selected').val();
+				<section class="main-right">
+					<select id="source" class="main-inlineBlock" name="pair">
+						<?php foreach (Pair::model()->findAll() as $pair) { ?>
+							<option
+								value="<?php echo $this->createUrl('/course/index', array('from'=>$pair->currency_from->name,'to'=>$pair->currency->name)); ?>"
+								<?php echo (isset($_GET['from'],$_GET['to']) and $pair->currency_from->name == $_GET['from'] and $pair->currency->name == $_GET['to']) ? ' selected="selectd"': ''; ?>
+							><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></option>
+						<?php } ?>
+					</select>
+					<script language="javascript">
+						$( document ).ready(function() {
+							$('select[id=source]').change(function(){
+								window.location = $(this).find('option:selected').val();
+							});
 						});
-					});
-				</script>
+					</script>
 
-				<span class="main-inlineBlock text-light"><?php echo Yii::t('main', 'индекс криптовалют'); ?></span>
+					<span class="main-inlineBlock text-light"><?php echo Yii::t('main', 'индекс криптовалют'); ?></span>
 
-				<?php $this->widget('LanguageSwitcherWidget'); ?>
-			</section>
+					<?php $this->widget('LanguageSwitcherWidget'); ?>
+				</section>
 		</div>
 	</header>
 
