@@ -203,6 +203,7 @@ class Course extends MyActiveRecord
 			GROUP BY t.id_service
 			ORDER BY t.`id`
 		";
+		Yii::log($sql, 'warning', 'sql');
 
 		$connection=Yii::app()->db;
 		$command=$connection->createCommand($sql);
