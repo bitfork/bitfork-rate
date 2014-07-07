@@ -109,4 +109,27 @@ class Integration extends MyActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	protected function afterSave()
+	{
+		parent::afterSave();
+		if ($this->isNewRecord) {
+			$this->sendMail();
+		}
+	}
+
+	public function send()
+	{
+		$_admin_from = 'robot';
+		$_admin_email = 'robot@bitfork-rate.com';
+		$subject = 'Bitfork-rate CREATE INTEGRATION';
+		$email = 'ens.rationis@bono-idea.com';
+		$message = 'email: '. $this->email ."<br />".
+			'site: '. $this->site ."<br />".
+			'comment: '. $this->comment;
+		$headers = "MIME-Version: 1.0\r\nFrom: $_admin_from\r\nReply-To: $_admin_email\r\nContent-Type: text/html; charset=utf-8";
+		$message = wordwrap($message, 70);
+		$message = str_replace("\n.", "\n..", $message);
+		return mail($email,'=?UTF-8?B?'.base64_encode($subject).'?=',$message,$headers);
+	}
 }
