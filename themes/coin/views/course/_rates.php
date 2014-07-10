@@ -63,13 +63,13 @@
 							</td>
 							<td id="service_volume_<?php echo $row['id_service']; ?>" class="volume_col">
 								<aside class="volume_shift">
-									<span class="volume_shift_1">
+									<span class="volume_shift_1 text-nowrap">
 										<?php
 										$percent = (float)$row['percent_for_index'] * 100;
 										echo ($percent>0) ? (($percent >= 0.1) ? round($percent, 2) .'%' : '&lt; 0.1 %') : 'loss';
 										?>
 									</span>
-									<span class="volume_shift_2">
+									<span class="volume_shift_2 text-nowrap">
 										<?php echo ViewPrice::GetResult($row['avg_volume'], ' ', 2); ?>
 									</span>
 								</aside>
