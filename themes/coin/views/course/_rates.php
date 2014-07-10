@@ -20,10 +20,10 @@
 							</p>
 						</th>
 						<th class="volume_col"><?php echo Yii::t('main', 'Volume'); ?> <p id="volume_measure" class="text-small text-nowrap">%</p></th>
-						<th>
+						<?php /*<th>
 							<?php echo Yii::t('main', 'Курс'); ?> 
 							<p class="text-small text-nowrap"><?php echo $pair->currency_from->name .' / '. $pair->currency->name; ?></p>
-						</th>
+						</th>*/ ?>
 					</tr>
 					</thead>
 					<tbody>
@@ -74,11 +74,11 @@
 									</span>
 								</aside>
 							</td>
-							<td id="service_price_<?php echo $row['id_service']; ?>">
+							<?php /*<td id="service_price_<?php echo $row['id_service']; ?>">
 								<span class="text-nowrap">
 									<?php echo ($row['avg_price']>0) ? ViewPrice::GetResult($row['avg_price'], $pair->currency->symbol, $pair->currency->round) : 'loss'; ?>
 								</span>
-							</td>
+							</td>*/ ?>
 						</tr>
 						<?php $i++; ?>
 					<?php } ?>
