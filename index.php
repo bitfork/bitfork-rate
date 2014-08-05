@@ -4,16 +4,12 @@ ini_set('display_errors',1);
 ini_set('date.timezone', 'Europe/Moscow');
 //date_default_timezone_set("UTC");
 
-// change the following paths if necessary
-$yii=dirname(__FILE__).'/../framework/yii.php';
-//$yii=dirname(__FILE__).'/../framework/yii.php';
-
 if ($_SERVER['HTTP_HOST']=='bitfork'){
 	defined('YII_DEBUG') or define('YII_DEBUG',true);
+	$yii=dirname(__FILE__).'/../framework/yii.php';
 } else {
 	defined('YII_DEBUG') or define('YII_DEBUG',false);
-	//define('YII_ENABLE_ERROR_HANDLER', false);
-	//define('YII_ENABLE_EXCEPTION_HANDLER', false);
+	$yii=dirname(__FILE__).'/../private/framework/yii.php';
 }
 
 $config=dirname(__FILE__).'/protected/config/main.php';
