@@ -2,11 +2,13 @@
 ini_set('memory_limit','128M');
 ini_set('date.timezone', 'Europe/Moscow');
 
-defined('YII_DEBUG') or define('YII_DEBUG',false);
-
-// подключаем файл инициализации Yii
-//require_once(dirname(__FILE__).'/../framework/yii.php');
-require_once(dirname(__FILE__).'/../framework/yii.php');
+if ($_SERVER['HTTP_HOST']=='bitfork'){
+	defined('YII_DEBUG') or define('YII_DEBUG',true);
+	require_once(dirname(__FILE__).'/../framework/yii.php');
+} else {
+	defined('YII_DEBUG') or define('YII_DEBUG',false);
+	require_once(dirname(__FILE__).'/../private/framework/yii.php');
+}
 
 // файл конфигурации будет отдельный
 $configFile=dirname(__FILE__).'/protected/config/cron.php';
