@@ -3,14 +3,14 @@
 class WebsocketServer
 {
     public function __construct($config) {
-		echo "<pre>";
-		print_r($config);
-		echo "</pre>";
         $this->config = $config;
 		$this->config['pid'] = Yii::getPathOfAlias('application.runtime') . $this->config['pid'];
     }
 
     public function start() {
+		echo "<pre>";
+		print_r($this->config['pid']);
+		echo "</pre>";
         $pid = @file_get_contents($this->config['pid']);
         if ($pid) {
             die("already started\r\n");
