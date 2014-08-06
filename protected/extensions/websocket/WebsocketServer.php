@@ -8,10 +8,8 @@ class WebsocketServer
     }
 
     public function start() {
-		echo "<pre>";
-		print_r($this->config['pid']);
-		echo "</pre>";
         $pid = @file_get_contents($this->config['pid']);
+		var_dump($pid);
         if ($pid) {
             die("already started\r\n");
         }
