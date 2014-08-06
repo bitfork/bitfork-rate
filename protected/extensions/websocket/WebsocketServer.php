@@ -9,8 +9,7 @@ class WebsocketServer
 
     public function start() {
         $pid = @file_get_contents($this->config['pid']);
-		var_dump($pid);
-        if ($pid) {
+        if ($pid!==false) {
             die("already started\r\n");
         }
 
@@ -105,7 +104,7 @@ class WebsocketServer
 
     public function stop() {
         $pid = @file_get_contents($this->config['pid']);
-        if ($pid) {
+        if ($pid!==false) {
             //posix_kill($pid, SIGTERM);
             unlink($this->config['pid']);
             /*sleep(1);
@@ -127,7 +126,7 @@ class WebsocketServer
 
     public function restart() {
         $pid = @file_get_contents($this->config['pid']);
-        if ($pid) {
+        if ($pid!==false) {
             $this->stop();
         }
 
