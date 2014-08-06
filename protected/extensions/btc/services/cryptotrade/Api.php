@@ -22,7 +22,7 @@ class Api extends ApiBase
 			$data_market = $data['data'];
 			$data = array();
 			$data['last'] = $data_market['last'];
-			$data['vol_cur'] = $data_market['vol_'. mb_strtolower($currency_to, 'utf-8')];
+			$data['vol_cur'] = $data_market['vol_'. mb_strtoupper($currency_to, 'utf-8')];
 			$data['high'] = $data_market['high'];
 			$data['low'] = $data_market['low'];
 			return $data;
