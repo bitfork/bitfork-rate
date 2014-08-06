@@ -8,8 +8,9 @@ class WebsocketServer
     }
 
     public function start() {
-        $pid = @file_get_contents($this->config['pid']);
-        if ($pid!==false) {
+        //$pid = @file_get_contents($this->config['pid']);
+        //if ($pid!==false) {
+        if (file_exists($this->config['pid'])) {
             die("already started\r\n");
         }
 
@@ -103,8 +104,9 @@ class WebsocketServer
     }*/
 
     public function stop() {
-        $pid = @file_get_contents($this->config['pid']);
-        if ($pid!==false) {
+        //$pid = @file_get_contents($this->config['pid']);
+        //if ($pid!==false) {
+		if (file_exists($this->config['pid'])) {
             //posix_kill($pid, SIGTERM);
             unlink($this->config['pid']);
             /*sleep(1);
@@ -125,8 +127,9 @@ class WebsocketServer
     }
 
     public function restart() {
-        $pid = @file_get_contents($this->config['pid']);
-        if ($pid!==false) {
+        //$pid = @file_get_contents($this->config['pid']);
+        //if ($pid!==false) {
+		if (file_exists($this->config['pid'])) {
             $this->stop();
         }
 
