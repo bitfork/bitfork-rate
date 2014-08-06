@@ -3,6 +3,9 @@
 class WebsocketServer
 {
     public function __construct($config) {
+		echo "<pre>";
+		print_r($config);
+		echo "</pre>";
         $this->config = $config;
 		$this->config['pid'] = Yii::getPathOfAlias('application.runtime') . $this->config['pid'];
     }
