@@ -20,6 +20,9 @@ class Api extends ApiBase
 		$data = $this->query($this->getUrl('ticker', $currency));
 		if (isset($data['data'])) {
 			$data_market = $data['data'];
+			echo "<pre>";
+			print_r($data_market);
+			echo "</pre>";exit;
 			$data = array();
 			$data['last'] = $data_market['last'];
 			$data['vol_cur'] = $data_market['vol_'. mb_strtoupper($currency_to, 'utf-8')];
