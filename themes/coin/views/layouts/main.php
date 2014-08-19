@@ -48,7 +48,8 @@
 	<header role="banner">
 		<div class="main-setWidth main-clearfix">
 			<section class="main-left">
-					<a class="logo" href="<?php echo $this->createUrl('/'); ?>"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitfork-rate-logo.svg" onerror="this.onerror=null; this.src='<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitfork-rate-logo.jpg'"/></a>
+					<a id="header-logo" href="<?php echo $this->createUrl('/'); ?>"></a>
+					<!-- <a class="logo" href="<?php echo $this->createUrl('/'); ?>"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitfork-rate-logo.svg" onerror="this.onerror=null; this.src='<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitfork-rate-logo.jpg'"/></a> -->
 					<?php $this->widget('MyMenu',array(
 						'items'=>array(
 							array('label'=>Yii::t('main', 'Формула расчета'), 'url'=>array('/site/formula')),
