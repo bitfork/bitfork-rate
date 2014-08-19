@@ -3,7 +3,7 @@
 		<div class="main-padding_10">
 			<h3><?php echo Yii::t('main', 'При подсчете курса мы используем:'); ?></h3>
 			<div class="main-overflow-x">
-				<table id="js-init_changeObj" class="table-dotted table-hover-tr">
+				<table id="js-init_changeObj" class="table-dotted table-hover-tr table-fullWidth">
 					<thead>
 					<tr>
 						<th><?php echo Yii::t('main', 'URL биржы'); ?></th>
