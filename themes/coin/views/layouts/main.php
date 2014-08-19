@@ -20,8 +20,10 @@
 	<script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/jquery-1.10.1.min.js"></script>
 	<?php Yii::app()->clientScript->registerPackage('app'); ?>
 
+	<!-- Modernizr 2.8.3 (http://modernizr.com/) +  html5shiv v3.7.1 w/ printshiv -->
+	<script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/modernizr.custom.07029.js"></script>
+
 	<!--[if lte IE 8]>
-	<script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/html5shiv-printshiv.js"></script>
 	<script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/selectivizr-1.0.2/selectivizr-min.js"></script>
 	<![endif]-->
 
