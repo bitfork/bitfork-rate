@@ -22,7 +22,14 @@ class Api extends ApiBase
 			$data_market = $data['data'];
 			$data = array();
 			$data['last'] = $data_market['last'];
-			$data['vol_cur'] = $data_market['vol_'. mb_strtoupper($currency_to, 'utf-8')];
+			if (isset($data_market['vol_'. mb_strtoupper($currency_to, 'utf-8')])) {
+				$data['vol_cur'] = $data_market['vol_'. mb_strtoupper($currency_to, 'utf-8')];
+			} elseif (isset($data_market['vol_'. mb_strtolower($currency_to, 'utf-8')])) {
+				$data['vol_cur'] = $data_market['vol_'. mb_strtolower($currency_to, 'utf-8')];
+			} else {
+				$this->setMessageLog(__CLASS__ .' - getTicker не наден нужный елемент');
+				return false;
+			}
 			$data['high'] = $data_market['high'];
 			$data['low'] = $data_market['low'];
 			return $data;

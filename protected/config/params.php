@@ -14,5 +14,5 @@ return array(
 	'count_step_service'=>100,
 	'sleep_step_service'=>3,
 	'count_step_calculate'=>100,
-	'sleep_step_calculate'=>5,
+	'sleep_step_calculate'=>10,
 );
