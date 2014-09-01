@@ -20,8 +20,10 @@
 	<script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/jquery-1.10.1.min.js"></script>
 	<?php Yii::app()->clientScript->registerPackage('app'); ?>
 
+	<!-- Modernizr 2.8.3 (http://modernizr.com/) +  html5shiv v3.7.1 w/ printshiv -->
+	<script src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/modernizr.custom.07029.js"></script>
+
 	<!--[if lte IE 8]>
-	<script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/html5shiv-printshiv.js"></script>
 	<script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/js/selectivizr-1.0.2/selectivizr-min.js"></script>
 	<![endif]-->
 
@@ -48,7 +50,8 @@
 	<header role="banner">
 		<div class="main-setWidth main-clearfix">
 			<section class="main-left">
-					<a class="logo" href="<?php echo $this->createUrl('/'); ?>"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitfork-rate-logo.svg" onerror="this.onerror=null; this.src='<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitfork-rate-logo.jpg'"/></a>
+					<a id="header-logo" href="<?php echo $this->createUrl('/'); ?>"></a>
+					<!-- <a class="logo" href="<?php echo $this->createUrl('/'); ?>"><img alt="" src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitfork-rate-logo.svg" onerror="this.onerror=null; this.src='<?php echo Yii::app()->theme->baseUrl; ?>/assets/i/bitfork-rate-logo.jpg'"/></a> -->
 					<?php $this->widget('MyMenu',array(
 						'items'=>array(
 							array('label'=>Yii::t('main', 'Формула расчета'), 'url'=>array('/site/formula')),
