@@ -14,6 +14,7 @@ return CMap::mergeArray(
 				'username' => 'root',
 				'password' => '',
 				'charset' => 'utf8',
+				'initSQLs'=>array("SET time_zone = '+00:00'"),
 			),
 			'websocket' => array(
 				'class' => 'ws.Websocket',

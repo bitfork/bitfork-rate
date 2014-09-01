@@ -11,6 +11,7 @@ return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'bitfork',
 	'language' => 'ru',
+	'timeZone' => 'UTC',
 
 	'aliases'=>array(
 		'ws'=>realpath(__DIR__ . '/../extensions/websocket/components'),
