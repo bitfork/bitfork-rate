@@ -205,9 +205,6 @@ class Course extends MyActiveRecord
 			GROUP BY t.id_service
 			ORDER BY t.`id`
 		";
-		echo "<pre>";
-		print_r($sql);
-		echo "</pre>";
 		//Yii::log($period .' / '. $sql, 'warning', 'sql');
 
 		$connection=Yii::app()->db;
