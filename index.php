@@ -1,8 +1,6 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors',1);
-ini_set('date.timezone', 'Europe/Moscow');
-//date_default_timezone_set("UTC");
 
 if ($_SERVER['HTTP_HOST']=='bitfork'){
 	defined('YII_DEBUG') or define('YII_DEBUG',true);

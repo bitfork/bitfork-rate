@@ -1,6 +1,5 @@
 <?php
 ini_set('memory_limit','128M');
-ini_set('date.timezone', 'Europe/Moscow');
 
 if (isset($_SERVER['windir'])) {
 	defined('YII_DEBUG') or define('YII_DEBUG',true);
