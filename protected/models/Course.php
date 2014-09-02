@@ -171,7 +171,7 @@ class Course extends MyActiveRecord
 	 */
 	public static function getAvgData($id_currency_from, $id_currency, $period, $date_start, $date_finish, $id_services = null)
 	{
-		$select = "t.id_service, t2.name as name_service, AVG(t.last) as avg_price, AVG(t.vol_cur) as avg_volume, t.change_state, t.change_percent";
+		$select = "t.id_service, AVG(t.last) as avg_price, AVG(t.vol_cur) as avg_volume, t.change_state, t.change_percent";
 		$where = array();
 		$order = '';
 		$where[] = "`id_currency_from` = ". $id_currency_from ." AND `id_currency` = ". $id_currency;
@@ -181,13 +181,13 @@ class Course extends MyActiveRecord
 			$where[] = "`create_date` BETWEEN '". $date_start ."' AND '". $date_finish ."'";
 		} else {
 			// с каждой биржи получаем только последние данные
-			$select = "t.id_service, t2.name as name_service, t.last as avg_price, t.vol_cur as avg_volume, t.change_state, t.change_percent";
+			$select = "t.id_service, t.last as avg_price, t.vol_cur as avg_volume, t.change_state, t.change_percent";
 			$order = 'ORDER BY id DESC';
 		}
 		// по сервисам смотрим тк какие то сервисы могут быть выключенны
-		/*if (is_array($id_services) and count($id_services)>0) {
+		if (is_array($id_services) and count($id_services)>0) {
 			$where[] = 'id_service IN ('. implode(',', $id_services) .')';
-		}*/
+		}
 		if (count($where)>0) {
 			$where = 'WHERE '. implode(' AND ', $where);
 		} else {
@@ -201,7 +201,6 @@ class Course extends MyActiveRecord
 				". $where ."
 				". $order ."
 			) as `t`
-			JOIN `". Service::model()->tableName() ."` as t2 ON t.id_service = t2.id
 			GROUP BY t.id_service
 			ORDER BY t.`id`
 		";
@@ -221,6 +220,12 @@ class Course extends MyActiveRecord
 		$index['change_state'] = RateIndex::CHANGE_NULL;
 		$index['change_percent'] = 0;
 		foreach ($data as $k => $r) {
+			$service = Service::model()->findByPk($r['id_service']);
+			if ($service===null) {
+				$data[$k]['name_service'] = '-';
+			} else {
+				$data[$k]['name_service'] = $service->name;
+			}
 			$data[$k]['percent_for_index'] = $r['avg_volume'] / $sum; // процент объема биржи от суммы всех объемов бирж
 			$data[$k]['percent_price_for_index'] = $r['avg_price'] * $data[$k]['percent_for_index']; // цена курса которая влияет на индекс
 			$index['index'] += $data[$k]['percent_price_for_index']; // сумма всех курсов
