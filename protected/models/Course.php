@@ -185,9 +185,9 @@ class Course extends MyActiveRecord
 			$order = 'ORDER BY id DESC';
 		}
 		// по сервисам смотрим тк какие то сервисы могут быть выключенны
-		if (is_array($id_services) and count($id_services)>0) {
+		/*if (is_array($id_services) and count($id_services)>0) {
 			$where[] = 'id_service IN ('. implode(',', $id_services) .')';
-		}
+		}*/
 		if (count($where)>0) {
 			$where = 'WHERE '. implode(' AND ', $where);
 		} else {
