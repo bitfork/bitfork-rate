@@ -148,6 +148,7 @@ class Pair extends MyActiveRecord
 				$results = $exchange->getDepth($values['currency_from']->name, $values['currency']->name);
 				if ($results!==false) {
 					$parse_data[$service->id]['service'] = $service->name;
+					$parse_data[$service->id]['service_url'] = $exchange->getBaseUrl();
 					$parse_data[$service->id]['data'] = $results;
 				}/* else {
 					echo "<pre>";
@@ -162,6 +163,7 @@ class Pair extends MyActiveRecord
 				$list = self::getTop($data['data'], $volume, $is_buy);
 				if (count($list['list'])>0) {
 					$top[$id_service]['service'] = $data['service'];
+					$top[$id_service]['service_url'] = $data['service_url'];
 					$top[$id_service]['data'] = $list;
 				}
 			}

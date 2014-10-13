@@ -112,6 +112,7 @@ return array(
 				array(
 					'price-<from:\w+>-<to:\w+>' => 'course/index',
 					'price-<from:\w+>-<to:\w+>-<period:\d+>' => 'course/index',
+					'best-bitcoin-price' => 'top/index',
 					'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 					'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 					'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',

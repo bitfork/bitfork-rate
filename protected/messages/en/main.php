@@ -37,4 +37,18 @@ return array(
 	'Get запрос' => 'GET request',
 	'Ответ в формате JSON' => 'Response in JSON format',
 	'Others show' => 'Others show',
+
+	'Анализатор лучших цен покупки Bitcoin, Litecoin, Darkcoin на популярных биржах.' => 'Analyzer prices to buy Bitcoin, Litecoin, Darkcoin on popular exchanges.',
+	'Данный сервис запущен осенью 2014 года. Введите интересующую сумму покупки криптовалюты, укажите валюту за которую вы хотите приоб-рести и нажмите кнопку «Анализировать». Наш сервис опросит подключенные биржи и покажет наиболее выгодное актуальное предложение.' => 'The service launched in the autumn of 2014. Just enter amount of the purchase crypto currency, select the currency for which you want to purchase and click "Analyze". Our service poll connected exchanges and show the most pro­table actual oer.',
+	'Укажите сумму покупки:' => 'Enter the amount of the purchase:',
+	'Укажите валюту, за которую хотите купить:' => 'Enter the currency in which you want to buy:',
+	'Анализировать' => 'Analyze',
+	'Результат анализа цен.' => 'The result of the analysis of price.',
+	'Лучше всего {is_buy} на {service} общая сумма лотов: {summa} за {price}. Курс составит ~ {course}.' => 'Best {is_buy} {service} total amount of lots: {summa} for {price}. The course will be ~ {course}',
+	'Размер лота' => 'Lot Size',
+	'Стоимость лота' => 'The cost of the lot',
+	'купить' => 'buy',
+	'продать' => 'sell',
+	'Лучшая цена' => 'Best price',
+	'Анализатор цен на покупку Bitcoin, Litecoin, Darkcoin на популярных биржах | Bitfork-rate.com' => 'Analyzer prices to buy Bitcoin, Litecoin, Darkcoin on popular exchanges | Bitfork-rate.com',
 );
