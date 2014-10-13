@@ -147,7 +147,8 @@ class Pair extends MyActiveRecord
 				$exchange->setService($service->name);
 				$results = $exchange->getDepth($values['currency_from']->name, $values['currency']->name);
 				if ($results!==false) {
-					$parse_data[$service->id] = $results;
+					$parse_data[$service->id]['service'] = $service->name;
+					$parse_data[$service->id]['data'] = $results;
 				}/* else {
 					echo "<pre>";
 					print_r($service->name);
@@ -158,13 +159,14 @@ class Pair extends MyActiveRecord
 		if (count($parse_data)>0) {
 			foreach ($parse_data as $id_service => $data) {
 				// для каждого сервиса теперь ищем подходящие лоты
-				$list = self::getTop($data, $volume, $is_buy);
+				$list = self::getTop($data['data'], $volume, $is_buy);
 				if (count($list['list'])>0) {
-					$top[$id_service] = $list;
+					$top[$id_service]['service'] = $data['service'];
+					$top[$id_service]['data'] = $list;
 				}
 			}
 		}
-		$id_service = ($is_buy===true) ? self::getTopBuy($top) : self::getTopSell($top);
+		$id_service = ($is_buy==1) ? self::getTopBuy($top) : self::getTopSell($top);
 
 		return array($id_service, $top);
 	}
@@ -174,8 +176,8 @@ class Pair extends MyActiveRecord
 		$min = null;
 		$id_service_search = null;
 		foreach ($top as $id_service => $item) {
-			if ($min===null or $item['summa'] < $min) {
-				$min = $item['summa'];
+			if ($min===null or $item['data']['summa'] < $min) {
+				$min = $item['data']['summa'];
 				$id_service_search = $id_service;
 			}
 		}
@@ -187,8 +189,8 @@ class Pair extends MyActiveRecord
 		$max = null;
 		$id_service_search = null;
 		foreach ($top as $id_service => $item) {
-			if ($max===null or $item['summa'] > $max) {
-				$max = $item['summa'];
+			if ($max===null or $item['data']['summa'] > $max) {
+				$max = $item['data']['summa'];
 				$id_service_search = $id_service;
 			}
 		}
@@ -197,7 +199,7 @@ class Pair extends MyActiveRecord
 
 	public static function getTop($data, $volume, $is_buy)
 	{
-		if ($is_buy===true) {
+		if ($is_buy==1) {
 			// нам нужно купить, по этому смотрим лоты на продажу
 			$data = $data['asks'];
 		} else {

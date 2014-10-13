@@ -54,8 +54,7 @@ $this->breadcrumbs=array(
 			лучше всего продать на
 		<?php } ?>
 		<?php
-		$service = Service::model()->findByPk($result[0]);
-		echo $service->name;
+		echo $result[1][$result[0]]['service'];
 		?>
 	</p>
 	<p>
@@ -64,7 +63,7 @@ $this->breadcrumbs=array(
 		<?php } else { ?>
 			можно продать
 		<?php } ?>
-		<?php echo $result[1][$result[0]]['volume'] .' за '. $result[1][$result[0]]['summa']; ?>
+		<?php echo $result[1][$result[0]]['data']['volume'] .' за '. $result[1][$result[0]]['data']['summa']; ?>
 	</p>
 	<?php
 	/*echo "<pre>";
