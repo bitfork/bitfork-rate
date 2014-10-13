@@ -90,7 +90,10 @@ class Service extends \CApplicationComponent
 
 	public function getDepth($currency_to = 'btc', $currency_of = 'usd')
 	{
-		return $this->getServiceAdapter()->getDepth($currency_to, $currency_of);
+		if (method_exists($this->getServiceAdapter(), 'getDepth')) {
+			return $this->getServiceAdapter()->getDepth($currency_to, $currency_of);
+		}
+		return false;
 	}
 
 	public function getBaseUrl()

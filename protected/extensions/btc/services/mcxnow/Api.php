@@ -41,11 +41,23 @@ class Api extends ApiBase
 		$xml = new \SimpleXMLElement($data);
 		$data = json_decode(json_encode($xml), true);
 
-		if (isset($data["sell"],  $data["sell"]["o"],  $data["sell"]["o"][0], $data["buy"], $data["buy"]["o"], $data["buy"]["o"][0])) {
-			$return['ask']['price'] = $data["sell"]["o"][0]['p'];
-			$return['ask']['vol'] = $data["sell"]["o"][0]['c1'];
-			$return['bid']['price'] = $data["buy"]["o"][0]['p'];
-			$return['bid']['vol'] = $data["buy"]["o"][0]['c1'];
+		if (isset($data["sell"], $data["sell"]["o"], $data["sell"]["o"][0], $data["buy"], $data["buy"]["o"], $data["buy"]["o"][0])) {
+			$ret_data['asks'] = array();
+			$ret_data['bids'] = array();
+			foreach ($data["sell"]["o"] as $k => $elem) {
+				$ret_data['asks'][$k][0] = $elem['p'];
+				$ret_data['asks'][$k][1] = $elem['c1'];
+			}
+			foreach ($data["buy"]["o"] as $k => $elem) {
+				$ret_data['bids'][$k][0] = $elem['p'];
+				$ret_data['bids'][$k][1] = $elem['c1'];
+			}
+			return $ret_data;
+
+			$return['ask']['price'] = $ret_data['asks'][0][0];
+			$return['ask']['vol'] = $ret_data['asks'][0][1];
+			$return['bid']['price'] = $ret_data['bids'][0][0];
+			$return['bid']['vol'] = $ret_data['bids'][0][1];
 			return $return;
 		}
 		$this->setMessageLog(__CLASS__ .' - getDepth не наден нужный елемент');

@@ -110,4 +110,112 @@ class Pair extends MyActiveRecord
 	{
 		return parent::model($className);
 	}
+
+
+	public static function getPairServices($id_pair=false)
+	{
+		$services = array();
+		if ($id_pair===false)
+			$pairs = Pair::model()->findAll();
+		else
+			$pairs = Pair::model()->findAll('id=:id', array(':id'=>$id_pair));
+		foreach ($pairs as $pair) {
+			$services[$pair->id]['currency'] = $pair->currency;
+			$services[$pair->id]['currency_from'] = $pair->currency_from;
+			$services[$pair->id]['services'] = array();
+			foreach ($pair->service_pair as $service_pair) {
+				$services[$pair->id]['services'][] = $service_pair->service;
+			}
+		}
+		return $services;
+	}
+
+	public static function parseAllService($volume, $id_currency_2, $id_currency_1, $is_buy = true)
+	{
+		$pair = Pair::model()->findByAttributes(array('id_currency'=>$id_currency_1, 'id_currency_from'=>$id_currency_2));
+		if ($pair===null) {
+			return false;
+		}
+		$id_pair = $pair->id;
+		$exchange = Yii::app()->exchange;
+		// получаем сервисы для пары
+		$services = self::getPairServices($id_pair);
+		foreach ($services as $values) {
+			$parse_data = array();
+			foreach ($values['services'] as $service) {
+				// для каждого сервиса получаем стаканы
+				$exchange->setService($service->name);
+				$results = $exchange->getDepth($values['currency_from']->name, $values['currency']->name);
+				if ($results!==false) {
+					$parse_data[$service->id] = $results;
+				}/* else {
+					echo "<pre>";
+					print_r($service->name);
+					echo "</pre>";
+				}*/
+			}
+		}
+		if (count($parse_data)>0) {
+			foreach ($parse_data as $id_service => $data) {
+				// для каждого сервиса теперь ищем подходящие лоты
+				$list = self::getTop($data, $volume, $is_buy);
+				if (count($list['list'])>0) {
+					$top[$id_service] = $list;
+				}
+			}
+		}
+		$id_service = ($is_buy===true) ? self::getTopBuy($top) : self::getTopSell($top);
+
+		return array($id_service, $top);
+	}
+
+	public static function getTopBuy($top)
+	{
+		$min = null;
+		$id_service_search = null;
+		foreach ($top as $id_service => $item) {
+			if ($min===null or $item['summa'] < $min) {
+				$min = $item['summa'];
+				$id_service_search = $id_service;
+			}
+		}
+		return $id_service_search;
+	}
+
+	public static function getTopSell($top)
+	{
+		$max = null;
+		$id_service_search = null;
+		foreach ($top as $id_service => $item) {
+			if ($max===null or $item['summa'] > $max) {
+				$max = $item['summa'];
+				$id_service_search = $id_service;
+			}
+		}
+		return $id_service_search;
+	}
+
+	public static function getTop($data, $volume, $is_buy)
+	{
+		if ($is_buy===true) {
+			// нам нужно купить, по этому смотрим лоты на продажу
+			$data = $data['asks'];
+		} else {
+			$data = $data['bids'];
+		}
+
+		$tmp_volume = 0;
+		$summa = 0;
+		$list = array();
+
+		foreach ($data as $item) {
+			if ($tmp_volume < $volume and ($tmp_volume + $item[1]) < $volume) {
+				$tmp_volume += $item[1];
+				$summa += $item[0] * $item[1];
+				$list[] = $item;
+			}
+		}
+
+		return array('summa'=>$summa,'volume'=>$tmp_volume,'list'=>$list);
+	}
 }

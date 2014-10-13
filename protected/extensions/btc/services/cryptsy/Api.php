@@ -30,6 +30,35 @@ class Api extends ApiBase
 		return false;
 	}
 
+	public function getDepth($currency_to = 'btc', $currency_of = 'usd')
+	{
+		$currency_to = mb_strtoupper($currency_to, 'utf-8');
+		$data = $this->query($this->getUrl('singleorderdata', $currency_to, $currency_of));
+
+		if (isset($data['return'], $data['return'][$currency_to], $data['return'][$currency_to]['sellorders'], $data['return'][$currency_to]['sellorders'][0])) {
+
+			$ret_data['asks'] = array();
+			$ret_data['bids'] = array();
+			foreach ($data['return'][$currency_to]['sellorders'] as $k => $elem) {
+				$ret_data['asks'][$k][0] = $elem['price'];
+				$ret_data['asks'][$k][1] = $elem['quantity'];
+			}
+			foreach ($data['return'][$currency_to]['buyorders'] as $k => $elem) {
+				$ret_data['bids'][$k][0] = $elem['price'];
+				$ret_data['bids'][$k][1] = $elem['quantity'];
+			}
+			return $ret_data;
+
+			$return['ask']['price'] = $ret_data['asks'][0][0];
+			$return['ask']['vol'] = $ret_data['asks'][0][1];
+			$return['bid']['price'] = $ret_data['bids'][0][0];
+			$return['bid']['vol'] = $ret_data['bids'][0][1];
+			return $return;
+		}
+		$this->setMessageLog(__CLASS__ .' - getDepth не наден нужный елемент');
+		return false;
+	}
+
 	/**
 	 * Возвращает url к api
 	 *

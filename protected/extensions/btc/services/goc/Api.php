@@ -33,6 +33,7 @@ class Api extends ApiBase
 		$currency = mb_strtolower($currency_to .'_'. $currency_of, 'utf-8');
 		$data = $this->query($this->getUrl('depth', $currency));
 		if (isset($data['asks'])) {
+			return $data;
 			$return['ask']['price'] = $data['asks'][0][0];
 			$return['ask']['vol'] = $data['asks'][0][1];
 			$return['bid']['price'] = $data['bids'][0][0];
