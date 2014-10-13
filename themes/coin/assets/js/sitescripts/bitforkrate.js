@@ -43,5 +43,7 @@ jQuery(document).ready(function($) {
   $(window).load(function(){
       $('header').scrollToFixed();
   	});
+
+  $("select").chosen();
 	  
 });

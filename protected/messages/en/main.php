@@ -44,7 +44,7 @@ return array(
 	'Укажите валюту, за которую хотите купить:' => 'Enter the currency in which you want to buy:',
 	'Анализировать' => 'Analyze',
 	'Результат анализа цен.' => 'The result of the analysis of price.',
-	'Лучше всего {is_buy} на {service} общая сумма лотов: {summa} за {price}. Курс составит ~ {course}.' => 'Best {is_buy} {service} total amount of lots: {summa} for {price}. The course will be ~ {course}',
+	'Лучше всего {is_buy} на <a href="http://{service}" target="_blank">{service}</a>.<br/> Общая сумма лотов: <i>{summa}</i> за <i>{price}</i>. <br/>Курс составит <b>~ {course}</b>.' => 'Best {is_buy} <a href="http://{service}" target="_blank">{service}</a>.<br/> Total amount of lots: <i>{summa}</i> for <i>{price}</i>. <br/>The course will be <b>~ {course}</b>',
 	'Размер лота' => 'Lot Size',
 	'Стоимость лота' => 'The cost of the lot',
 	'купить' => 'buy',
