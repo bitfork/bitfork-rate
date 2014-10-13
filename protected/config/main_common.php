@@ -145,8 +145,8 @@ return array(
 		'websocket' => array(
 			'class' => 'ws.Websocket',
 			'eventDriver' => '',
-			'websocket' => 'tcp://172.31.16.152:8002',
-			'localsocket' => 'tcp://172.31.16.152:8003',
+			'websocket' => 'tcp://178.62.130.23:8002',
+			'localsocket' => 'tcp://178.62.130.23:8003',
 		),
 	),
 
