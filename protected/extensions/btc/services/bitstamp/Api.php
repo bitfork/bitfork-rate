@@ -32,7 +32,7 @@ class Api extends ApiBase
 
 	public function getDepth($currency_to = 'btc', $currency_of = 'usd')
 	{
-		if (($currency_to!='btc' or $currency_to!='BTC') and ($currency_of!='usd' or $currency_of!='USD')) {
+		if (($currency_to!='btc' and $currency_to!='BTC') or ($currency_of!='usd' and $currency_of!='USD')) {
 			return false;
 		}
 		$data = $this->query($this->getUrl('order_book'));
