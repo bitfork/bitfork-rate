@@ -56,22 +56,65 @@
 					)); ?>
 			</blockquote>
 
-			<table class="table-dotted table-hover-tr">
-				<thead>
-				<tr>
-					<td><?php echo Yii::t('main', 'Размер лота'); ?></td>
-					<td><?php echo Yii::t('main', 'Стоимость лота'); ?></td>
-				</tr>
-				</thead>
-				<tbody>
-				<?php foreach ($result[1][$result[0]]['data']['list'] as $item) { ?>
-					<tr>
-						<td><?php echo ViewPrice::GetResult($item[1], $currency_1->symbol, $currency_1->round); ?></td>
-						<td><?php echo ViewPrice::GetResult(($item[0] * $item[1]), $currency_2->symbol, $currency_2->round); ?></td>
-					</tr>
+			<hr/>
+
+			<div style="overflow: hidden">
+				<?php $top = $result[1][$result[0]]; unset($result[1][$result[0]]); array_unshift($result[1], $top); $result[1] = array_values($result[1]); ?>
+				<?php foreach ($result[1] as $key => $service) { ?>
+					<div class="main-left"<?php echo ($key==0) ? 'style="background-color: #eed2d6;"' : ''; ?>>
+
+						<h3><?php echo $service['service_url']; ?></h3>
+
+						<blockquote>
+							<?php echo Yii::t('main', 'Общая сумма лотов: <i>{summa}</i> за <i>{price}</i>. <br/>Курс составит <b>~ {course}</b>.',
+								array(
+									'{summa}'=>ViewPrice::GetResult($service['data']['volume'], $currency_1->symbol, $currency_1->round),
+									'{price}'=>ViewPrice::GetResult($service['data']['summa'], $currency_2->symbol, $currency_2->round),
+									'{course}'=>ViewPrice::GetResult(($service['data']['summa'] / $service['data']['volume']), $currency_2->symbol, $currency_2->round) .'/'. $currency_1->symbol,
+								)); ?>
+						</blockquote>
+
+						<table id="table-result-<?php echo $key; ?>" class="table-dotted table-hover-tr">
+							<thead>
+							<tr>
+								<td><?php echo Yii::t('main', 'Размер лота'); ?></td>
+								<td><?php echo Yii::t('main', 'Цена'); ?></td>
+								<td><?php echo Yii::t('main', 'Стоимость лота'); ?></td>
+							</tr>
+							</thead>
+							<tbody>
+							<?php
+							$i = 1;
+							$c = 6;
+							?>
+							<?php foreach ($service['data']['list'] as $item) { ?>
+								<?php if ($i<=$c) { ?>
+									<tr>
+								<?php } else {?>
+									<tr style="display: none" class="hide-row">
+								<?php } ?>
+									<td><?php echo ViewPrice::GetResult($item[1], $currency_1->symbol, $currency_1->round); ?></td>
+									<td><?php echo ViewPrice::GetResult($item[0], $currency_2->symbol, $currency_2->round); ?></td>
+									<td><?php echo ViewPrice::GetResult(($item[0] * $item[1]), $currency_2->symbol, $currency_2->round); ?></td>
+								</tr>
+								<?php $i++; ?>
+							<?php } ?>
+							<?php if (count($service['data']['list'])>$c) { ?>
+								<tr class="tr-nohover">
+									<td colspan="3">
+										<p class="text-center m-t-5 m-b-5">
+											<a href="javascript:;" class="js-table-toogle text-a-dotted" data-table="#table-result-<?php echo $key; ?>">
+												<?php echo Yii::t('main', 'Show more'); ?>
+											</a>
+										</p>
+									</td>
+								</tr>
+							<?php } ?>
+							</tbody>
+						</table>
+					</div>
 				<?php } ?>
-				</tbody>
-			</table>
+			</div>
 		</div>
 	<?php } ?>
 

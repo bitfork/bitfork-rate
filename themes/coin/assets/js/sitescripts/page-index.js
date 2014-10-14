@@ -79,5 +79,23 @@ jQuery(document).ready(function($) {
 		}
 	});
 	/*END TOGGLE EXCHANGES*/
+	$('.js-table-toogle').on('click', function(e){
+		e.preventDefault();
+		var $this = $(this);
+		var $table = $($this.data('table'));
+		var $tr_toggle = $table.find('tr.hide-row');
+
+		if ( $tr_toggle.is(':hidden') ) {
+			$tr_toggle.fadeIn('slow', function(){
+				$this.html('Hide');
+			});
+		}
+		else
+		{
+			$tr_toggle.fadeOut('slow', function(){
+				$this.html('Show more');
+			});
+		}
+	});
 
 });

@@ -168,6 +168,10 @@ class Pair extends MyActiveRecord
 				}
 			}
 		}
+		if (!isset($top) or count($top)<=0) {
+			return false;
+		}
+
 		$id_service = ($is_buy==1) ? self::getTopBuy($top) : self::getTopSell($top);
 
 		return array($id_service, $top);
