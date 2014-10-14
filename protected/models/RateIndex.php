@@ -366,7 +366,7 @@ class RateIndex extends MyActiveRecord
 	{
 		//найти id записи до которой нужно удалить
 		$date_start = new DateTime();
-		$date_start->modify('-7 day');
+		$date_start->modify('-2 day');
 		$date_limit = $date_start->getTimestamp();
 
 		$sql = "
