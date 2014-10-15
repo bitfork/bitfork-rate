@@ -31,6 +31,30 @@ class Api extends ApiBase
 		return false;
 	}
 
+	public function getDepth($currency_to = 'btc', $currency_of = 'usd')
+	{
+		$currency_to = mb_strtoupper($currency_to, 'utf-8');
+		$currency_of = mb_strtoupper($currency_of, 'utf-8');
+		$data = $this->query($this->getUrl('book', $currency_to, $currency_of));
+		if (isset($data['asks'])) {
+			foreach ($data['asks'] as $key => $item) {
+				$data['asks'][$key][0] = $item['price'];
+				$data['asks'][$key][1] = $item['amount'];
+				unset($data['asks'][$key]['price']);
+				unset($data['asks'][$key]['amount']);
+			}
+			foreach ($data['bids'] as $key => $item) {
+				$data['bids'][$key][0] = $item['price'];
+				$data['bids'][$key][1] = $item['amount'];
+				unset($data['bids'][$key]['price']);
+				unset($data['bids'][$key]['amount']);
+			}
+			return $data;
+		}
+		$this->setMessageLog(__CLASS__ .' - getDepth не наден нужный елемент');
+		return false;
+	}
+
 	/**
 	 * Возвращает url к api
 	 *
