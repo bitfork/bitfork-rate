@@ -5,13 +5,14 @@
  */
 class ApiController extends CController
 {
-	/*public function init()
+	public function init()
 	{
 		parent::init();
+		header('Access-Control-Allow-Origin: *');
 		// override methods to make sure we handle api errors
-		Yii::app()->attachEventHandler('onError', array($this, 'apiErrorHandler'));
-		Yii::app()->attachEventHandler('onException',array($this,'apiErrorHandler'));
-	}*/
+		/*Yii::app()->attachEventHandler('onError', array($this, 'apiErrorHandler'));
+		Yii::app()->attachEventHandler('onException',array($this,'apiErrorHandler'));*/
+	}
 
 	/**
 	 * Error handler, when there is an error this will fire
