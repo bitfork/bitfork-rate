@@ -131,4 +131,11 @@ class SiteController extends Controller
 			'pairs'=>Pair::model()->findAll(),
 		));
 	}
+
+	public function actionWidget()
+	{
+		$this->render('widget', array(
+			'pairs'=>Pair::model()->findAll(),
+		));
+	}
 }
