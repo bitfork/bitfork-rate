@@ -26,8 +26,6 @@
 	));
 	?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
-
 	<div class="row">
 		<?php echo $form->labelEx($model,'email'); ?>
 		<?php echo $form->textField($model,'email'); ?>

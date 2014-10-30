@@ -52,4 +52,5 @@ return array(
 	'продать' => 'sell',
 	'Лучшая цена' => 'Best price',
 	'Анализатор цен на покупку Bitcoin, Litecoin, Darkcoin на популярных биржах | Bitfork-rate.com' => 'Analyzer prices to buy Bitcoin, Litecoin, Darkcoin on popular exchanges | Bitfork-rate.com',
+	'Contact US' => 'Contact US',
 );
