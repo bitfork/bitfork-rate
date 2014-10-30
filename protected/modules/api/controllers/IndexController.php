@@ -17,6 +17,7 @@ class IndexController extends ApiController
 
 		$data=ApiRateIndex::getDateIndex($id_currency_from, $id_currency, $period);
 		$response['index'] = sprintf("%.8f", $data['index']['index']);
+		$response['date'] = $data['index']['create_date'];
 		$response['period'] = $period;
 		$this->render('view',array(
 			'data'=>$response,
