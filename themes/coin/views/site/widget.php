@@ -14,7 +14,7 @@
 	 data-css-class-date="widget-date"
 	 data-loader="загрузка ..."
 	></div>
-<script src="/widget/widget.js"></script>
+<script src="/widget/widget.min.js"></script>
 
 <br />
 <textarea name="clipboard-text" id="clipboard-text" cols="60" rows="10">
@@ -24,7 +24,7 @@
 	 data-css-class-date="widget-date"
 	 data-loader="загрузка ..."
 ></div>
-<script src="http://bitfork-rate.com/widget/widget.js"></script>
+<script src="http://bitfork-rate.com/widget/widget.min.js"></script>
 </textarea>
 <br />
 <button class="btn-blue" id="target-to-copy" data-clipboard-target="clipboard-text"><?php echo Yii::t('main', 'Click To Copy'); ?></button>
