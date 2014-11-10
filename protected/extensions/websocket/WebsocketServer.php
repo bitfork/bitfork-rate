@@ -11,7 +11,7 @@ class WebsocketServer
         //$pid = @file_get_contents($this->config['pid']);
         //if ($pid!==false) {
         if (file_exists($this->config['pid'])) {
-            die("already started\r\n");
+            die($this->config['pid']. " already started\r\n");
         }
 
         if (empty($this->config['websocket']) && empty($this->config['localsocket']) && empty($this->config['master'])) {
