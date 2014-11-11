@@ -8,6 +8,7 @@
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true,
 	),
+	'action'=>Yii::app()->createUrl('/top/index'),
 	'htmlOptions'=>array('class'=>'main-bordered-vertical main-separated-vertical'),
 )); ?>
 
