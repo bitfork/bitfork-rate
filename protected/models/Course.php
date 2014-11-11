@@ -545,14 +545,10 @@ class Course extends MyActiveRecord
 	public static function partition()
 	{
 		//найти id записи до которой нужно удалить
-		$date_start = new DateTime();
-		$date_start->modify('-2 day');
-		$date_limit = $date_start->getTimestamp();
-
 		$sql = "
 			SELECT `id`
 			FROM `course`
-			WHERE UNIX_TIMESTAMP(`create_date`) > '". $date_limit ."'
+			WHERE UNIX_TIMESTAMP(`create_date`) > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 day))
 			ORDER BY id
 			LIMIT 1
 		";
