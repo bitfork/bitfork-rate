@@ -17,13 +17,13 @@
 		<tr>
 			<td><?php echo Yii::t('main', 'Укажите сумму покупки:'); ?></td>
 			<td><?php echo $form->textField($model,'volume'); ?></td>
-			<td><?php echo $form->dropDownList($model,'id_service_1', CHtml::listData(Currency::model()->findAll(), 'id', 'name')); ?></td>
+			<td><?php echo $form->dropDownList($model,'id_service_1', array(2=>'BTC / USD',3=>'LTC / USD')/*CHtml::listData(Currency::model()->findAll(), 'id', 'name')*/); ?></td>
 		</tr>
-		<tr>
+		<?php /*<tr>
 			<td><?php echo Yii::t('main', 'Укажите валюту, за которую хотите купить:'); ?></td>
 			<td><?php echo $form->dropDownList($model,'id_service_2', CHtml::listData(Currency::model()->findAll(), 'id', 'name')); ?></td>
 			<td></td>
-		</tr>
+		</tr>*/ ?>
 		<tr>
 			<td></td>
 			<td>
