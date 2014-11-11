@@ -61,7 +61,9 @@
 
 			<div style="overflow: hidden">
 				<?php $top = $result[1][$result[0]]; unset($result[1][$result[0]]); array_unshift($result[1], $top); $result[1] = array_values($result[1]); ?>
+				<?php $step = 0; ?>
 				<?php foreach ($result[1] as $key => $service) { ?>
+					<?php echo ($step==0) ? '<div style="overflow: hidden">' : ''; ?>
 					<div class="main-left"<?php echo ($key==0) ? 'style="background-color: #eed2d6;"' : ''; ?>>
 
 						<h3><?php echo $service['service_url']; ?></h3>
@@ -114,6 +116,8 @@
 							</tbody>
 						</table>
 					</div>
+					<?php echo ($step==2) ? '</div>' : ''; ?>
+					<?php $step = ($step==2) ? 0 : $step + 1; ?>
 				<?php } ?>
 			</div>
 		</div>
