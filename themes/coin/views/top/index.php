@@ -38,7 +38,7 @@
 	<div style="display: none">
 		<?php echo $form->error($model,'volume'); ?>
 		<?php echo $form->error($model,'id_service_1'); ?>
-		<?php echo $form->error($model,'id_service_2'); ?>
+		<?php //echo $form->error($model,'id_service_2'); ?>
 		<?php echo $form->error($model,'is_buy'); ?>
 	</div>
 
